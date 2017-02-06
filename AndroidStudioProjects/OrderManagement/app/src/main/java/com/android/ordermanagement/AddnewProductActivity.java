@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class AddnewProductActivity extends AppCompatActivity {
 
@@ -15,7 +16,7 @@ public class AddnewProductActivity extends AppCompatActivity {
     private EditText quantityFld;
     private EditText billedQuantityFld;
     private EditText amountFld;
-    private EditText totalAmount;
+    private TextView totalAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,11 @@ public class AddnewProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_addnew_product);
         add= (Button) findViewById(R.id.add);
         pNameFld= (EditText) findViewById(R.id.name_fld);
+        packageTypeFld= (EditText) findViewById(R.id.type_fld);
+        quantityFld= (EditText) findViewById(R.id.quantity_fld);
+        billedQuantityFld= (EditText) findViewById(R.id.billed_fld);
+        amountFld= (EditText) findViewById(R.id.amount_fld);
+        totalAmount= (TextView) findViewById(R.id.total);
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
