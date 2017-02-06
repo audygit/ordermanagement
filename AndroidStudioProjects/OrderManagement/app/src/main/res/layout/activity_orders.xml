@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.android.ordermanagement.OrdersActivity">
+  <LinearLayout
+      android:background="@color/red"
+      android:layout_width="match_parent"
+      android:layout_height="?actionBarSize">
+      <TextView
+          android:textSize="18sp"
+          android:textColor="@color/white"
+          android:text="Target Vs Actual"
+          android:gravity="center"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" />
+  </LinearLayout>
+  <LinearLayout
+      android:background="@color/orange"
+      android:layout_width="match_parent"
+      android:layout_height="50dp">
+      <TextView
+          android:id="@+id/week"
+          android:padding="13dp"
+          android:textColor="@color/white"
+          android:layout_weight="1"
+          android:text="1Week"
+          android:gravity="center"
+          android:layout_gravity="center"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" />
+      <TextView
+          android:id="@+id/month"
+          android:padding="13dp"
+          android:text="1Month"
+          android:gravity="center"
+          android:textColor="@color/white"
+          android:layout_weight="1"
+          android:layout_gravity="center"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" />
+      <TextView
+          android:id="@+id/year"
+          android:padding="13dp"
+          android:text="1Year"
+          android:gravity="center"
+          android:textColor="@color/white"
+          android:layout_weight="1"
+          android:layout_gravity="center"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" />
+  </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="280dp">
+        <RelativeLayout
+            android:gravity="center"
+            android:background="@drawable/green_circle"
+            android:layout_width="160dp"
+            android:layout_height="160dp">
+        <RelativeLayout
+            android:gravity="center"
+            android:background="@drawable/white_circle"
+            android:layout_width="100dp"
+            android:layout_height="100dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/count"
+                android:textColor="@color/black"
+                android:text="100/"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/target"
+                android:textColor="@color/black"
+                android:text="120"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/subtext"
+            android:layout_marginTop="15dp"
+            android:text="This month"
+            android:gravity="center"
+            android:textColor="@color/red"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginLeft="1dp"
+            android:background="@color/grey"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:gravity="center"
+                android:id="@+id/pending"
+                android:background="@drawable/circle"
+                android:textSize="35sp"
+                android:textColor="@color/white"
+                android:layout_width="70dp"
+                android:layout_height="70dp" />
+            <TextView
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:text="Pending"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_marginLeft="1dp"
+            android:background="@color/grey"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/completed"
+                android:gravity="center"
+                android:background="@drawable/circle"
+                android:textSize="35sp"
+                android:textColor="@color/white"
+                android:layout_width="70dp"
+                android:layout_height="70dp" />
+            <TextView
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:text="Completed"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginLeft="1dp"
+            android:background="@color/grey"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/newOrder"
+                android:gravity="center"
+                android:elevation="6dp"
+                android:text="+"
+                android:background="@drawable/white_circle"
+                android:textSize="35sp"
+                android:textColor="@color/black"
+                android:layout_width="70dp"
+                android:layout_height="70dp" />
+            <TextView
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:text="New Order"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
