@@ -49,7 +49,7 @@ public class AddnewProductActivity extends AppCompatActivity {
         List<String> list = new ArrayList<String>();
         list.add("Desire");
         list.add("Pleasure");
-        list.add("Chocolates");
+        list.add("Aroma");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

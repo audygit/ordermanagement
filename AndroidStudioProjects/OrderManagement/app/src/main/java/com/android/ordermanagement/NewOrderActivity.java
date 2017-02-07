@@ -86,11 +86,17 @@ public class NewOrderActivity extends AppCompatActivity {
                 lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
                 dialog.show();
                 dialog.getWindow().setAttributes(lp);
-//                Intent intent=new Intent(NewOrderActivity.this,OrdersActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
-//                finish();
+                Button ok = (Button)dialog.findViewById(R.id.ok);
+                ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent=new Intent(NewOrderActivity.this,OrdersActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
             }
         });
 

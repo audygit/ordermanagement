@@ -21,11 +21,11 @@ public class CustomerListActivity extends AppCompatActivity {
         getCustomers();
     }
     private void  getCustomers(){
-        Customer customer=new Customer(1,"Customer1");
+        Customer customer=new Customer(1,"Hari Provision Stores");
         customers.add(customer);
-        customers.add(new Customer(2,"Customer2"));
-        customers.add(new Customer(3,"Customer3"));
-        customers.add(new Customer(4,"Customer4"));
+        customers.add(new Customer(2,"Anjaneya Condiments"));
+        customers.add(new Customer(3,"Mahalakshmi Wholesalers"));
+        customers.add(new Customer(4,"Ambica Store"));
         setup();
     }
     private void setup(){
