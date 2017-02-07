@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.ordermanagement.Models.Order;
 import com.android.ordermanagement.Models.Product;
 
 import java.util.ArrayList;
@@ -19,53 +20,88 @@ public class NewOrderActivity extends AppCompatActivity {
     private ArrayList<Product> products=new ArrayList<>();
     private RecyclerView recyclerView;
     private ProductsListAdapter productsListAdapter;
-    private double serviceTax=234;
-    private double vat=672;
     private TextView svt;
     private Button confirm;
     private TextView vatView;
     private TextView total;
     private ImageButton add;
+    private boolean viewOnly;
+    private Order order;
+    private TextView head;
+    private double totalAmount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_order);
+        viewOnly=getIntent().getBooleanExtra("view",false);
         recyclerView= (RecyclerView) findViewById(R.id.products_list);
         svt= (TextView) findViewById(R.id.service_tax);
         add= (ImageButton) findViewById(R.id.add);
         vatView= (TextView) findViewById(R.id.vat);
         confirm= (Button) findViewById(R.id.confirm);
         total= (TextView) findViewById(R.id.total);
-        getProducts();
+        head= (TextView) findViewById(R.id.head);
+        if (viewOnly){
+            add.setVisibility(View.GONE);
+            confirm.setVisibility(View.GONE);
+            order= (Order) getIntent().getSerializableExtra("order");
+            if (order==null){
+                products=new ArrayList<>();
+            }else {
+                products=order.getProducts();
+            }
+            head.setText("Order No "+order.getId());
+            total.setText(String.valueOf(order.getTotalAmount()));
+            svt.setText(String.valueOf(order.getServiceTax()));
+            vatView.setText(String.valueOf(order.getVat()));
+        }else {
+            Product product= (Product) getIntent().getSerializableExtra("product");
+            products.add(product);
+        }
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(NewOrderActivity.this,AddnewProductActivity.class);
-                startActivity(intent);
+                intent.putExtra("flag",true);
+                startActivityForResult(intent,22);
             }
         });
-    }
-    private void getProducts(){
-        products.add(new Product(1,"Desire",20,"cases",245000));
-        products.add(new Product(2,"Passion",25,"cases",2145000));
-        productsListAdapter=new ProductsListAdapter(NewOrderActivity.this,products);
+        productsListAdapter=new ProductsListAdapter(NewOrderActivity.this,products,viewOnly);
         recyclerView.setLayoutManager(new LinearLayoutManager(NewOrderActivity.this));
         recyclerView.setAdapter(productsListAdapter);
-        double totalAmount=0;
-        for (Product p:products){
-            totalAmount=totalAmount+p.getAmount();
-        }
-        totalAmount=totalAmount+serviceTax+vat;
-        total.setText(String.valueOf(totalAmount));
-        svt.setText(String.valueOf(serviceTax));
-        vatView.setText(String.valueOf(vat));
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(NewOrderActivity.this,CustomerListActivity.class);
+                Intent intent=new Intent(NewOrderActivity.this,OrdersActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
             }
         });
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==22&&resultCode==RESULT_OK){
+            Product product= (Product) data.getSerializableExtra("product");
+            products.add(product);
+            totalAmount=totalAmount+product.getAmount();
+            productsListAdapter.setProviders(products);
+            productsListAdapter.notifyDataSetChanged();
+        }
+    }
+    //    private void getProducts(){
+//        products.add(new Product(1,"Desire",20,"cases",245000));
+//        products.add(new Product(2,"Passion",25,"cases",2145000));
+//
+//        double totalAmount=0;
+//        for (Product p:products){
+//            totalAmount=totalAmount+p.getAmount();
+//        }
+//
+//    }
 }

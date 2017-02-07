@@ -18,7 +18,9 @@
         <activity android:name=".OrdersActivity" />
         <activity android:name=".NewOrderActivity" />
         <activity android:name=".CustomerListActivity" />
-        <activity android:name=".AddnewProductActivity"></activity>
+        <activity android:name=".AddnewProductActivity" />
+        <activity android:name=".PendingOrdersActivity" />
+        <activity android:name=".ProductActivity"></activity>
     </application>
 
 </manifest>

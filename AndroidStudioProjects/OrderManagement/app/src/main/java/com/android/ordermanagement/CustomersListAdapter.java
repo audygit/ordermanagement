@@ -6,9 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.ordermanagement.Models.Customer;
 import com.android.ordermanagement.Models.Order;
 
 import java.util.ArrayList;
@@ -16,12 +16,12 @@ import java.util.ArrayList;
 /**
  * Created by audyf on 2/5/2017.
  */
-public class OrdersListAdapter extends RecyclerView.Adapter<OrdersListAdapter.MyVH> {
+public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdapter.MyVH> {
     private Context mContext;
-    private ArrayList<Order> orders;
-    public OrdersListAdapter(Context mContext, ArrayList<Order> orders) {
+    private ArrayList<Customer> customers;
+    public CustomersListAdapter(Context mContext, ArrayList<Customer> customers) {
         this.mContext = mContext;
-        this.orders = orders;
+        this.customers = customers;
     }
 
     @Override
@@ -31,29 +31,32 @@ public class OrdersListAdapter extends RecyclerView.Adapter<OrdersListAdapter.My
         return vh;
     }
 
-    public void setProviders(ArrayList<Order> providers) {
-        this.orders = providers;
+    public void setCustomers(ArrayList<Customer> providers) {
+        this.customers = providers;
     }
     @Override
     public void onBindViewHolder(MyVH holder, int position) {
-        Order provider=orders.get(position);
-        holder.customerName.setText(provider.getCustomerName());
+        Customer provider=customers.get(position);
+        holder.pic.setText(provider.getName().substring(0,1).toUpperCase());
+        holder.customerName.setText(provider.getName());
     }
 
     @Override
     public int getItemCount() {
-        return orders.size();
+        return customers.size();
     }
 
     public class MyVH extends RecyclerView.ViewHolder {
         private TextView customerName;
+        private TextView pic;
         public MyVH(View convertView) {
             super(convertView);
+            pic= (TextView) convertView.findViewById(R.id.pic);
             customerName= (TextView) convertView.findViewById(R.id.name);
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(mContext,NewOrderActivity.class);
+                    Intent intent=new Intent(mContext,AddnewProductActivity.class);
                     mContext.startActivity(intent);
                 }
             });

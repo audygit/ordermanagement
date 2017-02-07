@@ -19,10 +19,11 @@ import java.util.ArrayList;
 public class ProductsListAdapter  extends RecyclerView.Adapter<ProductsListAdapter.MyVH> {
     private Context mContext;
     private ArrayList<Product> products;
-
-    public ProductsListAdapter(Context mContext, ArrayList<Product> products) {
+    private boolean viewOnly;
+    public ProductsListAdapter(Context mContext, ArrayList<Product> products,boolean viewOnly) {
         this.mContext = mContext;
         this.products = products;
+        this.viewOnly=viewOnly;
     }
 
     @Override
@@ -60,8 +61,11 @@ public class ProductsListAdapter  extends RecyclerView.Adapter<ProductsListAdapt
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(mContext,NewOrderActivity.class);
-                    mContext.startActivity(intent);
+                    if (viewOnly) {
+                        Intent intent = new Intent(mContext, ProductActivity.class);
+                        intent.putExtra("product",products.get(getAdapterPosition()));
+                        mContext.startActivity(intent);
+                    }
                 }
             });
         }

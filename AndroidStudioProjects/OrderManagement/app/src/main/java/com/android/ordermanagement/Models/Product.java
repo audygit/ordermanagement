@@ -1,15 +1,29 @@
 package com.android.ordermanagement.Models;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 /**
  * Created by audyf on 2/5/2017.
  */
-public class Product {
+public class Product implements Serializable{
+    @SerializedName("id")
     private int id;
+    @SerializedName("name")
     private String name;
+    @SerializedName("quantity")
     private int quantity;
+    @SerializedName("unit")
     private String unit;
+    @SerializedName("amount")
     private double amount;
+    @SerializedName("billed_quantity")
+    private int billedQuantity;
 
+    public Product(){
+
+    }
     public Product(int id,String name,int quantity,String unit,double amount){
         setId(id);
         setAmount(amount);
@@ -55,5 +69,13 @@ public class Product {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public int getBilledQuantity() {
+        return billedQuantity;
+    }
+
+    public void setBilledQuantity(int billedQuantity) {
+        this.billedQuantity = billedQuantity;
     }
 }

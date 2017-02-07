@@ -4,22 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.android.ordermanagement.CustomerListActivity">
+    tools:context="com.android.ordermanagement.PendingOrdersActivity">
     <RelativeLayout
         android:background="@color/red"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize">
         <TextView
-            android:id="@+id/head"
             android:textSize="18sp"
             android:textColor="@color/white"
-            android:text="Select Product"
+            android:text="Pending Orders"
             android:gravity="center"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </RelativeLayout>
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
+        android:id="@+id/pending_orders"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
