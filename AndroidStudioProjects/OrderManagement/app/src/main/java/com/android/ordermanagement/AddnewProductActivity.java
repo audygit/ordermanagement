@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,10 +30,11 @@ public class AddnewProductActivity extends AppCompatActivity {
     private TextView amountFld;
     private TextView totalAmountTxt;
     private double amount=245;
-
-
+    private TextView head;
+    private ImageView back;
     private boolean flag;
     private Product product;
+    private String temp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +45,16 @@ public class AddnewProductActivity extends AppCompatActivity {
         quantityFld= (EditText) findViewById(R.id.quantity_fld);
         billedQuantityFld= (EditText) findViewById(R.id.billed_fld);
         amountFld= (TextView) findViewById(R.id.amount_fld);
+        head = (TextView)findViewById(R.id.head);
+        temp = getIntent().getExtras().getString("name");
+        head.setText("Add Product for "+temp);
+        back = (ImageView)findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         totalAmountTxt= (TextView) findViewById(R.id.total);
 
         flag=getIntent().getBooleanExtra("flag",false);
@@ -85,13 +98,19 @@ public class AddnewProductActivity extends AppCompatActivity {
                 if (pNameFld.getSelectedItem() instanceof String){
                     Product product=new Product();
                     product.setName((String) pNameFld.getSelectedItem());
+                    int actual = 0;
+                    int billed = 0;
+                    if(!TextUtils.isEmpty(quantityFld.getText().toString()))
+                        actual = Integer.parseInt(quantityFld.getText().toString());
+                    if(!TextUtils.isEmpty(billedQuantityFld.getText().toString()))
+                        billed = Integer.parseInt(billedQuantityFld.getText().toString());
                     if (packageTypeFld.getSelectedItem() instanceof String){
                         product.setUnit((String) packageTypeFld.getSelectedItem());
-                        if (Integer.parseInt(quantityFld.getText().toString())!=0){
-                            product.setQuantity(Integer.parseInt(quantityFld.getText().toString()));
-                            if (Integer.parseInt(billedQuantityFld.getText().toString())!=0){
-                               product.setBilledQuantity( Integer.parseInt(billedQuantityFld.getText().toString()));
-                                product.setAmount(amount*(Integer.parseInt(billedQuantityFld.getText().toString())));
+                        if (actual!=0){
+                            product.setQuantity(actual);
+                            if (billed !=0){
+                               product.setBilledQuantity( billed);
+                                product.setAmount(amount*billed);
                                     if (flag){
                                         Intent intent=new Intent();
                                         intent.putExtra("product",product);
@@ -101,6 +120,7 @@ public class AddnewProductActivity extends AppCompatActivity {
                                     }else {
                                         Intent intent=new Intent(AddnewProductActivity.this,NewOrderActivity.class);
                                         intent.putExtra("product",product);
+                                        intent.putExtra("name",temp);
                                         startActivity(intent);
                                     }
                             }else {

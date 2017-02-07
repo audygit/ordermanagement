@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.ordermanagement.Models.Customer;
@@ -30,14 +31,17 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
     private RecyclerView customerListView;
     private TextView head;
     private ArrayList<Integer> selectedCustomers=new ArrayList<>();
-    private  ArrayList<Customer> customers=new ArrayList<>();
+    private ArrayList<Customer> customers=new ArrayList<>();
     private CustomerFilterAdapter filterAdapter;
     private int type;
+    private TextView count;
+    private ImageView back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pending_orders);
         recyclerView= (RecyclerView) findViewById(R.id.pending_orders);
+        count = (TextView)findViewById(R.id.count);
         ordersAdapter=new OrdersAdapter(PendingOrdersActivity.this,pendingOrders);
         filters= (ImageButton) findViewById(R.id.filters);
         drawerLayout= (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -52,6 +56,13 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
         if (type==2){
             head.setText("Completed Orders");
         }
+        back = (ImageView)findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         customerListView= (RecyclerView) findViewById(R.id.customers_list);
         filterAdapter=new CustomerFilterAdapter(PendingOrdersActivity.this,customers);
         customerListView.setLayoutManager(new LinearLayoutManager(PendingOrdersActivity.this));
@@ -72,7 +83,7 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
                     "\"total_amount\":328358.40,\"products\":[{\"id\":5,\"name\":\"AMBICA NEW BANGARAM 75 GRAMS(BOX)\",\"quantity\":10,\"unit\":\"cases\",\"amount\":27825.60}," +
                     "{\"id\":2,\"name\":\"AMBICAATHISAYADHOOP12CONES(BOX)\",\"quantity\":10,\"unit\":\"cases\",\"amount\":492},{\"id\":6,\"name\":\"AmbicaNityaPoojaSparsha(Box)-1Grams\"," +
                     "\"quantity\":70,\"unit\":\"cases\",\"amount\":153568.80},{\"id\":1,\"name\":\"AMBICAMAHALAKSHMIDHOOP44GRAMS\",\"quantity\":40,\"unit\":\"cases\",\"amount\":48882}]," +
-                    "\"service_tax\":12.26,\"vat\":39403},{\"id\": 3,\"cusoomer_id\":75,\"customer_name\":\"MahalakhsmiWholesalers\",\"total_amount\":96929.35," +
+                    "\"service_tax\":12.26,\"vat\":39403},{\"id\": 3,\"customer_id\":75,\"customer_name\":\"MahalakhsmiWholesalers\",\"total_amount\":96929.35," +
                     "\"products\":[{\"id\":7,\"name\":\"AMBICASUBHALAGNAMPOOJA8STICKS\",\"quantity\":5,\"unit\":\"cases\",\"amount\":12411.75}," +
                     "{\"id\":8,\"name\":\"AMBICAJAVVAJI70GRAMS\",\"quantity\":5,\"unit\":\"cases\",\"amount\":7810}," +
                     "{\"id\":1,\"name\":\"AMBICAMAHALAKSHMIDHOOP44GRAMS\",\"quantity\":40,\"unit\":\"cases\",\"amount\":48882}," +
@@ -93,6 +104,7 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
                 selectedCustomers.add(customer.getId());
             }
             ordersAdapter.setOrders(pendingOrders);
+            count.setText(pendingOrders.size()+" Orders");
             ordersAdapter.notifyDataSetChanged();
         } catch (JSONException e) {
             e.printStackTrace();

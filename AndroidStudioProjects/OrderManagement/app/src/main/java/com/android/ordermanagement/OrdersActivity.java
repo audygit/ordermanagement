@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.ordermanagement.Models.Order;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,8 +62,29 @@ public class OrdersActivity extends AppCompatActivity {
 //        target= (TextView) findViewById(R.id.target);
 //        count= (TextView) findViewById(R.id.count);
         week= (TextView) findViewById(R.id.week);
+        week.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(AnimationUtils.loadAnimation(OrdersActivity.this, R.anim.image_click));
+                viewPager.setCurrentItem(0);
+            }
+        });
         month= (TextView) findViewById(R.id.month);
+        month.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(AnimationUtils.loadAnimation(OrdersActivity.this, R.anim.image_click));
+                viewPager.setCurrentItem(1);
+            }
+        });
         year= (TextView) findViewById(R.id.year);
+        year.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(AnimationUtils.loadAnimation(OrdersActivity.this, R.anim.image_click));
+                viewPager.setCurrentItem(2);
+            }
+        });
         pending= (TextView) findViewById(R.id.pending);
         completed= (TextView) findViewById(R.id.completed);
         newOrder= (TextView) findViewById(R.id.newOrder);

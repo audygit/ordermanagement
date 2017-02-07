@@ -15,6 +15,13 @@ android:fitsSystemWindows="true"
         android:background="@color/red"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize">
+        <ImageView
+            android:layout_width="30dp"
+            android:padding="5dp"
+            android:layout_centerVertical="true"
+            android:layout_height="30dp"
+            android:id="@+id/back"
+            android:src="@drawable/back"/>
         <TextView
             android:id="@+id/head"
             android:textSize="18sp"
@@ -32,9 +39,21 @@ android:fitsSystemWindows="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:id="@+id/filters"
-            android:layout_width="45dp"
-            android:layout_height="45dp" />
+            android:layout_width="35dp"
+            android:layout_height="35dp" />
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:background="@color/grey">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/count"
+            android:padding="5dp"
+            android:textSize="16sp"/>
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/pending_orders"
         android:scrollbars="vertical"

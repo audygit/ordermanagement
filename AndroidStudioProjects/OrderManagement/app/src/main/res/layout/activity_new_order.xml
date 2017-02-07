@@ -9,24 +9,40 @@
         android:background="@color/red"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize">
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:id="@+id/back"
+            android:src="@drawable/back"/>
         <TextView
             android:id="@+id/head"
             android:textSize="18sp"
             android:textColor="@color/white"
             android:text="New Order"
             android:gravity="center"
+            android:focusableInTouchMode="true"
+            android:singleLine="true"
+            android:scrollHorizontally="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit ="marquee_forever"
+            android:focusable="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <ImageButton
             android:id="@+id/add"
             android:scaleType="fitCenter"
             android:background="@null"
+            android:padding="5dp"
             android:src="@drawable/plus"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
-            android:layout_width="37dp"
-            android:layout_height="37dp" />
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
     </RelativeLayout>
     <LinearLayout
         android:background="@color/grey"

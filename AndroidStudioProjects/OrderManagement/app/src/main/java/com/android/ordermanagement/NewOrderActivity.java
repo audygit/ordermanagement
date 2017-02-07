@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.ordermanagement.Models.Order;
@@ -32,6 +33,7 @@ public class NewOrderActivity extends AppCompatActivity {
     private Order order;
     private TextView head;
     private double totalAmount;
+    private ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,13 @@ public class NewOrderActivity extends AppCompatActivity {
         confirm= (Button) findViewById(R.id.confirm);
         total= (TextView) findViewById(R.id.total);
         head= (TextView) findViewById(R.id.head);
+        back = (ImageView)findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         if (viewOnly){
             add.setVisibility(View.GONE);
             confirm.setVisibility(View.GONE);
@@ -54,11 +63,12 @@ public class NewOrderActivity extends AppCompatActivity {
             }else {
                 products=order.getProducts();
             }
-            head.setText("Order No "+order.getId());
+            head.setText("Order No A0014"+order.getId());
             total.setText(String.valueOf(order.getTotalAmount()));
             svt.setText(String.valueOf(order.getServiceTax()));
             vatView.setText(String.valueOf(order.getVat()));
         }else {
+            head.setText("New Order for "+getIntent().getExtras().getString("name"));
             Product product= (Product) getIntent().getSerializableExtra("product");
             products.add(product);
         }

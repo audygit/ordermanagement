@@ -14,7 +14,7 @@ import com.android.ordermanagement.Models.Product;
 import java.util.ArrayList;
 
 /**
- * Created by audyf on 2/5/2017.
+ * Created by challa on 2/5/2017.
  */
 public class ProductsListAdapter  extends RecyclerView.Adapter<ProductsListAdapter.MyVH> {
     private Context mContext;

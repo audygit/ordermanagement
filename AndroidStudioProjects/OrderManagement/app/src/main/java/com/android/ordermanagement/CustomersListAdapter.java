@@ -15,7 +15,7 @@ import com.github.siyamed.shapeimageview.CircularImageView;
 import java.util.ArrayList;
 
 /**
- * Created by audyf on 2/5/2017.
+ * Created by challa on 2/5/2017.
  */
 public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdapter.MyVH> {
     private Context mContext;
@@ -57,7 +57,9 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Customer customer = customers.get(getAdapterPosition());
                     Intent intent=new Intent(mContext,AddnewProductActivity.class);
+                    intent.putExtra("name", customer.getName());
                     mContext.startActivity(intent);
                 }
             });

@@ -20,15 +20,31 @@
             android:id="@+id/cancel"
             android:padding="7dp"
             android:scaleType="fitCenter"
-            android:layout_width="45dp"
-            android:layout_height="45dp" />
+            android:layout_width="35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="35dp" />
         <EditText
             android:textColor="@color/white"
             android:hint="Search Customers"
+            android:paddingLeft="10dp"
+            android:textSize="15sp"
             android:textColorHint="@color/lightg"
             android:id="@+id/searchFld"
+            android:background="@drawable/background_border"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:background="@color/grey">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/count"
+            android:padding="5dp"
+            android:textSize="16sp"/>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
