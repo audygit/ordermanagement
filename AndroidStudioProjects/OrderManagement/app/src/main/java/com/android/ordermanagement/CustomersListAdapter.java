@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.android.ordermanagement.Models.Customer;
 import com.android.ordermanagement.Models.Order;
+import com.github.siyamed.shapeimageview.CircularImageView;
 
 import java.util.ArrayList;
 
@@ -37,7 +38,7 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
     @Override
     public void onBindViewHolder(MyVH holder, int position) {
         Customer provider=customers.get(position);
-        holder.pic.setText(provider.getName().substring(0,1).toUpperCase());
+//        holder.pic.setText(provider.getName().substring(0,1).toUpperCase());
         holder.customerName.setText(provider.getName());
     }
 
@@ -48,10 +49,10 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
 
     public class MyVH extends RecyclerView.ViewHolder {
         private TextView customerName;
-        private TextView pic;
+        private CircularImageView pic;
         public MyVH(View convertView) {
             super(convertView);
-            pic= (TextView) convertView.findViewById(R.id.pic);
+            pic= (CircularImageView) convertView.findViewById(R.id.pic);
             customerName= (TextView) convertView.findViewById(R.id.name);
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override

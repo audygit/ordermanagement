@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.android.ordermanagement.Models.Customer;
 import com.android.ordermanagement.Models.Order;
@@ -27,9 +28,11 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
     private ImageButton filters;
     private DrawerLayout drawerLayout;
     private RecyclerView customerListView;
+    private TextView head;
     private ArrayList<Integer> selectedCustomers=new ArrayList<>();
     private  ArrayList<Customer> customers=new ArrayList<>();
     private CustomerFilterAdapter filterAdapter;
+    private int type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,11 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
                 drawerLayout.openDrawer(Gravity.RIGHT);
             }
         });
+        head= (TextView) findViewById(R.id.head);
+        type=getIntent().getIntExtra("type",0);
+        if (type==2){
+            head.setText("Completed Orders");
+        }
         customerListView= (RecyclerView) findViewById(R.id.customers_list);
         filterAdapter=new CustomerFilterAdapter(PendingOrdersActivity.this,customers);
         customerListView.setLayoutManager(new LinearLayoutManager(PendingOrdersActivity.this));
