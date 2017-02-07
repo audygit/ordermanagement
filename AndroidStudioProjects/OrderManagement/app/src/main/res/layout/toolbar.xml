@@ -4,11 +4,14 @@
         android:background="@color/red"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize">
-    <ImageView
+    <ImageButton
+        android:id="@+id/back"
+        android:background="@null"
         android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:padding="10dp"
+        android:padding="8dp"
         android:src="@drawable/back"/>
         <TextView
             android:id="@+id/head"
@@ -19,4 +22,16 @@
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
+    <ImageButton
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:visibility="gone"
+        android:padding="8dp"
+        android:id="@+id/search"
+        android:background="@null"
+        android:src="@drawable/filters"
+        android:scaleType="fitCenter"
+        android:layout_width="45dp"
+        android:layout_height="45dp" />
     </RelativeLayout>
