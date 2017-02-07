@@ -8,6 +8,29 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/search_container"
+        android:background="@color/red"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
+        <ImageButton
+            android:background="@null"
+            android:src="@drawable/close"
+            android:id="@+id/cancel"
+            android:padding="7dp"
+            android:scaleType="fitCenter"
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+        <EditText
+            android:textColor="@color/white"
+            android:hint="Search Customers"
+            android:textColorHint="@color/lightg"
+            android:id="@+id/searchFld"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:scrollbars="vertical"
