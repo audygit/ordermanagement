@@ -81,6 +81,7 @@ public class NewOrderActivity extends AppCompatActivity {
                 dialog.setContentView(R.layout.item_popup);
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
                 lp.copyFrom(dialog.getWindow().getAttributes());
+
                 lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
                 lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
                 dialog.show();
