@@ -68,6 +68,7 @@ public class NewOrderActivity extends AppCompatActivity {
             svt.setText(String.valueOf(order.getServiceTax()));
             vatView.setText(String.valueOf(order.getVat()));
         }else {
+            head.setText("New Order for "+getIntent().getExtras().getString("name"));
             Product product= (Product) getIntent().getSerializableExtra("product");
             products.add(product);
         }

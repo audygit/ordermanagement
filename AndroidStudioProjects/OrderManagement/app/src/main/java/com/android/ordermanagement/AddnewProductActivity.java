@@ -33,6 +33,7 @@ public class AddnewProductActivity extends AppCompatActivity {
     private ImageView back;
     private boolean flag;
     private Product product;
+    private String temp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +45,7 @@ public class AddnewProductActivity extends AppCompatActivity {
         billedQuantityFld= (EditText) findViewById(R.id.billed_fld);
         amountFld= (TextView) findViewById(R.id.amount_fld);
         head = (TextView)findViewById(R.id.head);
-        String temp = getIntent().getExtras().getString("name");
+        temp = getIntent().getExtras().getString("name");
         head.setText("Add Product for "+temp);
         back = (ImageView)findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +113,7 @@ public class AddnewProductActivity extends AppCompatActivity {
                                     }else {
                                         Intent intent=new Intent(AddnewProductActivity.this,NewOrderActivity.class);
                                         intent.putExtra("product",product);
+                                        intent.putExtra("name",temp);
                                         startActivity(intent);
                                     }
                             }else {
