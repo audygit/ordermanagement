@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent=new Intent(MainActivity.this,OrdersActivity.class);
                         startActivity(intent);
                     }else {
-                        userName.getText().clear();
                         password.getText().clear();
                         Toast.makeText(MainActivity.this,"Invalid Credentials",Toast.LENGTH_SHORT).show();
                     }

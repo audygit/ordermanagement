@@ -5,18 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.android.ordermanagement.AddnewProductActivity">
-    <RelativeLayout
-        android:background="@color/red"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize">
-        <TextView
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:text="Select Product"
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
     <LinearLayout
         android:background="@color/grey"
         android:layout_width="match_parent"

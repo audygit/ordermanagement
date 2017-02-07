@@ -1,7 +1,7 @@
 package com.android.ordermanagement.Models;
 
 /**
- * Created by audyf on 2/7/2017.
+ * Created by challa on 2/7/2017.
  */
 public class Customer {
     private int id;

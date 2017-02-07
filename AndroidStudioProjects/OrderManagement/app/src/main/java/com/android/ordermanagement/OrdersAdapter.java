@@ -16,7 +16,7 @@ import com.android.ordermanagement.Models.Product;
 import java.util.ArrayList;
 
 /**
- * Created by audyf on 2/7/2017.
+ * Created by challa on 2/7/2017.
  */
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyVH> {
     private Context mContext;
@@ -40,7 +40,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyVH> {
     @Override
     public void onBindViewHolder(MyVH holder, int position) {
         Order order=orders.get(position);
-        holder.orderNo.setText("Order No: "+order.getId());
+        holder.orderNo.setText("Order No: A0014"+order.getId());
         Product product=order.getProducts().get(0);
         holder.orderText.setText("Product Name: "+product.getName()+"("+product.getQuantity()+" "+product.getUnit()+")");
         if (position%2==0){

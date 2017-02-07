@@ -14,9 +14,9 @@ import com.android.ordermanagement.Models.Customer;
 import java.util.ArrayList;
 
 /**
- * Created by audyf on 2/7/2017.
+ * Created by challa on 2/7/2017.
  */
-public class CustomerFilterAdapter extends RecyclerView.Adapter<CustomerFilterAdapter.MyVH> {
+class CustomerFilterAdapter extends RecyclerView.Adapter<CustomerFilterAdapter.MyVH> {
     private Context mContext;
     private ArrayList<Customer> customers;
     private ArrayList<Integer> selectedCustomers;

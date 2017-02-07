@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by audyf on 2/5/2017.
+ * Created by challa on 2/5/2017.
  */
 public class Order implements Serializable{
     @SerializedName("id")

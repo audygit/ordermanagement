@@ -10,8 +10,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.android.ordermanagement.Models.Customer;
 
@@ -26,7 +28,10 @@ public class CustomerListActivity extends AppCompatActivity {
     private EditText searchFld;
     private View toolbar;
     private ImageButton close;
+    private TextView head;
     private LinearLayout searchCont;
+    private TextView count;
+    private ImageView back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +39,16 @@ public class CustomerListActivity extends AppCompatActivity {
         search= (ImageButton) findViewById(R.id.search);
         search.setVisibility(View.VISIBLE);
         toolbar=findViewById(R.id.toolbar);
+        head = (TextView)findViewById(R.id.head);
+        count = (TextView)findViewById(R.id.count);
+        back = (ImageView)findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        head.setText("Customers");
         toolbar.setVisibility(View.VISIBLE);
         searchFld= (EditText) findViewById(R.id.searchFld);
         searchCont= (LinearLayout) findViewById(R.id.search_container);
@@ -94,6 +109,7 @@ public class CustomerListActivity extends AppCompatActivity {
         setup();
     }
     private void setup(){
+        count.setText(customers.size()+" Customers");
         recyclerView= (RecyclerView) findViewById(R.id.my_recycler_view);
         adapter=new CustomersListAdapter(CustomerListActivity.this,customers);
         recyclerView.setLayoutManager(new LinearLayoutManager(CustomerListActivity.this));
