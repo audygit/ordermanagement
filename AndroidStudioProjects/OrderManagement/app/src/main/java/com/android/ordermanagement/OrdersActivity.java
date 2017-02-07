@@ -83,7 +83,7 @@ public class OrdersActivity extends AppCompatActivity {
     }
     private void getData(){
         try {
-            JSONObject obj=new JSONObject(" {\"results\": {\"weekly_count\": 13, \"weekly_total\": 30,\"monthly_count\": 13, \"monthly_total\": 30,\"yearly_count\": 13, \"yearly_total\": 30, \"pending_count\":20, \"pending_order\": 23, \"completed_order\":45}}");
+            JSONObject obj=new JSONObject(" {\"results\": {\"weekly_count\": 13, \"weekly_total\": 30,\"monthly_count\": 36, \"monthly_total\": 120,\"yearly_count\": 586, \"yearly_total\": 3000, \"pending_count\":20, \"pending_order\": 23, \"completed_order\":45}}");
             JSONObject res=obj.getJSONObject("results");
             weeklyCount=res.getInt("weekly_count");
             weeklyTotal=res.getInt("weekly_total");
