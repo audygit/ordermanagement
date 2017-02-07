@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -97,13 +98,19 @@ public class AddnewProductActivity extends AppCompatActivity {
                 if (pNameFld.getSelectedItem() instanceof String){
                     Product product=new Product();
                     product.setName((String) pNameFld.getSelectedItem());
+                    int actual = 0;
+                    int billed = 0;
+                    if(!TextUtils.isEmpty(quantityFld.getText().toString()))
+                        actual = Integer.parseInt(quantityFld.getText().toString());
+                    if(!TextUtils.isEmpty(billedQuantityFld.getText().toString()))
+                        billed = Integer.parseInt(billedQuantityFld.getText().toString());
                     if (packageTypeFld.getSelectedItem() instanceof String){
                         product.setUnit((String) packageTypeFld.getSelectedItem());
-                        if (Integer.parseInt(quantityFld.getText().toString())!=0){
-                            product.setQuantity(Integer.parseInt(quantityFld.getText().toString()));
-                            if (Integer.parseInt(billedQuantityFld.getText().toString())!=0){
-                               product.setBilledQuantity( Integer.parseInt(billedQuantityFld.getText().toString()));
-                                product.setAmount(amount*(Integer.parseInt(billedQuantityFld.getText().toString())));
+                        if (actual!=0){
+                            product.setQuantity(actual);
+                            if (billed !=0){
+                               product.setBilledQuantity( billed);
+                                product.setAmount(amount*billed);
                                     if (flag){
                                         Intent intent=new Intent();
                                         intent.putExtra("product",product);
