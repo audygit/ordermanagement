@@ -1,172 +1,309 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.android.ordermanagement.NewOrderActivity">
+
+    android:orientation="vertical">
+
     <RelativeLayout
+
         android:background="@color/red"
+
         android:layout_width="match_parent"
+
         android:layout_height="?actionBarSize">
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_centerVertical="true"
-            android:padding="5dp"
-            android:id="@+id/back"
-            android:src="@drawable/back"/>
+
         <TextView
+
             android:id="@+id/head"
+
             android:textSize="18sp"
+
             android:textColor="@color/white"
+
             android:text="New Order"
+
             android:gravity="center"
-            android:focusableInTouchMode="true"
-            android:singleLine="true"
-            android:scrollHorizontally="true"
-            android:ellipsize="marquee"
-            android:marqueeRepeatLimit ="marquee_forever"
-            android:focusable="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+
             android:layout_width="match_parent"
+
             android:layout_height="match_parent" />
+
         <ImageButton
+
             android:id="@+id/add"
+
             android:scaleType="fitCenter"
+
             android:background="@null"
-            android:padding="5dp"
+
             android:src="@drawable/plus"
+
             android:layout_centerVertical="true"
+
             android:layout_marginRight="10dp"
+
             android:layout_alignParentRight="true"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
+
+            android:layout_width="37dp"
+
+            android:layout_height="37dp" />
+
     </RelativeLayout>
+
     <LinearLayout
+
         android:background="@color/grey"
+
         android:paddingTop="15dp"
+
         android:layout_width="match_parent"
+
         android:layout_height="45dp">
+
         <TextView
+
             android:paddingLeft="10dp"
+
             android:layout_weight="1"
+
             android:textSize="17sp"
+
             android:textColor="@color/black"
+
             android:text="Product Name"
+
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content" />
+
         <TextView
+
             android:textColor="@color/black"
+
             android:textSize="17sp"
+
             android:gravity="center"
+
             android:layout_weight="1"
+
             android:text="Quantity"
+
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content" />
+
         <TextView
+
             android:textColor="@color/black"
+
             android:textSize="17sp"
+
             android:paddingRight="10dp"
+
             android:gravity="right"
+
             android:layout_weight="1"
+
             android:text="Amount"
+
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content" />
+
     </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
+
         android:id="@+id/products_list"
+
         android:scrollbars="vertical"
+
         android:layout_width="match_parent"
+
         android:layout_height="300dp"/>
+
     <LinearLayout
+
         android:background="@color/lightg"
+
         android:paddingBottom="10dp"
+
         android:gravity="bottom"
+
         android:layout_gravity="bottom"
+
         android:orientation="vertical"
+
         android:layout_width="match_parent"
+
         android:layout_height="match_parent">
+
         <LinearLayout
+
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content">
+
             <TextView
+
                 android:textSize="18sp"
+
                 android:layout_weight="1"
+
                 android:layout_marginLeft="10dp"
+
                 android:text="Service Tax"
+
                 android:layout_width="wrap_content"
+
                 android:layout_height="wrap_content" />
+
             <TextView
+
                 android:id="@+id/service_tax"
+
                 android:textSize="18sp"
+
                 android:paddingRight="20dp"
+
                 android:gravity="right"
+
                 android:layout_gravity="right"
+
                 android:layout_weight="1"
+
                 android:text="Rs 673"
+
                 android:layout_width="wrap_content"
+
                 android:layout_height="wrap_content" />
 
+
+
         </LinearLayout>
+
         <LinearLayout
+
             android:layout_marginTop="10dp"
+
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content">
+
             <TextView
+
                 android:layout_weight="1"
+
                 android:layout_marginLeft="10dp"
+
                 android:text="VAT Tax"
+
                 android:textSize="18sp"
+
                 android:layout_width="wrap_content"
+
                 android:layout_height="wrap_content" />
+
             <TextView
+
                 android:id="@+id/vat"
+
                 android:paddingRight="20dp"
+
                 android:gravity="right"
+
                 android:layout_weight="1"
+
                 android:textSize="18sp"
+
                 android:layout_marginLeft="10dp"
+
                 android:text="Rs 620"
+
                 android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_marginTop="10dp"
+
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content">
+
+            <TextView
+
+                android:layout_weight="1"
+
+                android:layout_marginLeft="10dp"
+
+                android:text="Total Amount"
+
+                android:textColor="@color/black"
+
+                android:textSize="18sp"
+
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content" />
+
+            <TextView
+
+                android:id="@+id/total"
+
+                android:paddingRight="20dp"
+
+                android:gravity="right"
+
+                android:layout_weight="1"
+
+                android:textSize="18sp"
+
+                android:layout_marginLeft="10dp"
+
+                android:textColor="@color/black"
+
+                android:layout_width="wrap_content"
+
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp"
-                android:text="Total Amount"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/total"
-                android:paddingRight="20dp"
-                android:gravity="right"
-                android:layout_weight="1"
-                android:textSize="18sp"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+
         <Button
+
             android:id="@+id/confirm"
+
             android:textSize="18sp"
+
             android:textAllCaps="false"
+
             android:text="Confirm Order"
+
             android:layout_marginLeft="15dp"
+
             android:layout_marginRight="15dp"
+
             android:layout_marginTop="15dp"
+
             android:background="@color/red"
+
             android:textColor="@color/white"
+
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content" />
+
     </LinearLayout>
+
 </LinearLayout>
