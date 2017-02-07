@@ -69,8 +69,7 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
                     "{\"id\":8,\"name\":\"AMBICAJAVVAJI70GRAMS\",\"quantity\":5,\"unit\":\"cases\",\"amount\":7810}," +
                     "{\"id\":1,\"name\":\"AMBICAMAHALAKSHMIDHOOP44GRAMS\",\"quantity\":40,\"unit\":\"cases\",\"amount\":48882}," +
                     "{\"id\":4,\"name\":\"AMBICANEWGULAB70GRAMS\",\"quantity\":10,\"unit\":\"cases\",\"amount\":27825.60}],\"service_tax\":12.26,\"vat\":11631.5}]," +
-                    "\"customers\":[{\"id\":1,\"name\":\"HariProvisionStores\"},{\"id\":23,\"name\":\"AnjaneyaCondiments\"}," +
-                    "{\"id\":75,\"name\":\"MahalakshmiWholesalers\"}]}}");
+                    "\"customers\":[{\"id\":1,\"name\":\"HariProvisionStores\"},{\"id\":23,\"name\":\"AnjaneyaCondiments\"},{\"id\":75,\"name\":\"MahalakshmiWholesalers\"}]}}");
             JSONObject job= jsonObject.getJSONObject("result");
            JSONArray jarray= job.getJSONArray("orders");
             for (int i=0;i<jarray.length();i++){
