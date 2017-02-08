@@ -8,11 +8,13 @@ public class Customer {
     private String name;
     private String date;
     private String lastOrder;
-    public Customer(int id,String name){
+    private String image;
+    public Customer(int id,String name, String image){
         setId(id);
         setName(name);
         setDate("23/2/2017");
         setLastOrder("EROTICA(15 units)");
+        setImage(image);
     }
 
     public int getId() {
@@ -45,5 +47,13 @@ public class Customer {
 
     public void setLastOrder(String lastOrder) {
         this.lastOrder = lastOrder;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

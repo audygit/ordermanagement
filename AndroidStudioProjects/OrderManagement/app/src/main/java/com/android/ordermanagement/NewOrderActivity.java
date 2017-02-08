@@ -26,6 +26,7 @@ public class NewOrderActivity extends AppCompatActivity {
     private ProductsListAdapter productsListAdapter;
     private TextView svt;
     private Button confirm;
+    private Button edit;
     private TextView vatView;
     private TextView total;
     private ImageButton add;
@@ -34,6 +35,7 @@ public class NewOrderActivity extends AppCompatActivity {
     private TextView head;
     private double totalAmount;
     private ImageView back;
+    private String orderString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class NewOrderActivity extends AppCompatActivity {
         add= (ImageButton) findViewById(R.id.add);
         vatView= (TextView) findViewById(R.id.vat);
         confirm= (Button) findViewById(R.id.confirm);
+        edit= (Button) findViewById(R.id.edit);
         total= (TextView) findViewById(R.id.total);
         head= (TextView) findViewById(R.id.head);
         back = (ImageView)findViewById(R.id.back);
@@ -63,24 +66,39 @@ public class NewOrderActivity extends AppCompatActivity {
             }else {
                 products=order.getProducts();
             }
-            head.setText("Order No A0014"+order.getId());
+            orderString ="Order No A0014"+order.getId();
             total.setText(String.valueOf(order.getTotalAmount()));
+            edit.setVisibility(View.GONE);
             svt.setText(String.valueOf(order.getServiceTax()));
             vatView.setText(String.valueOf(order.getVat()));
         }else {
-            head.setText("New Order for "+getIntent().getExtras().getString("name"));
+            orderString = "New Order for "+getIntent().getExtras().getString("name");
             Product product= (Product) getIntent().getSerializableExtra("product");
             products.add(product);
+            edit.setVisibility(View.VISIBLE);
+            double totalPrice = 0;
+            double vat = 0;
+            double service = 0;
+            for(Product temp : products){
+                totalPrice = temp.getBilledQuantity()*temp.getAmount();
+            }
+            vat = totalPrice*0.145;
+            service = totalPrice*0.05;
+            total.setText(String.valueOf(totalPrice+vat+service));
+            svt.setText(String.valueOf(service));
+            vatView.setText(String.valueOf(vat));
         }
+        head.setText(orderString);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(NewOrderActivity.this,AddnewProductActivity.class);
                 intent.putExtra("flag",true);
+                intent.putExtra("name",getIntent().getExtras().getString("name"));
                 startActivityForResult(intent,22);
             }
         });
-        productsListAdapter=new ProductsListAdapter(NewOrderActivity.this,products,viewOnly);
+        productsListAdapter=new ProductsListAdapter(NewOrderActivity.this,products,true, orderString);
         recyclerView.setLayoutManager(new LinearLayoutManager(NewOrderActivity.this));
         recyclerView.setAdapter(productsListAdapter);
         confirm.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +127,21 @@ public class NewOrderActivity extends AppCompatActivity {
                 });
             }
         });
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                productsListAdapter.setViewOnly(false);
+                productsListAdapter.notifyDataSetChanged();
+            }
+        });
 
+    }
+
+    public void removeProduct(int position){
+        products.remove(position);
+        productsListAdapter.setProviders(products);
+        productsListAdapter.setViewOnly(true);
+        productsListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -120,6 +152,7 @@ public class NewOrderActivity extends AppCompatActivity {
             products.add(product);
             totalAmount=totalAmount+product.getAmount();
             productsListAdapter.setProviders(products);
+            productsListAdapter.setViewOnly(true);
             productsListAdapter.notifyDataSetChanged();
         }
     }

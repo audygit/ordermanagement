@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.android.ordermanagement.Models.Customer;
 import com.android.ordermanagement.Models.Order;
+import com.bumptech.glide.Glide;
 import com.github.siyamed.shapeimageview.CircularImageView;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
     public void onBindViewHolder(MyVH holder, int position) {
         Customer provider=customers.get(position);
 //        holder.pic.setText(provider.getName().substring(0,1).toUpperCase());
+        Glide.with(mContext).load(provider.getImage()).placeholder(R.drawable.background1).error(R.drawable.background1).into(holder.pic);
         holder.customerName.setText(provider.getName());
     }
 

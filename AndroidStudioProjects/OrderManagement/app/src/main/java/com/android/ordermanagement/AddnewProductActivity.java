@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,7 +32,7 @@ public class AddnewProductActivity extends AppCompatActivity {
     private TextView totalAmountTxt;
     private double amount=245;
     private TextView head;
-    private ImageView back;
+    private ImageButton back;
     private boolean flag;
     private Product product;
     private String temp;
@@ -48,7 +49,7 @@ public class AddnewProductActivity extends AppCompatActivity {
         head = (TextView)findViewById(R.id.head);
         temp = getIntent().getExtras().getString("name");
         head.setText("Add Product for "+temp);
-        back = (ImageView)findViewById(R.id.back);
+        back = (ImageButton)findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +115,7 @@ public class AddnewProductActivity extends AppCompatActivity {
                                     if (flag){
                                         Intent intent=new Intent();
                                         intent.putExtra("product",product);
+                                        intent.putExtra("name",temp);
                                         setResult(RESULT_OK,intent);
                                         finish();
 

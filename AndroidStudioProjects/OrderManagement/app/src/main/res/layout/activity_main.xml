@@ -9,8 +9,7 @@
     android:layout_height="match_parent"
 
     android:background="@color/orange"
-
-    tools:context="com.android.salesapp.MainActivity">
+>
 
     <LinearLayout
 
@@ -45,6 +44,8 @@
             android:gravity="center"
 
             android:hint="Username"
+            android:text="test"
+            android:enabled="false"
 
             android:layout_margin="20dp"
 
@@ -58,7 +59,7 @@
 
             android:id="@+id/password"
 
-            android:inputType="textPassword"
+            android:inputType="numberPassword"
 
             android:gravity="center"
 

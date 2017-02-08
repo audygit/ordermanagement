@@ -10,313 +10,284 @@
 
     android:orientation="vertical">
 
-    <RelativeLayout
-
-        android:background="@color/red"
-
-        android:layout_width="match_parent"
-
-        android:layout_height="?actionBarSize">
-
-        <TextView
-
-            android:textSize="18sp"
-
-            android:textColor="@color/white"
-
-            android:id="@+id/head"
-
-            android:gravity="center"
-
-            android:layout_width="match_parent"
-
-            android:layout_height="match_parent" />
-
-    </RelativeLayout>
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
 
-        android:background="@color/grey"
-
         android:layout_width="match_parent"
 
-        android:layout_height="45dp">
+        android:layout_height="45dp"
+
+        android:background="@color/grey">
 
         <TextView
 
+            android:layout_width="150dp"
+
+            android:layout_height="wrap_content"
+
             android:layout_gravity="center"
+
 
             android:paddingLeft="10dp"
 
-            android:layout_weight="1"
-
-            android:textSize="17sp"
+            android:text="Product Name: "
 
             android:textColor="@color/black"
 
-            android:text="Product Name"
-
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content" />
+            android:textSize="14sp" />
 
         <TextView
 
             android:id="@+id/name"
 
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
             android:layout_gravity="center_vertical"
-
-            android:textColor="@color/black"
-
-            android:textSize="14sp"
-
-            android:paddingRight="10dp"
-
-            android:gravity="right"
 
             android:layout_weight="1"
 
-            android:layout_width="wrap_content"
+            android:gravity="right"
 
-            android:layout_height="wrap_content" />
+            android:paddingRight="10dp"
+
+            android:textColor="@color/black"
+
+            android:textSize="14sp" />
 
     </LinearLayout>
 
     <LinearLayout
 
-        android:background="@color/white"
-
         android:layout_width="match_parent"
 
-        android:layout_height="45dp">
+        android:layout_height="45dp"
+
+        android:background="@color/white">
 
         <TextView
 
+            android:layout_width="150dp"
+
+            android:layout_height="wrap_content"
+
             android:layout_gravity="center"
+
 
             android:paddingLeft="10dp"
 
-            android:layout_weight="1"
-
-            android:textSize="17sp"
+            android:text="Package Type:"
 
             android:textColor="@color/black"
 
-            android:text="Package Type"
-
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content" />
+            android:textSize="14sp" />
 
         <TextView
 
             android:id="@+id/type"
 
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
             android:layout_gravity="center"
-
-            android:textColor="@color/black"
-
-            android:textSize="14sp"
-
-            android:paddingRight="10dp"
-
-            android:gravity="right"
 
             android:layout_weight="1"
 
-            android:layout_width="wrap_content"
+            android:gravity="right"
 
-            android:layout_height="wrap_content" />
+            android:paddingRight="10dp"
+
+            android:textColor="@color/black"
+
+            android:textSize="14sp" />
 
     </LinearLayout>
 
     <LinearLayout
 
-        android:background="@color/grey"
-
         android:layout_width="match_parent"
 
-        android:layout_height="45dp">
+        android:layout_height="45dp"
+
+        android:background="@color/grey">
 
         <TextView
 
+            android:layout_width="150dp"
+
+            android:layout_height="wrap_content"
+
             android:layout_gravity="center"
+
 
             android:paddingLeft="10dp"
 
-            android:layout_weight="1"
-
-            android:textSize="17sp"
+            android:text="Quantity: "
 
             android:textColor="@color/black"
 
-            android:text="Quantity"
-
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content" />
+            android:textSize="14sp" />
 
         <TextView
 
             android:id="@+id/quantity"
 
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
             android:layout_gravity="center"
-
-            android:textColor="@color/black"
-
-            android:textSize="14sp"
-
-            android:paddingRight="10dp"
-
-            android:gravity="right"
 
             android:layout_weight="1"
 
-            android:layout_width="wrap_content"
+            android:gravity="right"
 
-            android:layout_height="wrap_content" />
+            android:paddingRight="10dp"
+
+            android:textColor="@color/black"
+
+            android:textSize="14sp" />
 
     </LinearLayout>
 
     <LinearLayout
 
-        android:background="@color/white"
-
         android:layout_width="match_parent"
 
-        android:layout_height="45dp">
+        android:layout_height="45dp"
+
+        android:background="@color/white">
 
         <TextView
+
+            android:layout_width="150dp"
+
+            android:layout_height="wrap_content"
 
             android:layout_gravity="center"
 
             android:paddingLeft="10dp"
 
-            android:layout_weight="1"
-
-            android:textSize="17sp"
+            android:text="Billed Quantity: "
 
             android:textColor="@color/black"
 
-            android:text="Billed Quantity"
-
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content" />
+            android:textSize="14sp" />
 
         <TextView
 
             android:id="@+id/billed"
 
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
             android:layout_gravity="center"
-
-            android:textColor="@color/black"
-
-            android:textSize="14sp"
-
-            android:paddingRight="10dp"
-
-            android:gravity="right"
 
             android:layout_weight="1"
 
-            android:layout_width="wrap_content"
+            android:gravity="right"
 
-            android:layout_height="wrap_content" />
+            android:paddingRight="10dp"
+
+            android:textColor="@color/black"
+
+            android:textSize="14sp" />
 
     </LinearLayout>
 
     <LinearLayout
 
-        android:background="@color/grey"
-
         android:layout_width="match_parent"
 
-        android:layout_height="45dp">
+        android:layout_height="45dp"
+
+        android:background="@color/grey">
 
         <TextView
 
+            android:layout_width="150dp"
+
+            android:layout_height="wrap_content"
+
             android:layout_gravity="center"
+
 
             android:paddingLeft="10dp"
 
-            android:layout_weight="1"
-
-            android:textSize="17sp"
+            android:text="Amount: "
 
             android:textColor="@color/black"
 
-            android:text="Amount"
-
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content" />
+            android:textSize="14sp" />
 
         <TextView
-
-            android:layout_gravity="center"
 
             android:id="@+id/amount"
 
-            android:textColor="@color/black"
+            android:layout_width="wrap_content"
 
-            android:textSize="14sp"
+            android:layout_height="wrap_content"
 
-            android:paddingRight="10dp"
-
-            android:gravity="right"
+            android:layout_gravity="center"
 
             android:layout_weight="1"
 
-            android:layout_width="wrap_content"
+            android:gravity="right"
 
-            android:layout_height="wrap_content" />
+            android:paddingRight="10dp"
+
+            android:textColor="@color/black"
+
+            android:textSize="14sp" />
 
     </LinearLayout>
 
     <LinearLayout
 
-        android:background="@color/white"
-
-        android:paddingTop="15dp"
-
         android:layout_width="match_parent"
 
-        android:layout_height="45dp">
+        android:layout_height="45dp"
+
+        android:background="@color/white"
+
+        android:paddingTop="15dp">
 
         <TextView
 
+            android:layout_width="150dp"
+
+            android:layout_height="wrap_content"
+
+
             android:paddingLeft="10dp"
 
-            android:layout_weight="1"
-
-            android:textSize="20sp"
+            android:text="Total Amount: "
 
             android:textColor="@color/black"
 
-            android:text="Total Amount"
-
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content" />
+            android:textSize="16sp" />
 
         <TextView
 
             android:id="@+id/total"
 
-            android:textColor="@color/black"
+            android:layout_width="wrap_content"
 
-            android:textSize="20sp"
-
-            android:paddingRight="10dp"
-
-            android:gravity="right"
+            android:layout_height="wrap_content"
 
             android:layout_weight="1"
 
-            android:layout_width="wrap_content"
+            android:gravity="right"
 
-            android:layout_height="wrap_content" />
+            android:paddingRight="10dp"
+
+            android:textColor="@color/black"
+
+            android:textSize="16sp" />
 
     </LinearLayout>
 

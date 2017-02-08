@@ -101,11 +101,11 @@ public class CustomerListActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
     private void  getCustomers(){
-        Customer customer=new Customer(1,"Hari Provision Stores");
+        Customer customer=new Customer(1,"Hari Provision Stores", "http://www.filmibeat.com/img/popcorn/profile_photos/mahesh-babu-20140227172800-5310.jpg");
         customers.add(customer);
-        customers.add(new Customer(2,"Anjaneya Condiments"));
-        customers.add(new Customer(3,"Mahalakshmi Wholesalers"));
-        customers.add(new Customer(4,"Ambica Store"));
+        customers.add(new Customer(2,"Anjaneya Condiments", "http://www.tollymasala.com/TollyAdmin/gossips/ramcharan-dubbing-rights.jpg"));
+        customers.add(new Customer(3,"Mahalakshmi Wholesalers", "http://www.aptoday.com/pic_news/2014/11/18/naga-5170.jpg"));
+        customers.add(new Customer(4,"Ambica Store", "http://4.bp.blogspot.com/-aaL_q5XVNDI/Uc0ggCLStnI/AAAAAAAAAjE/3Vn9oI6H9CY/s460/Pawan-Kalyan-006.jpg"));
         setup();
     }
     private void setup(){

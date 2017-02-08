@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
                 String user=userName.getText().toString();
                 String passwordStr=password.getText().toString();
                 if (user!=null&&passwordStr!=null){
-                    if (user.equalsIgnoreCase("test")&&passwordStr.equalsIgnoreCase("password")){
+                    if (user.equalsIgnoreCase("test")&&passwordStr.equalsIgnoreCase("0012")){
                         Intent intent=new Intent(MainActivity.this,OrdersActivity.class);
                         startActivity(intent);
                     }else {
