@@ -4,13 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.ordermanagement.Models.Order;
@@ -43,8 +48,9 @@ public class OrdersActivity extends AppCompatActivity {
     private TextView pending;
     private TextView completed;
     private TextView newOrder;
+    private ImageButton ham;
     private ViewPager viewPager;
-
+    private DrawerLayout drawerLayout;
 //    private TextView subText;
 
 
@@ -52,8 +58,30 @@ public class OrdersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
+        drawerLayout= (DrawerLayout) findViewById(R.id.drawer_layout);
+        ham= (ImageButton) findViewById(R.id.ham);
+        ham.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+        setupMenu();
         setup();
 
+    }
+    private void setupMenu(){
+        ListView mMainList= (ListView) findViewById(R.id.main_list);
+        final String[] menuList={"Home","Distributors","Customers","Sales Persons"};
+        final Integer[] menuIcons = { R.drawable.ham,R.drawable.ham,R.drawable.ham,R.drawable.ham};
+        DrawerItemCustomAdapter adapter3 = new DrawerItemCustomAdapter(OrdersActivity.this, R.layout.home_menu_item_list, menuList,menuIcons);
+        mMainList.setAdapter(adapter3);
+        mMainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
     }
     private void setup(){
         first= (ImageView) findViewById(R.id.first);
