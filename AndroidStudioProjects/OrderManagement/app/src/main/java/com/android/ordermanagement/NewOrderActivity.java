@@ -33,7 +33,6 @@ public class NewOrderActivity extends AppCompatActivity {
     private boolean viewOnly;
     private Order order;
     private TextView head;
-    private double totalAmount;
     private ImageView back;
     private String orderString;
 
@@ -76,16 +75,7 @@ public class NewOrderActivity extends AppCompatActivity {
             Product product= (Product) getIntent().getSerializableExtra("product");
             products.add(product);
             edit.setVisibility(View.VISIBLE);
-            double totalPrice = 0;
-            double vat = 0;
-            double service = 0;
-            for(Product temp : products){
-                totalPrice += temp.getAmount();
-            }
-            service = totalPrice*0.05;
-            svt.setText(String.format("%.2f", service));
-            total.setText(String.format("%.2f", totalPrice+vat+service));
-            vatView.setText(String.valueOf(vat));
+            setTotal();
             vatView.setVisibility(View.GONE);
         }
         head.setText(orderString);
@@ -144,13 +134,23 @@ public class NewOrderActivity extends AppCompatActivity {
         productsListAdapter.notifyDataSetChanged();
     }
 
+    public void setTotal(){
+        double totalAmount=0;
+        for(Product product: products) {
+            totalAmount += product.getAmount();
+        }
+        double service = totalAmount * 0.05;
+        svt.setText(String.format("%.2f", service));
+        total.setText(String.format("%.2f", totalAmount + service));
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==22&&resultCode==RESULT_OK){
             Product product= (Product) data.getSerializableExtra("product");
             products.add(product);
-            totalAmount=totalAmount+product.getAmount();
+            setTotal();
             productsListAdapter.setProviders(products);
             productsListAdapter.setViewOnly(true);
             productsListAdapter.notifyDataSetChanged();
