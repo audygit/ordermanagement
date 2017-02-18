@@ -9,18 +9,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.ordermanagement.Models.Customer;
+import com.android.ordermanagement.Models.Product;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -35,28 +34,26 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class CustomerListActivity extends AppCompatActivity {
+public class ProductListActivity extends AppCompatActivity {
 
-    private ArrayList<Customer> customers=new ArrayList<>();
+    private ArrayList<Product> products=new ArrayList<>();
     private RecyclerView recyclerView;
-    private CustomersListAdapter adapter;
+    private AddProductListAdapter adapter;
     private ImageButton search;
     private EditText searchFld;
     private View toolbar;
     private TextView head;
     private LinearLayout searchCont;
-    private TextView count;
     private ImageView back;
     private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_list);
+        setContentView(R.layout.activity_product_list);
         search= (ImageButton) findViewById(R.id.search);
         search.setVisibility(View.VISIBLE);
         toolbar=findViewById(R.id.toolbar);
         head = (TextView)findViewById(R.id.head);
-        count = (TextView)findViewById(R.id.count);
         back = (ImageView)findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +61,7 @@ public class CustomerListActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        head.setText("Customers");
+        head.setText("Select Product");
         toolbar.setVisibility(View.VISIBLE);
         searchFld= (EditText) findViewById(R.id.searchFld);
         searchCont= (LinearLayout) findViewById(R.id.search_container);
@@ -85,7 +82,7 @@ public class CustomerListActivity extends AppCompatActivity {
                 if (s.length()>=0) {
                     search(s.toString());
                 }else {
-                    adapter.setCustomers(customers);
+                    adapter.setProviders(products);
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -95,22 +92,18 @@ public class CustomerListActivity extends AppCompatActivity {
 
             }
         });
-        showDialogue("Getting customers");
+        showDialogue("Getting products");
         getCustomers();
     }
     private void search(String s){
-        ArrayList<Customer> searchedCustomers=new ArrayList<>();
-        for (Customer c:customers){
+        ArrayList<Product> searchedCustomers=new ArrayList<>();
+        for (Product c:products){
             if (c.getName().toLowerCase().contains(s.toLowerCase())){
                 searchedCustomers.add(c);
             }
         }
 
-        if(searchedCustomers.size()==1)
-            count.setText(searchedCustomers.size()+" Customer");
-        else
-            count.setText(searchedCustomers.size()+" Customers");
-        adapter.setCustomers(searchedCustomers);
+        adapter.setProviders(searchedCustomers);
         adapter.notifyDataSetChanged();
     }
 
@@ -133,14 +126,14 @@ public class CustomerListActivity extends AppCompatActivity {
                         try {
                             JSONArray results = response.getJSONArray("Customer_Details");
                             for (int i = 0; i < results.length(); i++) {
-                                Customer temp = gson.fromJson(results.getJSONObject(i).toString(), Customer.class);
-                                customers.add(temp);
+                                Product temp = gson.fromJson(results.getJSONObject(i).toString(), Product.class);
+                                products.add(temp);
                             }
                             dismissDialogue();
                             setup();
                         } catch (JSONException e) {
                             dismissDialogue();
-                            Toast.makeText(CustomerListActivity.this, "Error retrieving customers!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProductListActivity.this, "Error retrieving customers!", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
                     }
@@ -149,7 +142,7 @@ public class CustomerListActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 dismissDialogue();
                 error.printStackTrace();
-                Toast.makeText(CustomerListActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProductListActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -160,17 +153,26 @@ public class CustomerListActivity extends AppCompatActivity {
         int socketTimeout = 15000;//30 seconds
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         postQuestionRequest.setRetryPolicy(policy);
-        VolleySingleton.getInstance(this).addToRequestQueue(postQuestionRequest);
+//        VolleySingleton.getInstance(this).addToRequestQueue(postQuestionRequest);
+        Product product = new Product();
+        product.setId("00001");
+        product.setName("AMBICA ALL DAYS");
+        product.setPrice(33);
+        product.setQuantity(1);
+        product.setQuantityUts(12);
+        product.setQuantityPkgs(132);
+        product.setWeightInKgs(60.20);
+        product.setActualQuantity(11.10);
+        product.setBilledQuantity(11.0);
+        products.add(product);
+        dismissDialogue();
+        setup();
     }
 
     private void setup(){
-        if(customers.size()==1)
-            count.setText(customers.size()+" Customer");
-        else
-            count.setText(customers.size()+" Customers");
-        recyclerView= (RecyclerView) findViewById(R.id.my_recycler_view);
-        adapter=new CustomersListAdapter(CustomerListActivity.this,customers);
-        recyclerView.setLayoutManager(new LinearLayoutManager(CustomerListActivity.this));
+        recyclerView= (RecyclerView) findViewById(R.id.recycle_items);
+        adapter=new AddProductListAdapter(ProductListActivity.this,products);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ProductListActivity.this));
         recyclerView.setAdapter(adapter);
     }
 
@@ -182,7 +184,7 @@ public class CustomerListActivity extends AppCompatActivity {
 
     public void showDialogue(String message) {
         if (progressDialog == null) {
-            progressDialog = new ProgressDialog(CustomerListActivity.this);
+            progressDialog = new ProgressDialog(ProductListActivity.this);
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
@@ -197,4 +199,13 @@ public class CustomerListActivity extends AppCompatActivity {
         super.onPause();
         dismissDialogue();
     }
+
+    public void setProduct(int position){
+        Intent intent = new Intent();
+        intent.putExtra("product", products.get(position));
+        setResult(RESULT_OK, intent);
+        overridePendingTransition(R.anim.no_change, R.anim.slide_down);
+        finish();
+    }
+
 }

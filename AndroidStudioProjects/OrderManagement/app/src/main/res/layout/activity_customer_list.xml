@@ -5,24 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.android.ordermanagement.CustomerListActivity">
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
+
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/search_container"
         android:background="@color/red"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize">
-        <ImageButton
-            android:background="@null"
-            android:src="@drawable/close"
-            android:id="@+id/cancel"
-            android:padding="7dp"
-            android:scaleType="fitCenter"
-            android:layout_width="35dp"
-            android:layout_gravity="center_vertical"
-            android:layout_height="35dp" />
+        android:layout_height="40dp">
+
         <EditText
             android:textColor="@color/white"
             android:hint="Search Customers"
@@ -32,7 +25,7 @@
             android:id="@+id/searchFld"
             android:background="@drawable/background_border"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="40dp" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

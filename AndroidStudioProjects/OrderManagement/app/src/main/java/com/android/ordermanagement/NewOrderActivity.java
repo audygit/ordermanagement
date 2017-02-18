@@ -80,13 +80,13 @@ public class NewOrderActivity extends AppCompatActivity {
             double vat = 0;
             double service = 0;
             for(Product temp : products){
-                totalPrice = temp.getBilledQuantity()*temp.getAmount();
+                totalPrice += temp.getAmount();
             }
-            vat = totalPrice*0.145;
             service = totalPrice*0.05;
-            total.setText(String.valueOf(totalPrice+vat+service));
-            svt.setText(String.valueOf(service));
+            svt.setText(String.format("%.2f", service));
+            total.setText(String.format("%.2f", totalPrice+vat+service));
             vatView.setText(String.valueOf(vat));
+            vatView.setVisibility(View.GONE);
         }
         head.setText(orderString);
         add.setOnClickListener(new View.OnClickListener() {

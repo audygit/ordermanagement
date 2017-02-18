@@ -42,7 +42,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyVH> {
         Order order=orders.get(position);
         holder.orderNo.setText("Order No: A0014"+order.getId());
         Product product=order.getProducts().get(0);
-        holder.orderText.setText("Product Name: "+product.getName()+"("+product.getQuantity()+" "+product.getUnit()+")");
+        holder.orderText.setText("Product Name: "+product.getName()+"("+product.getQuantity()+")");
         if (position%2==0){
             holder.cont.setBackgroundColor(ContextCompat.getColor(mContext,R.color.white));
         }else {

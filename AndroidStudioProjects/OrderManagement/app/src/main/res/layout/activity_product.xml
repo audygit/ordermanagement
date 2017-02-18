@@ -35,7 +35,7 @@
 
             android:textColor="@color/black"
 
-            android:textSize="14sp" />
+            android:textSize="17sp" />
 
         <TextView
 
@@ -55,240 +55,229 @@
 
             android:textColor="@color/black"
 
-            android:textSize="14sp" />
+            android:textSize="17sp" />
 
     </LinearLayout>
-
     <LinearLayout
-
-        android:layout_width="match_parent"
-
-        android:layout_height="45dp"
-
-        android:background="@color/white">
-
-        <TextView
-
-            android:layout_width="150dp"
-
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center"
-
-
-            android:paddingLeft="10dp"
-
-            android:text="Package Type:"
-
-            android:textColor="@color/black"
-
-            android:textSize="14sp" />
-
-        <TextView
-
-            android:id="@+id/type"
-
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center"
-
-            android:layout_weight="1"
-
-            android:gravity="right"
-
-            android:paddingRight="10dp"
-
-            android:textColor="@color/black"
-
-            android:textSize="14sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-
-        android:layout_width="match_parent"
-
-        android:layout_height="45dp"
-
-        android:background="@color/grey">
-
-        <TextView
-
-            android:layout_width="150dp"
-
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center"
-
-
-            android:paddingLeft="10dp"
-
-            android:text="Quantity: "
-
-            android:textColor="@color/black"
-
-            android:textSize="14sp" />
-
-        <TextView
-
-            android:id="@+id/quantity"
-
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center"
-
-            android:layout_weight="1"
-
-            android:gravity="right"
-
-            android:paddingRight="10dp"
-
-            android:textColor="@color/black"
-
-            android:textSize="14sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-
-        android:layout_width="match_parent"
-
-        android:layout_height="45dp"
-
-        android:background="@color/white">
-
-        <TextView
-
-            android:layout_width="150dp"
-
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center"
-
-            android:paddingLeft="10dp"
-
-            android:text="Billed Quantity: "
-
-            android:textColor="@color/black"
-
-            android:textSize="14sp" />
-
-        <TextView
-
-            android:id="@+id/billed"
-
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center"
-
-            android:layout_weight="1"
-
-            android:gravity="right"
-
-            android:paddingRight="10dp"
-
-            android:textColor="@color/black"
-
-            android:textSize="14sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-
-        android:layout_width="match_parent"
-
-        android:layout_height="45dp"
-
-        android:background="@color/grey">
-
-        <TextView
-
-            android:layout_width="150dp"
-
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center"
-
-
-            android:paddingLeft="10dp"
-
-            android:text="Amount: "
-
-            android:textColor="@color/black"
-
-            android:textSize="14sp" />
-
-        <TextView
-
-            android:id="@+id/amount"
-
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center"
-
-            android:layout_weight="1"
-
-            android:gravity="right"
-
-            android:paddingRight="10dp"
-
-            android:textColor="@color/black"
-
-            android:textSize="14sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-
-        android:layout_width="match_parent"
-
-        android:layout_height="45dp"
-
         android:background="@color/white"
-
-        android:paddingTop="15dp">
-
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
         <TextView
-
-            android:layout_width="150dp"
-
-            android:layout_height="wrap_content"
-
-
+            android:layout_gravity="center"
             android:paddingLeft="10dp"
-
-            android:text="Total Amount: "
-
-            android:textColor="@color/black"
-
-            android:textSize="16sp" />
-
-        <TextView
-
-            android:id="@+id/total"
-
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content"
-
             android:layout_weight="1"
-
-            android:gravity="right"
-
-            android:paddingRight="10dp"
-
+            android:textSize="17sp"
             android:textColor="@color/black"
-
-            android:textSize="16sp" />
-
+            android:text="Quantity(in cases)"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:inputType="number"
+            android:id="@+id/quantity_fld"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-
+    <LinearLayout
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="Billed Quantity(in units)"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/billed_fld"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_gravity="center_vertical"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="Actual Quantity(in cases)"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/actual_fld"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingRight="10dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="Each unit price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/price"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:textSize="14sp"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="UoM per each unit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/uom"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="Total Amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/amount_fld"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="Quantity in units"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/units"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="Quantity in packs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/packs"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/white"
+        android:paddingTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="Weight in Kgs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/weight"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </LinearLayout>

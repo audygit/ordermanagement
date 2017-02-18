@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,6 +10,13 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
     <LinearLayout
         android:background="@color/grey"
         android:layout_width="match_parent"
@@ -22,15 +30,17 @@
             android:text="Product Name"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
-        <Spinner
+        <TextView
            android:layout_weight="1"
             android:paddingRight="10dp"
             android:gravity="right"
+            android:hint="+click to add"
             android:layout_gravity="center"
             android:id="@+id/nameSpinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
     <LinearLayout
         android:background="@color/white"
         android:layout_width="match_parent"
@@ -41,30 +51,7 @@
             android:layout_weight="1"
             android:textSize="17sp"
             android:textColor="@color/black"
-            android:text="Package Type"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-        <Spinner
-            android:layout_weight="1"
-            android:paddingRight="10dp"
-            android:gravity="right"
-            android:layout_gravity="center"
-            android:id="@+id/typeSpinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:background="@color/grey"
-        android:layout_width="match_parent"
-        android:layout_height="45dp">
-        <TextView
-            android:layout_gravity="center"
-            android:paddingLeft="10dp"
-            android:layout_weight="1"
-            android:textSize="17sp"
-            android:textColor="@color/black"
-            android:text="Quantity"
+            android:text="Quantity(in cases)"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
         <EditText
@@ -80,6 +67,30 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="Billed Quantity(in units)"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/billed_fld"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="45dp">
@@ -89,11 +100,11 @@
             android:layout_weight="1"
             android:textSize="17sp"
             android:textColor="@color/black"
-            android:text="Billed Quantity"
+            android:text="Actual Quantity(in cases)"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
         <EditText
-            android:id="@+id/billed_fld"
+            android:id="@+id/actual_fld"
             android:inputType="number"
             android:textColor="@color/black"
             android:textSize="14sp"
@@ -113,12 +124,110 @@
             android:layout_weight="1"
             android:textSize="17sp"
             android:textColor="@color/black"
-            android:text="Amount"
+            android:text="Each unit price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/price"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="UoM per each unit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/uom"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="Total Amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
         <TextView
             android:layout_gravity="center"
             android:id="@+id/amount_fld"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="Quantity in units"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/units"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="Quantity in packs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/packs"
             android:inputType="number"
             android:textColor="@color/black"
             android:textSize="14sp"
@@ -136,15 +245,15 @@
         <TextView
             android:paddingLeft="10dp"
             android:layout_weight="1"
-            android:textSize="20sp"
+            android:textSize="17sp"
             android:textColor="@color/black"
-            android:text="Total Amount"
+            android:text="Weight in Kgs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
-            android:id="@+id/total"
+            android:id="@+id/weight"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="17sp"
             android:paddingRight="10dp"
             android:gravity="right"
             android:layout_weight="1"
@@ -167,4 +276,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </RelativeLayout>
+
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

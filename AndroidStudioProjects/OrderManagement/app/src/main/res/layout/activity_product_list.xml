@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_product_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.android.ordermanagement.ProductListActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"></include>
+
+    <LinearLayout
+        android:id="@+id/search_container"
+        android:background="@color/red"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <EditText
+            android:textColor="@color/white"
+            android:hint="Search Products"
+            android:paddingLeft="10dp"
+            android:textSize="15sp"
+            android:textColorHint="@color/lightg"
+            android:id="@+id/searchFld"
+            android:background="@drawable/background_border"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/grey"
+        android:id="@+id/heading"
+        android:layout_below="@+id/search_container"
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+        <TextView
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:text="Product Name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:text="Amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/no_products"
+        android:visibility="gone"
+        layout="@layout/no_products_layout"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/loader_layout"
+        android:visibility="gone"
+        android:background="@color/white"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/loader"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/loader"
+            android:layout_gravity="center"></ImageView>
+    </LinearLayout>
+
+    <view
+        android:id="@+id/recycle_items"
+        class="android.support.v7.widget.RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/heading"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>

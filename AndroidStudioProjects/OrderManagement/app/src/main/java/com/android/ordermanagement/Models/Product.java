@@ -8,34 +8,40 @@ import java.io.Serializable;
  * Created by challa on 2/5/2017.
  */
 public class Product implements Serializable{
-    @SerializedName("id")
-    private int id;
-    @SerializedName("name")
+    @SerializedName("ItemCode")
+    private String id;
+    @SerializedName("ItemName")
     private String name;
-    @SerializedName("quantity")
+    @SerializedName("QtyInCases")
     private int quantity;
-    @SerializedName("unit")
-    private String unit;
-    @SerializedName("amount")
+    @SerializedName("QtyInUnits")
+    private int quantityUts;
+    @SerializedName("QtyInPackages")
+    private int quantityPkgs;
+    @SerializedName("price")
+    private double price;
+    @SerializedName("Amount")
     private double amount;
-    @SerializedName("billed_quantity")
-    private int billedQuantity;
+    @SerializedName("WeightInKgs")
+    private double weightInKgs;
+    @SerializedName("ActualQty")
+    private double actualQuantity;
+    @SerializedName("BilledQty")
+    private double billedQuantity;
+    @SerializedName("Rate")
+    private String rate;
+    @SerializedName("Per")
+    private String per;
 
     public Product(){
 
     }
-    public Product(int id,String name,int quantity,String unit,double amount){
-        setId(id);
-        setAmount(amount);
-        setName(name);
-        setQuantity(quantity);
-        setUnit(unit);
-    }
-    public int getId() {
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -55,13 +61,6 @@ public class Product implements Serializable{
         this.quantity = quantity;
     }
 
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
 
     public double getAmount() {
         return amount;
@@ -71,11 +70,67 @@ public class Product implements Serializable{
         this.amount = amount;
     }
 
-    public int getBilledQuantity() {
+    public double getBilledQuantity() {
         return billedQuantity;
     }
 
-    public void setBilledQuantity(int billedQuantity) {
+    public void setBilledQuantity(double billedQuantity) {
         this.billedQuantity = billedQuantity;
+    }
+
+    public int getQuantityUts() {
+        return quantityUts;
+    }
+
+    public void setQuantityUts(int quantityUts) {
+        this.quantityUts = quantityUts;
+    }
+
+    public int getQuantityPkgs() {
+        return quantityPkgs;
+    }
+
+    public void setQuantityPkgs(int quantityPkgs) {
+        this.quantityPkgs = quantityPkgs;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getWeightInKgs() {
+        return weightInKgs;
+    }
+
+    public void setWeightInKgs(double weightInKgs) {
+        this.weightInKgs = weightInKgs;
+    }
+
+    public double getActualQuantity() {
+        return actualQuantity;
+    }
+
+    public void setActualQuantity(double actualQuantity) {
+        this.actualQuantity = actualQuantity;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+    public String getPer() {
+        return per;
+    }
+
+    public void setPer(String per) {
+        this.per = per;
     }
 }

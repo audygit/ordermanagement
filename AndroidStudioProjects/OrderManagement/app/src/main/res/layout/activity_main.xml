@@ -22,7 +22,7 @@
             android:id="@+id/userName"
             android:gravity="center"
             android:hint="Username"
-            android:text="test"
+            android:text="laksana"
             android:enabled="false"
             android:layout_margin="20dp"
             android:background="@color/white"

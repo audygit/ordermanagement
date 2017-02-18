@@ -1,5 +1,6 @@
 package com.android.ordermanagement;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
@@ -22,6 +23,10 @@ import com.android.ordermanagement.Models.Order;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class OrdersActivity extends AppCompatActivity {
 
@@ -52,6 +57,9 @@ public class OrdersActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private DrawerLayout drawerLayout;
 //    private TextView subText;
+    private ProgressDialog progressDialog;
+    private String fromDate;
+    private String toDate;
 
 
     @Override
@@ -120,8 +128,8 @@ public class OrdersActivity extends AppCompatActivity {
         pending.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(OrdersActivity.this,PendingOrdersActivity.class);
-                startActivity(intent);
+//                Intent intent=new Intent(OrdersActivity.this,PendingOrdersActivity.class);
+//                startActivity(intent);
             }
         });
         newOrder.setOnClickListener(new View.OnClickListener() {
@@ -135,11 +143,17 @@ public class OrdersActivity extends AppCompatActivity {
         completed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(OrdersActivity.this,PendingOrdersActivity.class);
-                intent.putExtra("type",2);
-                startActivity(intent);
+//                Intent intent=new Intent(OrdersActivity.this,PendingOrdersActivity.class);
+//                intent.putExtra("type",2);
+//                startActivity(intent);
             }
         });
+        final Calendar calendar1 = Calendar.getInstance(TimeZone.getDefault());
+//                calendar1.add(Calendar.DATE, 1);
+        calendar1.set(Calendar.SECOND, 0);
+        calendar1.set(Calendar.MINUTE, 0);
+        calendar1.set(Calendar.HOUR, 0);
+        final Date date = calendar1.getTime();
         getData();
     }
     private void getData(){
@@ -245,4 +259,28 @@ public class OrdersActivity extends AppCompatActivity {
 
 //    home screen : {“results”: {“weekly_count”: 13, “weekly_total”: 30,“monthly_count”: 13, “monthly_total”: 30,“yearly_count”: 13, “yearly_total”: 30, “pending_count”:20, “pending_order”: 23, “completed_order”:45}}
 //}
+    public void dismissDialogue() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    public void showDialogue(String message) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(OrdersActivity.this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+        progressDialog.setMessage(message);
+        if (!progressDialog.isShowing())
+            progressDialog.show();
+    }
+
+    @Override
+    protected  void  onPause(){
+        super.onPause();
+        dismissDialogue();
+    }
+
 }

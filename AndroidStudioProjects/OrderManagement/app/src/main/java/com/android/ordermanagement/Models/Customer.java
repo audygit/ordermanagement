@@ -1,27 +1,37 @@
 package com.android.ordermanagement.Models;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 /**
  * Created by challa on 2/7/2017.
  */
-public class Customer {
-    private int id;
+public class Customer implements Serializable{
+    @SerializedName("Customer_Id")
+    private String id;
+    @SerializedName("Customer_Name")
     private String name;
     private String date;
     private String lastOrder;
     private String image;
-    public Customer(int id,String name, String image){
+    public Customer(String id,String name, String image){
         setId(id);
         setName(name);
         setDate("23/2/2017");
         setLastOrder("EROTICA(15 units)");
         setImage(image);
     }
+    public Customer(String id,String name){
+        setId(id);
+        setName(name);
+    }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

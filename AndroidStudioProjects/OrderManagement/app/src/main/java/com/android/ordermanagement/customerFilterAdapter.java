@@ -35,7 +35,7 @@ class CustomerFilterAdapter extends RecyclerView.Adapter<CustomerFilterAdapter.M
     }
 
     public  interface HandleSelections{
-        public void onFiltersChanged(int id );
+        public void onFiltersChanged(String id );
     }
     @Override
     public MyVH onCreateViewHolder(ViewGroup parent, int viewType) {

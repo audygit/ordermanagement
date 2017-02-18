@@ -30,7 +30,7 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
     private DrawerLayout drawerLayout;
     private RecyclerView customerListView;
     private TextView head;
-    private ArrayList<Integer> selectedCustomers=new ArrayList<>();
+    private ArrayList<String> selectedCustomers=new ArrayList<>();
     private ArrayList<Customer> customers=new ArrayList<>();
     private CustomerFilterAdapter filterAdapter;
     private int type;
@@ -113,11 +113,11 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
     }
 
     @Override
-    public void onFiltersChanged(int id) {
-        if (selectedCustomers.contains(Integer.valueOf(id))){
-            selectedCustomers.remove(Integer.valueOf(id));
+    public void onFiltersChanged(String id) {
+        if (selectedCustomers.contains(id)){
+            selectedCustomers.remove(id);
         }else {
-            selectedCustomers.add(Integer.valueOf(id));
+            selectedCustomers.add(id);
         }
         ArrayList <Order> orders=new ArrayList<>();
         for (Order order:pendingOrders){
