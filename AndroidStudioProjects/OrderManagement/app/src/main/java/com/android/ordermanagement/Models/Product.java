@@ -17,7 +17,7 @@ public class Product implements Serializable{
     @SerializedName("QtyInUnits")
     private int quantityUts;
     @SerializedName("QtyInPackages")
-    private int quantityPkgs;
+    private double quantityPkgs;
     @SerializedName("price")
     private double price;
     @SerializedName("Amount")
@@ -31,7 +31,7 @@ public class Product implements Serializable{
     @SerializedName("Rate")
     private String rate;
     @SerializedName("Per")
-    private String per;
+    private int per;
 
     public Product(){
 
@@ -86,11 +86,11 @@ public class Product implements Serializable{
         this.quantityUts = quantityUts;
     }
 
-    public int getQuantityPkgs() {
+    public double getQuantityPkgs() {
         return quantityPkgs;
     }
 
-    public void setQuantityPkgs(int quantityPkgs) {
+    public void setQuantityPkgs(double quantityPkgs) {
         this.quantityPkgs = quantityPkgs;
     }
 
@@ -126,11 +126,12 @@ public class Product implements Serializable{
         this.rate = rate;
     }
 
-    public String getPer() {
+    public int getPer() {
         return per;
     }
 
-    public void setPer(String per) {
+    public void setPer(int per) {
         this.per = per;
     }
+
 }

@@ -42,6 +42,7 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
 //        holder.pic.setText(provider.getName().substring(0,1).toUpperCase());
         Glide.with(mContext).load(provider.getImage()).placeholder(R.drawable.background1).error(R.drawable.background1).into(holder.pic);
         holder.customerName.setText(provider.getName());
+        holder.last.setText(provider.getId());
     }
 
     @Override
@@ -52,16 +53,18 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
     public class MyVH extends RecyclerView.ViewHolder {
         private TextView customerName;
         private CircularImageView pic;
+        private TextView last;
         public MyVH(View convertView) {
             super(convertView);
             pic= (CircularImageView) convertView.findViewById(R.id.pic);
             customerName= (TextView) convertView.findViewById(R.id.name);
+            last= (TextView) convertView.findViewById(R.id.last);
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Customer customer = customers.get(getAdapterPosition());
                     Intent intent=new Intent(mContext,AddnewProductActivity.class);
-                    intent.putExtra("name", customer.getName());
+                    intent.putExtra("customer", customer);
                     mContext.startActivity(intent);
                 }
             });

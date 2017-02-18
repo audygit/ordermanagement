@@ -136,6 +136,13 @@ public class CustomerListActivity extends AppCompatActivity {
                                 Customer temp = gson.fromJson(results.getJSONObject(i).toString(), Customer.class);
                                 customers.add(temp);
                             }
+                            for(Customer cust: customers){
+                                JSONArray one = response.getJSONArray("SaleOrderType_Details");
+                                JSONObject two = (JSONObject) one.get(0);
+
+                                cust.setSalesOrderType(two.getString("SaleOrdertypeID"));
+                                cust.setSalesExecutiveName(two.getString("Salestype_Name"));
+                            }
                             dismissDialogue();
                             setup();
                         } catch (JSONException e) {

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.ordermanagement.Models.Product;
+import com.android.ordermanagement.Models.ProductListItem;
 
 import java.util.ArrayList;
 
@@ -18,9 +19,9 @@ import java.util.ArrayList;
  */
 public class AddProductListAdapter extends RecyclerView.Adapter<AddProductListAdapter.MyVH> {
     private Context mContext;
-    private ArrayList<Product> products;
+    private ArrayList<ProductListItem> products;
 
-    public AddProductListAdapter(Context mContext, ArrayList<Product> products) {
+    public AddProductListAdapter(Context mContext, ArrayList<ProductListItem> products) {
         this.mContext = mContext;
         this.products = products;
     }
@@ -32,12 +33,12 @@ public class AddProductListAdapter extends RecyclerView.Adapter<AddProductListAd
         return vh;
     }
 
-    public void setProviders(ArrayList<Product> providers) {
+    public void setProviders(ArrayList<ProductListItem> providers) {
         this.products = providers;
     }
     @Override
     public void onBindViewHolder(MyVH holder, final int position) {
-        Product product=products.get(position);
+        ProductListItem product=products.get(position);
         holder.name.setText(product.getName());
         holder.amount.setText(String.valueOf(product.getPrice()));
     }

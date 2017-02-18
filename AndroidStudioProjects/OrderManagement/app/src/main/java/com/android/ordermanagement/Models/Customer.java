@@ -15,6 +15,8 @@ public class Customer implements Serializable{
     private String date;
     private String lastOrder;
     private String image;
+    private String salesOrderType;
+    private String salesExecutiveName;
     public Customer(String id,String name, String image){
         setId(id);
         setName(name);
@@ -65,5 +67,21 @@ public class Customer implements Serializable{
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getSalesExecutiveName() {
+        return salesExecutiveName;
+    }
+
+    public void setSalesExecutiveName(String salesExecutiveName) {
+        this.salesExecutiveName = salesExecutiveName;
+    }
+
+    public String getSalesOrderType() {
+        return salesOrderType;
+    }
+
+    public void setSalesOrderType(String salesOrderType) {
+        this.salesOrderType = salesOrderType;
     }
 }

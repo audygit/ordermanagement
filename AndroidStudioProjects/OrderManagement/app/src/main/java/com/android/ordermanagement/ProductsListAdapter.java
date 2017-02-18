@@ -47,7 +47,7 @@ public class ProductsListAdapter  extends RecyclerView.Adapter<ProductsListAdapt
     public void onBindViewHolder(MyVH holder, final int position) {
         Product product=products.get(position);
         holder.name.setText(product.getName());
-        holder.quantity.setText(String.valueOf(product.getQuantity()));
+        holder.quantity.setText(String.valueOf(product.getActualQuantity()));
         holder.amount.setText(String.valueOf(product.getAmount()));
         if(viewOnly)
             holder.delete.setVisibility(View.GONE);

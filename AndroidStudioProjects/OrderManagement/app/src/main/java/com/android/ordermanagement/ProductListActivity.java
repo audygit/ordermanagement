@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.android.ordermanagement.Models.Customer;
 import com.android.ordermanagement.Models.Product;
+import com.android.ordermanagement.Models.ProductListItem;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 
 public class ProductListActivity extends AppCompatActivity {
 
-    private ArrayList<Product> products=new ArrayList<>();
+    private ArrayList<ProductListItem> products=new ArrayList<>();
     private RecyclerView recyclerView;
     private AddProductListAdapter adapter;
     private ImageButton search;
@@ -96,8 +97,8 @@ public class ProductListActivity extends AppCompatActivity {
         getCustomers();
     }
     private void search(String s){
-        ArrayList<Product> searchedCustomers=new ArrayList<>();
-        for (Product c:products){
+        ArrayList<ProductListItem> searchedCustomers=new ArrayList<>();
+        for (ProductListItem c:products){
             if (c.getName().toLowerCase().contains(s.toLowerCase())){
                 searchedCustomers.add(c);
             }
@@ -109,11 +110,13 @@ public class ProductListActivity extends AppCompatActivity {
 
     private void getCustomers() {
         JSONObject params = new JSONObject();
-        String url = URLUtils.GET_CUSTOMERS_LIST;
+        String url = URLUtils.GET_PRODUCTS_LIST;
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
         String company = preferences.getString("company", "");
+        String name = preferences.getString("user", "");
         try {
             params.put("Creation_Company", company);
+            params.put("Customer_Name", name);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -124,9 +127,9 @@ public class ProductListActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Gson gson = new Gson();
                         try {
-                            JSONArray results = response.getJSONArray("Customer_Details");
+                            JSONArray results = response.getJSONArray("Item_Details");
                             for (int i = 0; i < results.length(); i++) {
-                                Product temp = gson.fromJson(results.getJSONObject(i).toString(), Product.class);
+                                ProductListItem temp = gson.fromJson(results.getJSONObject(i).toString(), ProductListItem.class);
                                 products.add(temp);
                             }
                             dismissDialogue();
@@ -153,20 +156,20 @@ public class ProductListActivity extends AppCompatActivity {
         int socketTimeout = 15000;//30 seconds
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         postQuestionRequest.setRetryPolicy(policy);
-//        VolleySingleton.getInstance(this).addToRequestQueue(postQuestionRequest);
-        Product product = new Product();
-        product.setId("00001");
-        product.setName("AMBICA ALL DAYS");
-        product.setPrice(33);
-        product.setQuantity(1);
-        product.setQuantityUts(12);
-        product.setQuantityPkgs(132);
-        product.setWeightInKgs(60.20);
-        product.setActualQuantity(11.10);
-        product.setBilledQuantity(11.0);
-        products.add(product);
-        dismissDialogue();
-        setup();
+        VolleySingleton.getInstance(this).addToRequestQueue(postQuestionRequest);
+//        Product product = new Product();
+//        product.setId("00001");
+//        product.setName("AMBICA ALL DAYS");
+//        product.setPrice(33);
+//        product.setQuantity(1);
+//        product.setQuantityUts(12);
+//        product.setQuantityPkgs(132);
+//        product.setWeightInKgs(60.20);
+//        product.setActualQuantity(11.10);
+//        product.setBilledQuantity(11.0);
+//        products.add(p);
+//        dismissDialogue();
+//        setup();
     }
 
     private void setup(){
