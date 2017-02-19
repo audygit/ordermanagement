@@ -72,20 +72,18 @@ public class MainActivity extends AppCompatActivity {
                         dismissDialogue();
                         try {
                             JSONArray array = response.getJSONArray("SalesExecutive_Service");
-//                            if(array.length()>0){
-//                                String temp = array.getJSONObject(0).getString("city");
-//                                SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
-//                                SharedPreferences.Editor editor = preferences.edit();
-//                                editor.putString("user", temp);
-//                                editor.putString("role", role);
-//                                editor.putString("company", comp);
-//                                boolean commit = editor.commit();
-//                                if(commit){
+                            if(array.length()>0){
+                                String temp = array.getJSONObject(0).getString("Area_Responsible");
+                                SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = preferences.edit();
+                                editor.putString("city", temp);
+                                boolean commit = editor.commit();
+                                if(commit){
                                     Intent mainIntent = new Intent(MainActivity.this, OrdersActivity.class);
                                     startActivity(mainIntent);
                                     finish();
-//                                }
-//                            }
+                                }
+                            }
                         } catch (JSONException e) {
                             dismissDialogue();
                             Toast.makeText(MainActivity.this, "Invalid credentials!", Toast.LENGTH_SHORT).show();
