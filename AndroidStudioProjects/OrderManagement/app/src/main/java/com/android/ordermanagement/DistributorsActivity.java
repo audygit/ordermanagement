@@ -2,7 +2,6 @@ package com.android.ordermanagement;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,8 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.ordermanagement.Models.Customer;
-import com.android.ordermanagement.Models.Product;
-import com.android.ordermanagement.Models.ProductListItem;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -35,28 +32,28 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ProductListActivity extends AppCompatActivity {
+public class DistributorsActivity extends AppCompatActivity {
 
-    private ArrayList<ProductListItem> products=new ArrayList<>();
+    private ArrayList<Customer> customers=new ArrayList<>();
     private RecyclerView recyclerView;
-    private AddProductListAdapter adapter;
+    private CustomersListAdapter adapter;
     private ImageButton search;
     private EditText searchFld;
     private View toolbar;
     private TextView head;
     private LinearLayout searchCont;
+    private TextView count;
     private ImageView back;
-    private String company;
     private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product_list);
+        setContentView(R.layout.activity_customer_list);
         search= (ImageButton) findViewById(R.id.search);
-        company=getIntent().getStringExtra("company");
         search.setVisibility(View.VISIBLE);
         toolbar=findViewById(R.id.toolbar);
         head = (TextView)findViewById(R.id.head);
+        count = (TextView)findViewById(R.id.count);
         back = (ImageView)findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +61,7 @@ public class ProductListActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        head.setText("Select Product");
+        head.setText("Distributors");
         toolbar.setVisibility(View.VISIBLE);
         searchFld= (EditText) findViewById(R.id.searchFld);
         searchCont= (LinearLayout) findViewById(R.id.search_container);
@@ -85,7 +82,7 @@ public class ProductListActivity extends AppCompatActivity {
                 if (s.length()>=0) {
                     search(s.toString());
                 }else {
-                    adapter.setProviders(products);
+                    adapter.setCustomers(customers);
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -95,29 +92,32 @@ public class ProductListActivity extends AppCompatActivity {
 
             }
         });
-        showDialogue("Getting products");
+        showDialogue("Getting Distributors");
         getCustomers();
     }
     private void search(String s){
-        ArrayList<ProductListItem> searchedCustomers=new ArrayList<>();
-        for (ProductListItem c:products){
+        ArrayList<Customer> searchedCustomers=new ArrayList<>();
+        for (Customer c:customers){
             if (c.getName().toLowerCase().contains(s.toLowerCase())){
                 searchedCustomers.add(c);
             }
         }
 
-        adapter.setProviders(searchedCustomers);
+        if(searchedCustomers.size()==1)
+            count.setText(searchedCustomers.size()+" Distributor");
+        else
+            count.setText(searchedCustomers.size()+" Distributors");
+        adapter.setCustomers(searchedCustomers);
         adapter.notifyDataSetChanged();
     }
 
     private void getCustomers() {
         JSONObject params = new JSONObject();
-        String url = URLUtils.GET_PRODUCTS_LIST;
+        String url = URLUtils.GET_CUSTOMERS_LIST;
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
-        String name = preferences.getString("user", "");
+        String company = preferences.getString("company", "");
         try {
             params.put("Creation_Company", company);
-            params.put("Customer_Name", name);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -128,16 +128,25 @@ public class ProductListActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Gson gson = new Gson();
                         try {
-                            JSONArray results = response.getJSONArray("Item_Details");
+                            JSONArray results = response.getJSONArray("Customer_Details");
                             for (int i = 0; i < results.length(); i++) {
-                                ProductListItem temp = gson.fromJson(results.getJSONObject(i).toString(), ProductListItem.class);
-                                products.add(temp);
+                                if (results.getJSONObject(i).getString("Customer_Type").equalsIgnoreCase("Distributor")) {
+                                    Customer temp = gson.fromJson(results.getJSONObject(i).toString(), Customer.class);
+                                    customers.add(temp);
+                                }
+                            }
+                            for(Customer cust: customers){
+                                JSONArray one = response.getJSONArray("SaleOrderType_Details");
+                                JSONObject two = (JSONObject) one.get(0);
+
+                                cust.setSalesOrderType(two.getString("SaleOrdertypeID"));
+                                cust.setSalesExecutiveName(two.getString("Salestype_Name"));
                             }
                             dismissDialogue();
                             setup();
                         } catch (JSONException e) {
                             dismissDialogue();
-                            Toast.makeText(ProductListActivity.this, "Error retrieving customers!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DistributorsActivity.this, "Error retrieving customers!", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
                     }
@@ -146,7 +155,7 @@ public class ProductListActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 dismissDialogue();
                 error.printStackTrace();
-                Toast.makeText(ProductListActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DistributorsActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -158,25 +167,16 @@ public class ProductListActivity extends AppCompatActivity {
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         postQuestionRequest.setRetryPolicy(policy);
         VolleySingleton.getInstance(this).addToRequestQueue(postQuestionRequest);
-//        Product product = new Product();
-//        product.setId("00001");
-//        product.setName("AMBICA ALL DAYS");
-//        product.setPrice(33);
-//        product.setQuantity(1);
-//        product.setQuantityUts(12);
-//        product.setQuantityPkgs(132);
-//        product.setWeightInKgs(60.20);
-//        product.setActualQuantity(11.10);
-//        product.setBilledQuantity(11.0);
-//        products.add(p);
-//        dismissDialogue();
-//        setup();
     }
 
     private void setup(){
-        recyclerView= (RecyclerView) findViewById(R.id.recycle_items);
-        adapter=new AddProductListAdapter(ProductListActivity.this,products);
-        recyclerView.setLayoutManager(new LinearLayoutManager(ProductListActivity.this));
+        if(customers.size()==1)
+            count.setText(customers.size()+" Distributor");
+        else
+            count.setText(customers.size()+" Distributors");
+        recyclerView= (RecyclerView) findViewById(R.id.my_recycler_view);
+        adapter=new CustomersListAdapter(DistributorsActivity.this,customers,true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(DistributorsActivity.this));
         recyclerView.setAdapter(adapter);
     }
 
@@ -188,7 +188,7 @@ public class ProductListActivity extends AppCompatActivity {
 
     public void showDialogue(String message) {
         if (progressDialog == null) {
-            progressDialog = new ProgressDialog(ProductListActivity.this);
+            progressDialog = new ProgressDialog(DistributorsActivity.this);
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
@@ -203,13 +203,4 @@ public class ProductListActivity extends AppCompatActivity {
         super.onPause();
         dismissDialogue();
     }
-
-    public void setProduct(int position){
-        Intent intent = new Intent();
-        intent.putExtra("product", products.get(position));
-        setResult(RESULT_OK, intent);
-        overridePendingTransition(R.anim.no_change, R.anim.slide_down);
-        finish();
-    }
-
 }

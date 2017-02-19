@@ -18,7 +18,7 @@
 
         <EditText
             android:textColor="@color/white"
-            android:hint="Search Customers"
+            android:hint="Search"
             android:paddingLeft="10dp"
             android:textSize="15sp"
             android:textColorHint="@color/lightg"

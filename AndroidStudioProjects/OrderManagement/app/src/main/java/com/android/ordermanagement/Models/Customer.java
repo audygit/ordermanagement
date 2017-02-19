@@ -14,6 +14,8 @@ public class Customer implements Serializable{
     private String name;
     private String date;
     private String lastOrder;
+    @SerializedName("Creation_Company")
+    private String creationCompany;
     private String image;
     private String salesOrderType;
     private String salesExecutiveName;
@@ -83,5 +85,13 @@ public class Customer implements Serializable{
 
     public void setSalesOrderType(String salesOrderType) {
         this.salesOrderType = salesOrderType;
+    }
+
+    public String getCreationCompany() {
+        return creationCompany;
+    }
+
+    public void setCreationCompany(String creationCompany) {
+        this.creationCompany = creationCompany;
     }
 }

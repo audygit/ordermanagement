@@ -43,17 +43,20 @@ public class AddnewProductActivity extends AppCompatActivity {
     private TextView weight;
     private EditText actualText;
     private Customer customer;
+    private String company;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addnew_product);
         add = (Button) findViewById(R.id.add);
+        company=getIntent().getStringExtra("company");
         pNameFld = (TextView) findViewById(R.id.nameSpinner);
         pNameFld.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AddnewProductActivity.this, ProductListActivity.class);
+                intent.putExtra("company",company);
                 startActivityForResult(intent, 1);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }

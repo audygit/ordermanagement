@@ -55,6 +55,61 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private void getSalesExe(String comp){
+        JSONObject params = new JSONObject();
+        String url = URLUtils.SALES_EXE;
+        try {
+            params.put("UserName", "laksana");
+            params.put("Creation_Company",comp );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest postQuestionRequest = new JsonObjectRequest(Request.Method.POST, url, params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        dismissDialogue();
+                        try {
+                            JSONArray array = response.getJSONArray("SalesExecutive_Service");
+//                            if(array.length()>0){
+//                                String temp = array.getJSONObject(0).getString("city");
+//                                SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+//                                SharedPreferences.Editor editor = preferences.edit();
+//                                editor.putString("user", temp);
+//                                editor.putString("role", role);
+//                                editor.putString("company", comp);
+//                                boolean commit = editor.commit();
+//                                if(commit){
+                                    Intent mainIntent = new Intent(MainActivity.this, OrdersActivity.class);
+                                    startActivity(mainIntent);
+                                    finish();
+//                                }
+//                            }
+                        } catch (JSONException e) {
+                            dismissDialogue();
+                            Toast.makeText(MainActivity.this, "Invalid credentials!", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dismissDialogue();
+                error.printStackTrace();
+                Toast.makeText(MainActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return "application/xml";
+            }
+        };
+        int socketTimeout = 15000;//30 seconds
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postQuestionRequest.setRetryPolicy(policy);
+        VolleySingleton.getInstance(this).addToRequestQueue(postQuestionRequest);
+    }
 
     private void login() {
         JSONObject params = new JSONObject();
@@ -70,9 +125,8 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        dismissDialogue();
                         try {
-                            JSONArray array = response.getJSONArray("userDetails");
+                            JSONArray array = response.getJSONArray("User_Details");
                             if(array.length()>0){
                                 String temp = array.getJSONObject(0).getString("UserName");
                                 String role = array.getJSONObject(0).getString("UserRole");
@@ -84,10 +138,9 @@ public class MainActivity extends AppCompatActivity {
                                 editor.putString("company", comp);
                                 boolean commit = editor.commit();
                                 if(commit){
-                                    Intent mainIntent = new Intent(MainActivity.this, OrdersActivity.class);
-                                    startActivity(mainIntent);
-                                    finish();
+                                    getSalesExe(comp );
                                 }
+
                             }
                         } catch (JSONException e) {
                             dismissDialogue();
