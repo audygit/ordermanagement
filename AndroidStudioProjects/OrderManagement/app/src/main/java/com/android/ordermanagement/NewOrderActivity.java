@@ -57,12 +57,14 @@ public class NewOrderActivity extends AppCompatActivity {
     private String orderString;
     private Customer customer;
     private String date;
+    private String company;
     private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_order);
+        company=getIntent().getStringExtra("company");
         final Calendar calendar1 = Calendar.getInstance(TimeZone.getDefault());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setTimeZone(calendar1.getTimeZone());
@@ -147,33 +149,35 @@ public class NewOrderActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String url = URLUtils.POST_ORDER;
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
-        String company = preferences.getString("company", "");
+        String code = preferences.getString("company", "");
         String user = preferences.getString("user", "");
         String role = preferences.getString("role", "");
         JSONObject temp = new JSONObject();
-        temp.put("CustomerCode", company);
-        temp.put("CustomerName", user);
-        temp.put("SalesExecutiveName", customer.getSalesOrderType());
-        temp.put("SaleOrderType", customer.getSalesExecutiveName());
+        temp.put("CustomerCode", code);
+        temp.put("UserName", user);
+        temp.put("UserType", role);
+//        temp.put("SalesExecutiveName", customer.getSalesOrderType());
+//        temp.put("SaleOrderType", customer.getSalesExecutiveName());
+        temp.put("DispatchThrough", "Ap2132423");
         temp.put("Transport", "00001");
-        temp.put("Destination", "00001");
-        temp.put("DiscountType", "00001");
-        temp.put("TaxClass", "AP TS SALES");
-        temp.put("OrderNo", "ELU/4");
+//        temp.put("Destination", "00001");
+//        temp.put("DiscountType", "00001");
+//        temp.put("TaxClass", "AP TS SALES");
+        temp.put("InvNo", "ELU/4");
         temp.put("CreationCompany", company);
-        temp.put("OrderDate", date);
-        temp.put("CreationCompany", company);
+        temp.put("InvDate", date);
+//        temp.put("CreationCompany", company);
         temp.put("TotalQtyInCases", "1");
-        temp.put("TotoalQtyInUnits", "11");
-        temp.put("TotalQtyInPackets", "132");
-        temp.put("TotalQtyInKgs", "1.90");
+//        temp.put("TotoalQtyInUnits", "11");
+//        temp.put("TotalQtyInPackets", "132");
+//        temp.put("TotalQtyInKgs", "1.90");
         temp.put("SubTotal", "200");
         temp.put("TaxPercentage", "1");
         temp.put("TaxAmount", "12");
         temp.put("TotalAmount", "120");
         temp.put("Status", "Created");
-        temp.put("UserType", role);
-        temp.put("UserName", user);
+//        temp.put("UserType", role);
+//        temp.put("UserName", user);
 
         params.put("HeaderDetails", temp);
         params.put("ItemDetails", gson.toJson(products));

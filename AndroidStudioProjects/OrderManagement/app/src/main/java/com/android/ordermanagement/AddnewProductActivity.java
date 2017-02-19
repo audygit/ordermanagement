@@ -162,6 +162,7 @@ public class AddnewProductActivity extends AppCompatActivity {
                                     Intent intent = new Intent(AddnewProductActivity.this, NewOrderActivity.class);
                                     intent.putExtra("product", product);
                                     intent.putExtra("name", temp);
+                                    intent.putExtra("company",company);
                                     intent.putExtra("customer", customer);
                                     startActivity(intent);
                                 }
