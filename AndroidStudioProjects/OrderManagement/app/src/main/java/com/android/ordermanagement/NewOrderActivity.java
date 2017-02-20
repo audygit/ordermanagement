@@ -162,7 +162,6 @@ public class NewOrderActivity extends AppCompatActivity {
         temp.put("OrderNo", "ELU/4");
         temp.put("CreationCompany", company);
         temp.put("OrderDate", date);
-        temp.put("CreationCompany", company);
         temp.put("TotalQtyInCases", "1");
         temp.put("TotoalQtyInUnits", "11");
         temp.put("TotalQtyInPackets", "132");
