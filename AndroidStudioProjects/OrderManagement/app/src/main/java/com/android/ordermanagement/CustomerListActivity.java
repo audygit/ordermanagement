@@ -119,7 +119,8 @@ public class CustomerListActivity extends AppCompatActivity {
     private void getCustomers() {
         JSONObject params = new JSONObject();
         String url = URLUtils.GET_CUSTOMERS_LIST;
-//        SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+        final String city = preferences.getString("city", "");
 //        String company = preferences.getString("company", "");
         try {
             params.put("Creation_Company", company);
@@ -135,7 +136,7 @@ public class CustomerListActivity extends AppCompatActivity {
                         try {
                             JSONArray results = response.getJSONArray("Customer_Details");
                             for (int i = 0; i < results.length(); i++) {
-                                if (results.getJSONObject(i).getString("Customer_Type").equalsIgnoreCase("Customer")) {
+                                if (results.getJSONObject(i).getString("Customer_Type").equalsIgnoreCase("Customer")&&(results.getJSONObject(i).getString("Area_Name").equalsIgnoreCase(city))) {
                                     Customer temp = gson.fromJson(results.getJSONObject(i).toString(), Customer.class);
                                     customers.add(temp);
                                 }

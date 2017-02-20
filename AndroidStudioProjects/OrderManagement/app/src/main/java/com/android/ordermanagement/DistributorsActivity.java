@@ -116,6 +116,7 @@ public class DistributorsActivity extends AppCompatActivity {
         String url = URLUtils.GET_CUSTOMERS_LIST;
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
         String company = preferences.getString("company", "");
+        final String city = preferences.getString("city", "");
         try {
             params.put("Creation_Company", company);
         } catch (JSONException e) {
@@ -130,7 +131,7 @@ public class DistributorsActivity extends AppCompatActivity {
                         try {
                             JSONArray results = response.getJSONArray("Customer_Details");
                             for (int i = 0; i < results.length(); i++) {
-                                if (results.getJSONObject(i).getString("Customer_Type").equalsIgnoreCase("Distributor")) {
+                                if ((results.getJSONObject(i).getString("Customer_Type").equalsIgnoreCase("Distributor"))&&(results.getJSONObject(i).getString("Area_Name").equalsIgnoreCase(city))) {
                                     Customer temp = gson.fromJson(results.getJSONObject(i).toString(), Customer.class);
                                     customers.add(temp);
                                 }
