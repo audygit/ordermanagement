@@ -51,7 +51,8 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ProductListActivity"></activity>
+        <activity android:name=".ProductListActivity" />
+        <activity android:name=".DistributorsActivity"></activity>
     </application>
 
 </manifest>

@@ -47,11 +47,13 @@ public class CustomerListActivity extends AppCompatActivity {
     private LinearLayout searchCont;
     private TextView count;
     private ImageView back;
+    private String company;
     private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_list);
+        company=getIntent().getStringExtra("company");
         search= (ImageButton) findViewById(R.id.search);
         search.setVisibility(View.VISIBLE);
         toolbar=findViewById(R.id.toolbar);
@@ -117,8 +119,8 @@ public class CustomerListActivity extends AppCompatActivity {
     private void getCustomers() {
         JSONObject params = new JSONObject();
         String url = URLUtils.GET_CUSTOMERS_LIST;
-        SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
-        String company = preferences.getString("company", "");
+//        SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+//        String company = preferences.getString("company", "");
         try {
             params.put("Creation_Company", company);
         } catch (JSONException e) {
@@ -133,8 +135,10 @@ public class CustomerListActivity extends AppCompatActivity {
                         try {
                             JSONArray results = response.getJSONArray("Customer_Details");
                             for (int i = 0; i < results.length(); i++) {
-                                Customer temp = gson.fromJson(results.getJSONObject(i).toString(), Customer.class);
-                                customers.add(temp);
+                                if (results.getJSONObject(i).getString("Customer_Type").equalsIgnoreCase("Customer")) {
+                                    Customer temp = gson.fromJson(results.getJSONObject(i).toString(), Customer.class);
+                                    customers.add(temp);
+                                }
                             }
                             for(Customer cust: customers){
                                 JSONArray one = response.getJSONArray("SaleOrderType_Details");
@@ -176,7 +180,8 @@ public class CustomerListActivity extends AppCompatActivity {
         else
             count.setText(customers.size()+" Customers");
         recyclerView= (RecyclerView) findViewById(R.id.my_recycler_view);
-        adapter=new CustomersListAdapter(CustomerListActivity.this,customers);
+        adapter=new CustomersListAdapter(CustomerListActivity.this,customers,false);
+        adapter.setCompanyId(company);
         recyclerView.setLayoutManager(new LinearLayoutManager(CustomerListActivity.this));
         recyclerView.setAdapter(adapter);
     }

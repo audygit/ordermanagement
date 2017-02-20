@@ -21,9 +21,12 @@ import java.util.ArrayList;
 public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdapter.MyVH> {
     private Context mContext;
     private ArrayList<Customer> customers;
-    public CustomersListAdapter(Context mContext, ArrayList<Customer> customers) {
+    private boolean isDistributor=false;
+    private String companyId;
+    public CustomersListAdapter(Context mContext, ArrayList<Customer> customers,boolean isDistributor) {
         this.mContext = mContext;
         this.customers = customers;
+        this.isDistributor=isDistributor;
     }
 
     @Override
@@ -50,6 +53,14 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
         return customers.size();
     }
 
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
     public class MyVH extends RecyclerView.ViewHolder {
         private TextView customerName;
         private CircularImageView pic;
@@ -62,10 +73,19 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Customer customer = customers.get(getAdapterPosition());
-                    Intent intent=new Intent(mContext,AddnewProductActivity.class);
-                    intent.putExtra("customer", customer);
-                    mContext.startActivity(intent);
+                    if (isDistributor){
+                        Customer customer = customers.get(getAdapterPosition());
+                        Intent intent = new Intent(mContext, CustomerListActivity.class);
+                        intent.putExtra("company",customer.getCreationCompany());
+//                        intent.putExtra("customer", customer);
+                        mContext.startActivity(intent);
+                    }else {
+                        Customer customer = customers.get(getAdapterPosition());
+                        Intent intent = new Intent(mContext, AddnewProductActivity.class);
+                        intent.putExtra("customer", customer);
+                        intent.putExtra("company",companyId);
+                        mContext.startActivity(intent);
+                    }
                 }
             });
         }
