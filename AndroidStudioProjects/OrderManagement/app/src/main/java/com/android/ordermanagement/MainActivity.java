@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
         JSONObject params = new JSONObject();
         String url = URLUtils.SALES_EXE;
         try {
-            params.put("UserName", "laksana");
-            params.put("Creation_Company",comp );
+            params.put("User_Name", "laksana");
+            params.put("Creation_Company",String.valueOf(comp) );
         } catch (JSONException e) {
             e.printStackTrace();
         }
