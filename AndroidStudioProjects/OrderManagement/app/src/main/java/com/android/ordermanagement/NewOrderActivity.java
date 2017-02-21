@@ -156,7 +156,8 @@ public class NewOrderActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
         String companyId = preferences.getString("company", "");
         try {
-            params.put("Creation_Company", company);
+//            params.put("Creation_Company", company);
+            params.put("Creation_Company", "00002");
             params.put("Customer_Id", companyId);
             params.put("Tax_Class", "VAT");
         } catch (JSONException e) {
@@ -206,7 +207,6 @@ public class NewOrderActivity extends AppCompatActivity {
         JSONObject params = new JSONObject();
         double subTotal = 0;
         double taxAmount = 0;
-        double taxPerentage = 0;
         double total = 0;
         int cases = 0;
         int units = 0;
@@ -219,7 +219,7 @@ public class NewOrderActivity extends AppCompatActivity {
         }
         units = cases*11;
         packets = cases*132;
-        taxAmount = total*taxPerentage/100;
+        taxAmount = subTotal*taxPercent/100;
         total = subTotal+taxAmount;
 
         Gson gson = new Gson();
@@ -250,7 +250,7 @@ public class NewOrderActivity extends AppCompatActivity {
         temp.put("TotalQtyInPackets", String.valueOf(packets));
         temp.put("TotalQtyInKgs", String.valueOf(weight));
         temp.put("SubTotal", String.valueOf(subTotal));
-        temp.put("TaxPercentage", String.valueOf(taxPerentage));
+        temp.put("TaxPercentage", String.valueOf(taxPercent));
         temp.put("TaxAmount", String.valueOf(taxAmount));
         temp.put("TotalAmount", String.valueOf(total));
         temp.put("Status", "Created");
@@ -272,9 +272,12 @@ public class NewOrderActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 dismissDialogue();
-                showDialog();
-//                error.printStackTrace();
-//                Toast.makeText(NewOrderActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+                if (error.getMessage().contains("Value null of type"))
+                    showDialog();
+                else{
+                    error.printStackTrace();
+                Toast.makeText(NewOrderActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+            }
             }
         }){
             @Override

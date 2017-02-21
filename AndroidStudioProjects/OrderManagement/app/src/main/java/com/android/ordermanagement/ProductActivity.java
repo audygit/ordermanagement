@@ -46,7 +46,7 @@ public class ProductActivity extends AppCompatActivity {
         weight= (TextView) findViewById(R.id.weight);
         units= (TextView) findViewById(R.id.units);
         packs= (TextView) findViewById(R.id.packs);
-        amount= (TextView) findViewById(R.id.amount);
+        amount= (TextView) findViewById(R.id.amount_fld);
         total= (TextView) findViewById(R.id.total);
         head= (TextView) findViewById(R.id.head);
         name.setText(product.getName());
@@ -59,7 +59,7 @@ public class ProductActivity extends AppCompatActivity {
         units.setText(String.valueOf(product.getQuantityUts()));
         packs.setText(String.valueOf(product.getQuantityPkgs()));
         weight.setText(String.valueOf(product.getWeightInKgs()));
-        total.setText(String.valueOf(product.getAmount()));
+        total.setText(String.valueOf(String.format("%.2f", product.getAmount())));
 
     }
 }

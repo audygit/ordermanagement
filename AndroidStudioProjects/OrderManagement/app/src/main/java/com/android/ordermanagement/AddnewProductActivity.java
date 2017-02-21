@@ -52,6 +52,7 @@ public class AddnewProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_addnew_product);
         add = (Button) findViewById(R.id.add);
         company=getIntent().getStringExtra("company");
+        count=getIntent().getStringExtra("count");
         pNameFld = (TextView) findViewById(R.id.nameSpinner);
         pNameFld.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,7 +164,7 @@ public class AddnewProductActivity extends AppCompatActivity {
                                     Intent intent = new Intent(AddnewProductActivity.this, NewOrderActivity.class);
                                     intent.putExtra("product", product);
                                     intent.putExtra("name", temp);
-                                    intent.putExtra("count", intent.getExtras().getString("count"));
+                                    intent.putExtra("count", count);
                                     intent.putExtra("company",company);
                                     intent.putExtra("customer", customer);
                                     startActivity(intent);
