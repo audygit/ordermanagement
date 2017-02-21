@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.android.ordermanagement.Models.Customer;
 import com.android.ordermanagement.Models.Order;
 import com.android.ordermanagement.Models.Product;
+import com.android.ordermanagement.Models.ProductListItem;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -59,12 +60,16 @@ public class NewOrderActivity extends AppCompatActivity {
     private String date;
     private String company;
     private ProgressDialog progressDialog;
+    private String count;
+    private double taxPercent;
+    private String taxClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_order);
         company=getIntent().getStringExtra("company");
+        count = getIntent().getStringExtra("count");
         final Calendar calendar1 = Calendar.getInstance(TimeZone.getDefault());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setTimeZone(calendar1.getTimeZone());
@@ -106,7 +111,6 @@ public class NewOrderActivity extends AppCompatActivity {
             Product product= (Product) getIntent().getSerializableExtra("product");
             products.add(product);
             edit.setVisibility(View.VISIBLE);
-            setTotal();
             vatView.setVisibility(View.GONE);
         }
         head.setText(orderString);
@@ -141,40 +145,114 @@ public class NewOrderActivity extends AppCompatActivity {
                 productsListAdapter.notifyDataSetChanged();
             }
         });
+        showDialogue("Please wait!");
+        getTaxInfo();
 
     }
 
+    public void getTaxInfo(){
+        String url = " http://loginwebservice.laksanasoft.com/LoginWebService.asmx/TAXDetails";
+        JSONObject params = new JSONObject();
+        SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+        String companyId = preferences.getString("company", "");
+        try {
+            params.put("Creation_Company", company);
+            params.put("Customer_Id", companyId);
+            params.put("Tax_Class", "VAT");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest postQuestionRequest = new JsonObjectRequest(Request.Method.POST, url, params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray results = response.getJSONArray("SalesExecutive_Service");
+                            JSONObject tax = results.getJSONObject(0);
+                            taxClass = tax.getString("TaxClass");
+                            if("VAT".equals(taxClass))
+                                taxPercent = Double.valueOf(tax.getString("VATPer"));
+                            else if("CST".equals(taxClass))
+                                taxPercent = Double.valueOf(tax.getString("CSTPer"));
+                            dismissDialogue();
+                            setTotal();
+                        } catch (JSONException e) {
+                            dismissDialogue();
+                            Toast.makeText(NewOrderActivity.this, "Error retrieving taxes!", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dismissDialogue();
+                error.printStackTrace();
+                Toast.makeText(NewOrderActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return "application/xml";
+            }
+        };
+        int socketTimeout = 15000;//30 seconds
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postQuestionRequest.setRetryPolicy(policy);
+        VolleySingleton.getInstance(this).addToRequestQueue(postQuestionRequest);
+    }
+
+
     public void postOrder() throws JSONException {
         JSONObject params = new JSONObject();
+        double subTotal = 0;
+        double taxAmount = 0;
+        double taxPerentage = 0;
+        double total = 0;
+        int cases = 0;
+        int units = 0;
+        int packets = 0;
+        float weight = 0;
+        for(Product temp : products){
+            subTotal += temp.getAmount();
+            cases += temp.getQuantity();
+            weight += temp.getWeightInKgs();
+        }
+        units = cases*11;
+        packets = cases*132;
+        taxAmount = total*taxPerentage/100;
+        total = subTotal+taxAmount;
+
         Gson gson = new Gson();
         String url = URLUtils.POST_ORDER;
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
         String code = preferences.getString("company", "");
         String user = preferences.getString("user", "");
         String role = preferences.getString("role", "");
+        String salesType = preferences.getString("salesType", "");
         JSONObject temp = new JSONObject();
         temp.put("CustomerCode", code);
         temp.put("UserName", user);
         temp.put("UserType", role);
-//        temp.put("SalesExecutiveName", customer.getSalesOrderType());
-//        temp.put("SaleOrderType", customer.getSalesExecutiveName());
+        temp.put("SalesExecutiveName", customer.getSalesOrderType());
+        temp.put("SaleOrderType", customer.getSalesExecutiveName());
         temp.put("DispatchThrough", "Ap2132423");
         temp.put("Transport", "00001");
-//        temp.put("Destination", "00001");
-//        temp.put("DiscountType", "00001");
+        temp.put("Destination", customer.getCity());
+        temp.put("DiscountType", "00001");
 //        temp.put("TaxClass", "AP TS SALES");
-        temp.put("InvNo", "ELU/4");
+        temp.put("InvNo", salesType.substring(0,3)+"/"+count);
         temp.put("CreationCompany", company);
         temp.put("InvDate", date);
 //        temp.put("CreationCompany", company);
-        temp.put("TotalQtyInCases", "1");
-//        temp.put("TotoalQtyInUnits", "11");
-//        temp.put("TotalQtyInPackets", "132");
-//        temp.put("TotalQtyInKgs", "1.90");
-        temp.put("SubTotal", "200");
-        temp.put("TaxPercentage", "1");
-        temp.put("TaxAmount", "12");
-        temp.put("TotalAmount", "120");
+        temp.put("OrderDate", date);
+        temp.put("TotalQtyInCases", String.valueOf(cases));
+        temp.put("TotoalQtyInUnits", String.valueOf(units));
+        temp.put("TotalQtyInPackets", String.valueOf(packets));
+        temp.put("TotalQtyInKgs", String.valueOf(weight));
+        temp.put("SubTotal", String.valueOf(subTotal));
+        temp.put("TaxPercentage", String.valueOf(taxPerentage));
+        temp.put("TaxAmount", String.valueOf(taxAmount));
+        temp.put("TotalAmount", String.valueOf(total));
         temp.put("Status", "Created");
 //        temp.put("UserType", role);
 //        temp.put("UserName", user);
@@ -247,7 +325,7 @@ public class NewOrderActivity extends AppCompatActivity {
         for(Product product: products) {
             totalAmount += product.getAmount();
         }
-        double service = totalAmount * 0.05;
+        double service = totalAmount * taxPercent/100;
         svt.setText(String.format("%.2f", service));
         total.setText(String.format("%.2f", totalAmount + service));
     }

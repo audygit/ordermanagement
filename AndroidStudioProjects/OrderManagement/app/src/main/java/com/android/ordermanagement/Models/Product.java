@@ -33,8 +33,24 @@ public class Product implements Serializable{
     @SerializedName("Per")
     private int per;
 
+    private String uom;
+
     public Product(){
 
+    }
+    public Product(String id,String name,int qc,int qu,double qp, double price,double amount,double weightInKgs,double actualQuantity,double billedQuantity,String rate,String uom){
+        setId(id);
+        setName(name);
+        setQuantity(qc);
+        setQuantityUts(qu);
+        setQuantityPkgs(qp);
+        setPrice(price);
+        setAmount(amount);
+        setWeightInKgs(weightInKgs);
+        setActualQuantity(actualQuantity);
+        setBilledQuantity(billedQuantity);
+        setRate(rate);
+        setUom(uom);
     }
 
     public String getId() {
@@ -134,4 +150,11 @@ public class Product implements Serializable{
         this.per = per;
     }
 
+    public String getUom() {
+        return uom;
+    }
+
+    public void setUom(String uom) {
+        this.uom = uom;
+    }
 }

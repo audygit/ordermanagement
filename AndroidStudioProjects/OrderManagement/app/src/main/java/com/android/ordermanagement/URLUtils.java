@@ -15,5 +15,8 @@ public class URLUtils {
 
     public static final String POST_ORDER = "http://loginwebservice.laksanasoft.com/LoginWebService.asmx/SaleOrder";
 
+    public static final String GET_ORDERS = "http://loginwebservice.laksanasoft.com/LoginWebService.asmx/GetSaleOrderDetails";
+
+    public static final String INVOICE = "http://loginwebservice.laksanasoft.com/LoginWebService.asmx/InvoiceCreation";
 
 }
