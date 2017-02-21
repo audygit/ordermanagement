@@ -156,7 +156,7 @@ public class NewOrderActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
         String companyId = preferences.getString("company", "");
         try {
-            params.put("Creation_Company", customer.getCreationCompany());
+            params.put("Creation_Company", company);
             params.put("Customer_Id", companyId);
             params.put("Tax_Class", "VAT");
         } catch (JSONException e) {
@@ -178,7 +178,7 @@ public class NewOrderActivity extends AppCompatActivity {
                             setTotal();
                         } catch (JSONException e) {
                             dismissDialogue();
-                            Toast.makeText(NewOrderActivity.this, "Error retrieving customers!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NewOrderActivity.this, "Error retrieving taxes!", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
                     }
