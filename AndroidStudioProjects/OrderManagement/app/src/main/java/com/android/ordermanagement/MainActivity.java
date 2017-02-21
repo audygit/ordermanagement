@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         JSONObject params = new JSONObject();
         String url = URLUtils.SALES_EXE;
         try {
-            params.put("User_Name", "laksana");
+            params.put("User_Name", userName.getText().toString().trim());
             params.put("Creation_Company",String.valueOf(comp) );
         } catch (JSONException e) {
             e.printStackTrace();
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         JSONObject params = new JSONObject();
         String url = URLUtils.LOGIN;
         try {
-            params.put("User_Name1", "laksana");
+            params.put("User_Name1", userName.getText().toString().trim());
             params.put("Password1", password.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -129,9 +129,11 @@ public class MainActivity extends AppCompatActivity {
                                 String temp = array.getJSONObject(0).getString("UserName");
                                 String role = array.getJSONObject(0).getString("UserRole");
                                 String comp = array.getJSONObject(0).getString("CompanyId");
+                                String salesType = array.getJSONObject(0).getString("Sale_Type");
                                 SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = preferences.edit();
                                 editor.putString("user", temp);
+                                editor.putString("salesType", salesType);
                                 editor.putString("role", role);
                                 editor.putString("company", comp);
                                 boolean commit = editor.commit();

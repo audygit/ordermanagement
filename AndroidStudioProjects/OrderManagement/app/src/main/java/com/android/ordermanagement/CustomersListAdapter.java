@@ -22,9 +22,12 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
     private Context mContext;
     private ArrayList<Customer> customers;
     private boolean isDistributor=false;
+    private String order;
     private String companyId;
-    public CustomersListAdapter(Context mContext, ArrayList<Customer> customers,boolean isDistributor) {
+
+    public CustomersListAdapter(Context mContext, ArrayList<Customer> customers,boolean isDistributor, String order) {
         this.mContext = mContext;
+        this.order = order;
         this.customers = customers;
         this.isDistributor=isDistributor;
     }
@@ -84,6 +87,7 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
                         Intent intent = new Intent(mContext, AddnewProductActivity.class);
                         intent.putExtra("customer", customer);
                         intent.putExtra("company",companyId);
+                        intent.putExtra("count",order);
                         mContext.startActivity(intent);
                     }
                 }

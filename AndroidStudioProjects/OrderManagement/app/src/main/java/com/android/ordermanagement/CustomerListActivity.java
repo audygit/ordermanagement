@@ -49,6 +49,7 @@ public class CustomerListActivity extends AppCompatActivity {
     private ImageView back;
     private String company;
     private ProgressDialog progressDialog;
+    private String order;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,6 +135,7 @@ public class CustomerListActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Gson gson = new Gson();
                         try {
+                            order = ((JSONObject)response.getJSONArray("Sale_OrderNo").get(0)).getString("Order_No");
                             JSONArray results = response.getJSONArray("Customer_Details");
                             for (int i = 0; i < results.length(); i++) {
                                 if (results.getJSONObject(i).getString("Customer_Type").equalsIgnoreCase("Customer")&&(results.getJSONObject(i).getString("Area_Name").equalsIgnoreCase(city))) {
@@ -181,7 +183,7 @@ public class CustomerListActivity extends AppCompatActivity {
         else
             count.setText(customers.size()+" Customers");
         recyclerView= (RecyclerView) findViewById(R.id.my_recycler_view);
-        adapter=new CustomersListAdapter(CustomerListActivity.this,customers,false);
+        adapter=new CustomersListAdapter(CustomerListActivity.this,customers,false, order);
         adapter.setCompanyId(company);
         recyclerView.setLayoutManager(new LinearLayoutManager(CustomerListActivity.this));
         recyclerView.setAdapter(adapter);

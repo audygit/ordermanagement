@@ -19,6 +19,11 @@ public class Customer implements Serializable{
     private String image;
     private String salesOrderType;
     private String salesExecutiveName;
+    @SerializedName("City")
+    private String city;
+    @SerializedName("Tax_Class")
+    private String tax;
+
     public Customer(String id,String name, String image){
         setId(id);
         setName(name);
@@ -93,5 +98,21 @@ public class Customer implements Serializable{
 
     public void setCreationCompany(String creationCompany) {
         this.creationCompany = creationCompany;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getTax() {
+        return tax;
+    }
+
+    public void setTax(String tax) {
+        this.tax = tax;
     }
 }

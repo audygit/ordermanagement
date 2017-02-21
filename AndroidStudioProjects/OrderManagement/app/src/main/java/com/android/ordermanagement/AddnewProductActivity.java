@@ -44,6 +44,7 @@ public class AddnewProductActivity extends AppCompatActivity {
     private EditText actualText;
     private Customer customer;
     private String company;
+    private String count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +116,7 @@ public class AddnewProductActivity extends AppCompatActivity {
                     amountFld.setText(String.valueOf(q * producto.getUnits() * producto.getPrice()));
                     units.setText(String.valueOf(q * producto.getUnits()));
                     packs.setText(String.valueOf(q * producto.getPacks()));
-                    weight.setText(String.format("%.2f", (q * producto.getUnits()* Double.valueOf(producto.getWeight()))));
+                    weight.setText(String.format("%.2f", (q * Double.valueOf(producto.getWeight()))));
                 }
             }
 
@@ -162,6 +163,7 @@ public class AddnewProductActivity extends AppCompatActivity {
                                     Intent intent = new Intent(AddnewProductActivity.this, NewOrderActivity.class);
                                     intent.putExtra("product", product);
                                     intent.putExtra("name", temp);
+                                    intent.putExtra("count", intent.getExtras().getString("count"));
                                     intent.putExtra("company",company);
                                     intent.putExtra("customer", customer);
                                     startActivity(intent);
