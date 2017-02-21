@@ -176,7 +176,7 @@ public class DistributorsActivity extends AppCompatActivity {
         else
             count.setText(customers.size()+" Distributors");
         recyclerView= (RecyclerView) findViewById(R.id.my_recycler_view);
-        adapter=new CustomersListAdapter(DistributorsActivity.this,customers,true);
+        adapter=new CustomersListAdapter(DistributorsActivity.this,customers,true,"");
         recyclerView.setLayoutManager(new LinearLayoutManager(DistributorsActivity.this));
         recyclerView.setAdapter(adapter);
     }
