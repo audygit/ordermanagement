@@ -46,8 +46,7 @@ public class ProductActivity extends AppCompatActivity {
         weight= (TextView) findViewById(R.id.weight);
         units= (TextView) findViewById(R.id.units);
         packs= (TextView) findViewById(R.id.packs);
-        amount= (TextView) findViewById(R.id.amount_fld);
-        total= (TextView) findViewById(R.id.total);
+        total= (TextView) findViewById(R.id.amount_fld);
         head= (TextView) findViewById(R.id.head);
         name.setText(product.getName());
         head.setText(getIntent().getExtras().getString("order"));

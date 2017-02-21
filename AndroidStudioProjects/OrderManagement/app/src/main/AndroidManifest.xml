@@ -51,10 +51,14 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ProductListActivity" />
-        <activity android:name=".DistributorsActivity" />
-        <activity android:name=".OrdersListActivity" />
-        <activity android:name=".OrderDetailsActivity"></activity>
+        <activity android:name=".ProductListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".DistributorsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".OrdersListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".OrderDetailsActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

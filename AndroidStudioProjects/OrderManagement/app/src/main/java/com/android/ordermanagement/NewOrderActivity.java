@@ -63,6 +63,7 @@ public class NewOrderActivity extends AppCompatActivity {
     private String count;
     private double taxPercent;
     private String taxClass;
+    private String num;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,6 +230,7 @@ public class NewOrderActivity extends AppCompatActivity {
         String user = preferences.getString("user", "");
         String role = preferences.getString("role", "");
         String salesType = preferences.getString("salesType", "");
+        num = salesType.substring(0,3)+"/"+String.valueOf(count);
         JSONObject temp = new JSONObject();
         temp.put("CustomerCode", code);
         temp.put("UserName", user);
@@ -276,7 +278,7 @@ public class NewOrderActivity extends AppCompatActivity {
                     showDialog();
                 else{
                     error.printStackTrace();
-                Toast.makeText(NewOrderActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewOrderActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
             }
             }
         }){
@@ -295,6 +297,8 @@ public class NewOrderActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(NewOrderActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.item_popup);
+        TextView textView = (TextView) dialog.findViewById(R.id.order_num);
+        textView.setText("Order No: "+ num);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
 
