@@ -137,11 +137,13 @@ public class MainActivity extends AppCompatActivity {
                                         String temp = array.getJSONObject(0).getString("UserName");
                                         String role = array.getJSONObject(0).getString("UserRole");
                                         String comp = array.getJSONObject(0).getString("CompanyId");
+                                        String salesType = array.getJSONObject(0).getString("Sale_Type");
                                         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = preferences.edit();
                                         editor.putString("user", temp);
                                         editor.putString("role", role);
                                         editor.putString("company", comp);
+                                        editor.putString("salesType", salesType);
                                         boolean commit = editor.commit();
                                         if (commit) {
                                             getSalesExe(comp,temp);
