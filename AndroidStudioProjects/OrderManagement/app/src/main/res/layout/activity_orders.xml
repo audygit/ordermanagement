@@ -31,6 +31,13 @@
           android:src="@drawable/ham"
           android:layout_width="45dp"
           android:layout_height="45dp" />
+      <TextView
+          android:textSize="14sp"
+          android:textColor="@color/white"
+          android:id="@+id/name"
+          android:gravity="right|center_vertical"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" />
   </RelativeLayout>
 
     <LinearLayout

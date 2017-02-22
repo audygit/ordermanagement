@@ -1,5 +1,6 @@
 package com.android.ordermanagement;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -85,7 +86,8 @@ public class ProductsListAdapter  extends RecyclerView.Adapter<ProductsListAdapt
                         Intent intent = new Intent(mContext, ProductActivity.class);
                         intent.putExtra("product",products.get(getAdapterPosition()));
                         intent.putExtra("order",orderId);
-                        mContext.startActivity(intent);
+                        intent.putExtra("position",getAdapterPosition());
+                        ((Activity) mContext).startActivityForResult(intent, 2);
                     }
                 }
             });

@@ -3,6 +3,7 @@ package com.android.ordermanagement;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -60,6 +61,7 @@ public class OrdersActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private String fromDate;
     private String toDate;
+    private TextView name;
 
 
     @Override
@@ -68,6 +70,10 @@ public class OrdersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_orders);
         drawerLayout= (DrawerLayout) findViewById(R.id.drawer_layout);
         ham= (ImageButton) findViewById(R.id.ham);
+        name= (TextView) findViewById(R.id.name);
+        SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+        String user = preferences.getString("user", "");
+        name.setText(user);
         ham.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,8 +134,8 @@ public class OrdersActivity extends AppCompatActivity {
         pending.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent=new Intent(OrdersActivity.this,PendingOrdersActivity.class);
-//                startActivity(intent);
+                Intent intent=new Intent(OrdersActivity.this,PendingOrdersActivity.class);
+                startActivity(intent);
             }
         });
         newOrder.setOnClickListener(new View.OnClickListener() {
@@ -156,6 +162,9 @@ public class OrdersActivity extends AppCompatActivity {
         final Date date = calendar1.getTime();
         getData();
     }
+//    private void  getData(){
+//
+//    }
     private void getData(){
         try {
             JSONObject obj=new JSONObject(" {\"results\": {\"weekly_count\": 13, \"weekly_total\": 30,\"monthly_count\": 36, \"monthly_total\": 120,\"yearly_count\": 586, \"yearly_total\": 3000, \"pending_count\":20, \"pending_order\": 23, \"completed_order\":45}}");

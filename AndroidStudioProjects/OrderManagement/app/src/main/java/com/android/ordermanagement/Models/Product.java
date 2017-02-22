@@ -14,6 +14,8 @@ public class Product implements Serializable{
     private String name;
     @SerializedName("QtyInCases")
     private int quantity;
+    @SerializedName("No_Of_Unit_Per_Case")
+    private int units;
     @SerializedName("QtyInUnits")
     private int quantityUts;
     @SerializedName("QtyInPackages")

@@ -341,6 +341,16 @@ public class NewOrderActivity extends AppCompatActivity {
             productsListAdapter.setViewOnly(true);
             productsListAdapter.notifyDataSetChanged();
         }
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+             Product   product = (Product) data.getExtras().getSerializable("product");
+                int pos=data.getIntExtra("position",0);
+                products.remove(pos);
+                products.add(pos,product);
+                productsListAdapter.setProviders(products);
+                productsListAdapter.notifyDataSetChanged();
+            }
+        }
     }
     //    private void getProducts(){
 //        products.add(new Product(1,"Desire",20,"cases",245000));
