@@ -34,13 +34,21 @@ public class OrdersListActivity extends AppCompatActivity {
     private ArrayList<SalesOrder> orders=new ArrayList<>();
     private OrdersListAdapter adapter;
     private TextView head;
+    private int type;
     private ImageButton back;
+    private boolean isPending=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders_list);
+        type=getIntent().getIntExtra("type",0);
+
         head= (TextView) findViewById(R.id.head);
-        head.setText("Select Order");
+        head.setText("Pending Orders");
+        if (type==2){
+            isPending=false;
+            head.setText("Completed Orders");
+        }
         back= (ImageButton) findViewById(R.id.back);
         back.setVisibility(View.GONE);
         recyclerView= (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -50,9 +58,6 @@ public class OrdersListActivity extends AppCompatActivity {
         getOrders();
     }
 
-    @Override
-    public void onBackPressed() {
-    }
 
     private void getOrders(){
         JSONObject params = new JSONObject();
@@ -104,6 +109,7 @@ public class OrdersListActivity extends AppCompatActivity {
                                         salesOrder.setTotalQtyPack(array.getJSONObject(i).getDouble("Total_Qty_In_Packs"));
                                         salesOrder.setTotalQtyKgs(array.getJSONObject(i).getDouble("Total_Qty_In_Kgs"));
                                         salesOrder.setTaxpercent(array.getJSONObject(i).getDouble("Tax_Percentage"));
+                                        salesOrder.setStatus(array.getJSONObject(i).getString("Status"));
                                         salesOrder.setTaxClass(array.getJSONObject(i).getString("Tax_Class"));
                                         salesOrder.setTaxAmount(array.getJSONObject(i).getDouble("Tax_Amount"));
                                         salesOrder.setSubTotal(array.getJSONObject(i).getDouble("Sub_Toal"));
@@ -133,7 +139,13 @@ public class OrdersListActivity extends AppCompatActivity {
                                     if (newOder) {
                                         products.add(product);
                                         sOrder.setProducts(products);
-                                        orders.add(sOrder);
+                                        if (sOrder.getStatus().equalsIgnoreCase("created")&&isPending) {
+                                            orders.add(sOrder);
+                                        }else {
+                                            if (sOrder.getStatus().equalsIgnoreCase("approved")&&!isPending) {
+                                                orders.add(sOrder);
+                                            }
+                                        }
                                     }else {
                                         products.add(product);
                                         sOrder.setProducts(products);

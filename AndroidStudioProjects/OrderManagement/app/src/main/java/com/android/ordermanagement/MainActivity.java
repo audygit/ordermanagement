@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                                         editor.putString("company", comp);
                                         boolean commit = editor.commit();
                                         if (commit) {
-                                            Intent mainIntent = new Intent(MainActivity.this, OrdersListActivity.class);
+                                            Intent mainIntent = new Intent(MainActivity.this, DashBoardActivity.class);
                                             startActivity(mainIntent);
                                             finish();
                                         }
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                                     editor.putString("company", comp);
                                     boolean commit = editor.commit();
                                     if (commit) {
-                                        Intent mainIntent = new Intent(MainActivity.this, OrdersListActivity.class);
+                                        Intent mainIntent = new Intent(MainActivity.this, DashBoardActivity.class);
                                         startActivity(mainIntent);
                                         finish();
                                     }
