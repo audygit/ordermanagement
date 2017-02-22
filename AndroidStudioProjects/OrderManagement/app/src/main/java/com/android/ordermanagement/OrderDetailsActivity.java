@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.ordermanagement.Models.Customer;
 import com.android.ordermanagement.Models.Order;
@@ -162,25 +163,25 @@ public class OrderDetailsActivity  extends AppCompatActivity {
         String role = preferences.getString("role", "");
         JSONObject temp = new JSONObject();
         temp.put("CustomerCode", code);
-        temp.put("UserName", user);
-        temp.put("UserType", role);
-//        temp.put("SalesExecutiveName", customer.getSalesOrderType());
-//        temp.put("SaleOrderType", customer.getSalesExecutiveName());
+//        temp.put("UserName", user);
+        temp.put("UserType", salesOrder.getUserType());
+        temp.put("SalesExecutiveName", salesOrder.getSalesmenCode());
+        temp.put("SaleOrderType", salesOrder.getSaleOrderType());
         temp.put("DispatchThrough", "Ap2132423");
-        temp.put("Transport", "00001");
-//        temp.put("Destination", "00001");
-//        temp.put("DiscountType", "00001");
+        temp.put("Transport", salesOrder.getTransporter());
+        temp.put("Destination", salesOrder.getDestination());
+        temp.put("DiscountType", salesOrder.getDiscountType());
 //        temp.put("TaxClass", "AP TS SALES");
-        temp.put("InvNo", "ELU/4");
+        temp.put("InvNo", salesOrder.getId());
         temp.put("CreationCompany", code);
-        temp.put("InvDate", date);
+        temp.put("InvDate", salesOrder.getDate());
 //        temp.put("CreationCompany", company);
-        temp.put("TotalQtyInCases", "1");
-//        temp.put("TotoalQtyInUnits", "11");
-//        temp.put("TotalQtyInPackets", "132");
-//        temp.put("TotalQtyInKgs", "1.90");
-        temp.put("SubTotal", "200");
-        temp.put("TaxPercentage", "1");
+        temp.put("TotalQtyInCases", salesOrder.getTotalQtyCases());
+        temp.put("TotoalQtyInUnits", salesOrder.getTotalQtyCases()*11);
+        temp.put("TotalQtyInPackets", salesOrder.getTotalQtyPack());
+        temp.put("TotalQtyInKgs", salesOrder.getTotalQtyKgs());
+        temp.put("SubTotal", salesOrder.getSubTotal());
+        temp.put("TaxPercentage", salesOrder.getTaxpercent());
         temp.put("TaxAmount", String.valueOf(salesOrder.getTaxAmount()));
         temp.put("TotalAmount", String.valueOf(salesOrder.getTotalAmount()));
         temp.put("Status", "Created");
@@ -202,7 +203,12 @@ public class OrderDetailsActivity  extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 dismissDialogue();
-                showDialog();
+                if (error.getMessage().contains("Value null of type"))
+                    showDialog();
+                else{
+                    error.printStackTrace();
+                    Toast.makeText(OrderDetailsActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+                }
 //                error.printStackTrace();
 //                Toast.makeText(NewOrderActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
             }
@@ -222,6 +228,8 @@ public class OrderDetailsActivity  extends AppCompatActivity {
         Dialog dialog = new Dialog(OrderDetailsActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.invoice_popup);
+        TextView textView = (TextView)dialog.findViewById(R.id.order_num);
+        textView.setText("Invoice No: "+salesOrder.getId());
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
 

@@ -94,6 +94,22 @@ public class OrdersListActivity extends AppCompatActivity {
                                         double taxAm=array.getJSONObject(i).getDouble("Tax_Amount");
                                         SalesOrder salesOrder=new SalesOrder(orderNo,date,cusName,amount);
                                         salesOrder.setTaxAmount(taxAm);
+                                        salesOrder.setTotalAmount(amount);
+                                        salesOrder.setDestination(array.getJSONObject(i).getString("Destination"));
+                                        salesOrder.setId(array.getJSONObject(i).getString("Order_No"));
+                                        salesOrder.setSalesmenCode(array.getJSONObject(i).getString("Salesmen_Code"));
+                                        salesOrder.setSaleOrderType(array.getJSONObject(i).getString("SaleOrdertype"));
+                                        salesOrder.setTransporter(array.getJSONObject(i).getString("Transporter"));
+                                        salesOrder.setTotalQtyCases(array.getJSONObject(i).getDouble("Total_Qty_In_Cases"));
+                                        salesOrder.setTotalQtyPack(array.getJSONObject(i).getDouble("Total_Qty_In_Packs"));
+                                        salesOrder.setTotalQtyKgs(array.getJSONObject(i).getDouble("Total_Qty_In_Kgs"));
+                                        salesOrder.setTaxpercent(array.getJSONObject(i).getDouble("Tax_Percentage"));
+                                        salesOrder.setTaxClass(array.getJSONObject(i).getString("Tax_Class"));
+                                        salesOrder.setTaxAmount(array.getJSONObject(i).getDouble("Tax_Amount"));
+                                        salesOrder.setSubTotal(array.getJSONObject(i).getDouble("Sub_Toal"));
+                                        salesOrder.setDiscountType(array.getJSONObject(i).getString("Discounttype"));
+                                        salesOrder.setDate(array.getJSONObject(i).getString("Order_Date"));
+                                        salesOrder.setUserType(array.getJSONObject(i).getString("User_Type"));
                                         sOrder=salesOrder;
                                     }
                                    ArrayList<Product> products= sOrder.getProducts();

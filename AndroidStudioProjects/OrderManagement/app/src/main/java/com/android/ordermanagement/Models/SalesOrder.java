@@ -17,6 +17,7 @@ public class SalesOrder implements Serializable{
     private double totalQtyPack;
     private double totalQtyKgs;
     private double totalQtyCases;
+    private double totalQtyUnits;
     private double totalAmount;
     private String taxClass;
     private double taxpercent;
@@ -26,6 +27,7 @@ public class SalesOrder implements Serializable{
     private String discountType;
     private String destination;
     private String remarks;
+    private String userType;
 
     private ArrayList<Product> products=new ArrayList<>();
 
@@ -189,5 +191,21 @@ public class SalesOrder implements Serializable{
 
     public void setProducts(ArrayList<Product> products) {
         this.products = products;
+    }
+
+    public double getTotalQtyUnits() {
+        return totalQtyUnits;
+    }
+
+    public void setTotalQtyUnits(double totalQtyUnits) {
+        this.totalQtyUnits = totalQtyUnits;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 }
