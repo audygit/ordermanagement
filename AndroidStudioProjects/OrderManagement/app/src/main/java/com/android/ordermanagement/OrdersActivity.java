@@ -86,14 +86,19 @@ public class OrdersActivity extends AppCompatActivity {
     }
     private void setupMenu(){
         ListView mMainList= (ListView) findViewById(R.id.main_list);
-        final String[] menuList={"Home","Distributors","Customers","Sales Persons"};
-        final Integer[] menuIcons = { R.drawable.ham,R.drawable.ham,R.drawable.ham,R.drawable.ham};
+        final String[] menuList={"Home","Distributors","Customers","Sales Persons","Logout"};
+        final Integer[] menuIcons = { R.drawable.ham,R.drawable.ham,R.drawable.ham,R.drawable.ham,R.drawable.ham};
         DrawerItemCustomAdapter adapter3 = new DrawerItemCustomAdapter(OrdersActivity.this, R.layout.home_menu_item_list, menuList,menuIcons);
         mMainList.setAdapter(adapter3);
         mMainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                if (position==4){
+                    SharedPreferences preferences = getSharedPreferences("USER_PREFS", 0);
+                    preferences.edit().clear();
+                    Intent intent=new Intent(OrdersActivity.this,MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -149,9 +154,9 @@ public class OrdersActivity extends AppCompatActivity {
         completed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent=new Intent(OrdersActivity.this,PendingOrdersActivity.class);
-//                intent.putExtra("type",2);
-//                startActivity(intent);
+                Intent intent=new Intent(OrdersActivity.this,PendingOrdersActivity.class);
+                intent.putExtra("type",2);
+                startActivity(intent);
             }
         });
         final Calendar calendar1 = Calendar.getInstance(TimeZone.getDefault());

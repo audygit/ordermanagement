@@ -262,18 +262,20 @@ public class OrderDetailsActivity  extends AppCompatActivity {
         total.setText(String.format("%.2f", totalAmount + service));
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode==22&&resultCode==RESULT_OK){
-//            Product product= (Product) data.getSerializableExtra("product");
-//            products.add(product);
-//            setTotal();
-//            productsListAdapter.setProviders(products);
-//            productsListAdapter.setViewOnly(true);
-//            productsListAdapter.notifyDataSetChanged();
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                Product   product = (Product) data.getExtras().getSerializable("product");
+                int pos=data.getIntExtra("position",0);
+                products.remove(pos);
+                products.add(pos,product);
+                productsListAdapter.setProviders(products);
+                productsListAdapter.notifyDataSetChanged();
+            }
+        }
+    }
     //    private void getProducts(){
 //        products.add(new Product(1,"Desire",20,"cases",245000));
 //        products.add(new Product(2,"Passion",25,"cases",2145000));

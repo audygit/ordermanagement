@@ -22,6 +22,7 @@ import com.android.ordermanagement.Models.Customer;
 import com.android.ordermanagement.Models.Order;
 import com.android.ordermanagement.Models.Product;
 import com.android.ordermanagement.Models.ProductListItem;
+import com.android.ordermanagement.Models.SalesOrder;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -52,7 +53,7 @@ public class NewOrderActivity extends AppCompatActivity {
     private TextView total;
     private ImageButton add;
     private boolean viewOnly;
-    private Order order;
+    private SalesOrder order;
     private TextView head;
     private ImageView back;
     private String orderString;
@@ -96,17 +97,17 @@ public class NewOrderActivity extends AppCompatActivity {
         if (viewOnly){
             add.setVisibility(View.GONE);
             confirm.setVisibility(View.GONE);
-            order= (Order) getIntent().getSerializableExtra("order");
+            order= (SalesOrder) getIntent().getSerializableExtra("order");
             if (order==null){
                 products=new ArrayList<>();
             }else {
                 products=order.getProducts();
             }
-            orderString ="Order No A0014"+order.getId();
+            orderString ="Order No "+order.getId();
             total.setText(String.valueOf(order.getTotalAmount()));
             edit.setVisibility(View.GONE);
-            svt.setText(String.valueOf(order.getServiceTax()));
-            vatView.setText(String.valueOf(order.getVat()));
+            svt.setText(String.valueOf(order.getTaxAmount()));
+//            vatView.setText(String.valueOf(order.getVat()));
         }else {
             orderString = "New Order for "+getIntent().getExtras().getString("name");
             Product product= (Product) getIntent().getSerializableExtra("product");

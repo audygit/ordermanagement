@@ -74,7 +74,7 @@ class CustomerFilterAdapter extends RecyclerView.Adapter<CustomerFilterAdapter.M
                         checkBox.setChecked(true);
                     }
                     Customer customer=customers.get(getAdapterPosition());
-                    handleSelections.onFiltersChanged(customer.getId());
+                    handleSelections.onFiltersChanged(customer.getName());
 
                 }
             });

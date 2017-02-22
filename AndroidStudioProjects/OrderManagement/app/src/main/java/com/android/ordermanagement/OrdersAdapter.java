@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.android.ordermanagement.Models.Order;
 import com.android.ordermanagement.Models.Product;
+import com.android.ordermanagement.Models.SalesOrder;
 
 import java.util.ArrayList;
 
@@ -20,9 +21,9 @@ import java.util.ArrayList;
  */
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyVH> {
     private Context mContext;
-    private ArrayList<Order> orders;
+    private ArrayList<SalesOrder> orders;
 
-    public OrdersAdapter(Context mContext, ArrayList<Order> orders) {
+    public OrdersAdapter(Context mContext, ArrayList<SalesOrder> orders) {
         this.mContext = mContext;
         this.orders = orders;
     }
@@ -34,13 +35,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyVH> {
         return vh;
     }
 
-    public void setOrders(ArrayList<Order> orders) {
+    public void setOrders(ArrayList<SalesOrder> orders) {
         this.orders = orders;
     }
     @Override
     public void onBindViewHolder(MyVH holder, int position) {
-        Order order=orders.get(position);
-        holder.orderNo.setText("Order No: A0014"+order.getId());
+        SalesOrder order=orders.get(position);
+        holder.orderNo.setText("Order No: "+order.getId());
         Product product=order.getProducts().get(0);
         holder.orderText.setText("Product Name: "+product.getName()+"("+product.getQuantity()+")");
         if (position%2==0){

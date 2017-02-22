@@ -40,6 +40,9 @@ public class ProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product);
         pos=getIntent().getIntExtra("position",0);
         product= (Product) getIntent().getSerializableExtra("product");
+        if (product.getPer()==0){
+            product.setPer(1);
+        }
         name= (TextView) findViewById(R.id.name);
         save= (Button) findViewById(R.id.add);
         back = (ImageButton)findViewById(R.id.back);

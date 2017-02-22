@@ -56,7 +56,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void getSalesExe(String comp,String temp){
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(false);
+    }
+
+    private void getSalesExe(String comp, String temp){
         JSONObject params = new JSONObject();
         String url = URLUtils.SALES_EXE;
         try {
