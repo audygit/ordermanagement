@@ -50,7 +50,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private TextView pending;
     private TextView completed;
-//    private TextView newOrder;
+    private TextView newOrder;
     private ImageButton ham;
     private ViewPager viewPager;
     private DrawerLayout drawerLayout;
@@ -128,7 +128,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
         pending= (TextView) findViewById(R.id.pending);
         completed= (TextView) findViewById(R.id.completed);
-//        newOrder= (TextView) findViewById(R.id.newOrder);
+        newOrder= (TextView) findViewById(R.id.newOrder);
         viewPager= (ViewPager) findViewById(R.id.pager);
         pending.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,14 +137,17 @@ public class DashBoardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        newOrder.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent=new Intent(DashBoardActivity.this,DistributorsActivity.class);
-//                intent.putExtra("type",1);
-//                startActivity(intent);
-//            }
-//        });
+        newOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(DashBoardActivity.this,CustomerListActivity.class);
+                SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+                String companyId = preferences.getString("company", "");
+                intent.putExtra("company", companyId);
+                intent.putExtra("type",1);
+                startActivity(intent);
+            }
+        });
         completed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

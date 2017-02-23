@@ -111,7 +111,11 @@ public class AddnewProductActivity extends AppCompatActivity {
                             i = (int) (second/12);
                             j = second%12;
                         }
-                        actual = q*producto.getUnits()+i+j/10;
+                        if((int)j/10>0)
+                            j=(float)j/100;
+                        else
+                            j=(float)j/10;
+                        actual = q*producto.getUnits()+i+j;
                     }
                     actualText.setText(String.format("%.2f", actual));
                     amountFld.setText(String.valueOf(q * producto.getUnits() * producto.getPrice()));
