@@ -19,7 +19,7 @@ public class ProductListItem implements Serializable {
     @SerializedName("Price")
     private double price;
     @SerializedName("Uom_Per_EachUnit")
-    private String uom;
+    private String uomPerEchUnit;
     @SerializedName("Fixed_Qty")
     private String fixedQty;
     @SerializedName("No_Of_Unit_Per_Case")
@@ -34,6 +34,7 @@ public class ProductListItem implements Serializable {
     private int per;
     @SerializedName("Case_Units")
     private String caseUnit;
+    private String Uom;
 
     public String getCode() {
         return code;
@@ -67,12 +68,12 @@ public class ProductListItem implements Serializable {
         this.price = price;
     }
 
-    public String getUom() {
-        return uom;
+    public String getUomPerEchUnit() {
+        return uomPerEchUnit;
     }
 
-    public void setUom(String uom) {
-        this.uom = uom;
+    public void setUomPerEchUnit(String uomPerEchUnit) {
+        this.uomPerEchUnit = uomPerEchUnit;
     }
 
     public String getFixedQty() {
@@ -129,5 +130,13 @@ public class ProductListItem implements Serializable {
 
     public void setCaseUnit(String caseUnit) {
         this.caseUnit = caseUnit;
+    }
+
+    public String getUom() {
+        return Uom;
+    }
+
+    public void setUom(String uom) {
+        Uom = uom;
     }
 }

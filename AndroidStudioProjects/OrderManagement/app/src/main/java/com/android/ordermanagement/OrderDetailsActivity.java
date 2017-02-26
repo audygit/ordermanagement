@@ -9,12 +9,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +35,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,14 +67,27 @@ public class OrderDetailsActivity  extends AppCompatActivity {
     private boolean isDistributor;
     private ProgressDialog progressDialog;
     private SalesOrder salesOrder;
+    private String invNo;
+    private LinearLayout taxLayout;
+    private EditText taxE;
+    private double tax=0.0;
+    private double taxAmount;
+    private double totalAmount;
+    private String inv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_order);
         isDistributor=getIntent().getBooleanExtra("distributor",false);
+        invNo=getIntent().getStringExtra("invNo");
         final Calendar calendar1 = Calendar.getInstance(TimeZone.getDefault());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        taxLayout = (LinearLayout)findViewById(R.id.tax_layout);
+        if(isDistributor)
+            taxLayout.setVisibility(View.VISIBLE);
+        taxE = (EditText)findViewById(R.id.tax);
+
         dateFormat.setTimeZone(calendar1.getTimeZone());
         date = dateFormat.format(calendar1.getTime());
         final Date date = calendar1.getTime();
@@ -115,6 +134,33 @@ public class OrderDetailsActivity  extends AppCompatActivity {
             confirm.setText("Send Invoice");
              salesOrder= (SalesOrder) getIntent().getSerializableExtra("order");
             orderString ="Order No "+salesOrder.getId();
+            taxE.setText(String.valueOf(salesOrder.getTaxpercent()));
+            taxE.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if(TextUtils.isEmpty(s.toString()))
+                        tax = 0.0;
+                    else{
+                        tax = Double.valueOf(s.toString());
+                    }
+                    taxAmount = salesOrder.getSubTotal()*tax/100;
+                    totalAmount = salesOrder.getSubTotal() + taxAmount;
+                    total.setText(String.valueOf(totalAmount));
+                    svt.setText(String.valueOf(taxAmount));
+                }
+            });
+        totalAmount = salesOrder.getTotalAmount();
+        taxAmount = salesOrder.getTaxAmount();
             total.setText(String.valueOf(salesOrder.getTotalAmount()));
             svt.setText(String.valueOf(salesOrder.getTaxAmount()));
             if (salesOrder==null){
@@ -160,36 +206,54 @@ public class OrderDetailsActivity  extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
         String code = preferences.getString("company", "");
         String user = preferences.getString("user", "");
-        String role = preferences.getString("role", "");
+        String custId = preferences.getString("customerId", "");
         JSONObject temp = new JSONObject();
-        temp.put("CustomerCode", code);
-//        temp.put("UserName", user);
-        temp.put("UserType", salesOrder.getUserType());
-        temp.put("SalesExecutiveName", salesOrder.getSalesmenCode());
-        temp.put("SaleOrderType", salesOrder.getSaleOrderType());
+        temp.put("CustomerCode", salesOrder.getCustomerId());
+        temp.put("UserName", user);
+        temp.put("UserType", "Customer");
+//        temp.put("SalesExecutiveName", salesOrder.getSalesmenCode());
+//        temp.put("SaleOrderType", salesOrder.getSaleOrderType());
         temp.put("DispatchThrough", "Ap2132423");
-        temp.put("Transport", salesOrder.getTransporter());
-        temp.put("Destination", salesOrder.getDestination());
-        temp.put("DiscountType", salesOrder.getDiscountType());
+//        temp.put("Transport", salesOrder.getTransporter());
+//        temp.put("Destination", salesOrder.getDestination());
+//        temp.put("DiscountType", salesOrder.getDiscountType());
 //        temp.put("TaxClass", "AP TS SALES");
-        temp.put("InvNo", salesOrder.getId());
-        temp.put("CreationCompany", code);
-        temp.put("InvDate", salesOrder.getDate());
+        temp.put("InvNo", salesOrder.getInv());
+        temp.put("OrderNo", salesOrder.getId());
+        temp.put("CreationCompany", custId);
+        temp.put("InvDate", date);
 //        temp.put("CreationCompany", company);
         temp.put("TotalQtyInCases", salesOrder.getTotalQtyCases());
-        temp.put("TotoalQtyInUnits", salesOrder.getTotalQtyCases()*11);
-        temp.put("TotalQtyInPackets", salesOrder.getTotalQtyPack());
-        temp.put("TotalQtyInKgs", salesOrder.getTotalQtyKgs());
+//        temp.put("TotoalQtyInUnits", salesOrder.getTotalQtyCases()*11);
+//        temp.put("TotalQtyInPackets", salesOrder.getTotalQtyPack());
+//        temp.put("TotalQtyInKgs", salesOrder.getTotalQtyKgs());
         temp.put("SubTotal", salesOrder.getSubTotal());
-        temp.put("TaxPercentage", salesOrder.getTaxpercent());
-        temp.put("TaxAmount", String.valueOf(salesOrder.getTaxAmount()));
-        temp.put("TotalAmount", String.valueOf(salesOrder.getTotalAmount()));
+        temp.put("TaxPercentage", tax);
+        temp.put("TaxAmount", String.valueOf(taxAmount));
+        temp.put("TotalAmount", String.valueOf(totalAmount));
         temp.put("Status", "Created");
 //        temp.put("UserType", role);
 //        temp.put("UserName", user);
 
         params.put("HeaderDetails", temp);
-        params.put("ItemDetails", gson.toJson(products));
+        JSONArray returnProducts= new JSONArray();
+        for(Product pro :products){
+            JSONObject t = new JSONObject();
+            t.put("ItemCode", pro.getId());
+            t.put("ItemName", pro.getName());
+            t.put("QtyInCases", pro.getBilledQuantity());
+            t.put("quantityUts", pro.getQuantityUts());
+            t.put("quantityPkgs", pro.getQuantityPkgs());
+            t.put("Price", pro.getPrice());
+            t.put("Amount", pro.getAmount());
+            t.put("WeightInKgs", pro.getWeightInKgs());
+            t.put("ActualQty", pro.getActualQuantity());
+            t.put("BilledQty", pro.getBilledQuantity());
+            t.put("Rate", pro.getPrice());
+            t.put("Per", pro.getUom());
+            returnProducts.put(t);
+        }
+        params.put("ItemDetails", returnProducts);
 
 
         JsonObjectRequest postQuestionRequest = new JsonObjectRequest(Request.Method.POST, url, params,
@@ -197,18 +261,19 @@ public class OrderDetailsActivity  extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         dismissDialogue();
+                        try {
+                            inv = response.getString("Inv_No");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         showDialog();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 dismissDialogue();
-                if (error.getMessage().contains("Value null of type"))
-                    showDialog();
-                else{
-                    error.printStackTrace();
-                    Toast.makeText(OrderDetailsActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(OrderDetailsActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+
 //                error.printStackTrace();
 //                Toast.makeText(NewOrderActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
             }
@@ -229,7 +294,7 @@ public class OrderDetailsActivity  extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.invoice_popup);
         TextView textView = (TextView)dialog.findViewById(R.id.order_num);
-        textView.setText("Invoice No: "+salesOrder.getId());
+        textView.setText("Invoice No: "+inv);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
 
@@ -253,12 +318,16 @@ public class OrderDetailsActivity  extends AppCompatActivity {
 
 
     public void setTotal(){
-        double totalAmount=0;
+        double sub=0;
         for(Product product: products) {
-            totalAmount += product.getAmount();
+            sub += product.getAmount();
         }
-        double service = totalAmount * 0.05;
-        svt.setText(String.format("%.2f", service));
+        taxAmount = sub*tax/100;
+        totalAmount = sub + taxAmount;
+        total.setText(String.valueOf(totalAmount));
+        svt.setText(String.valueOf(taxAmount));
+        double service = totalAmount * tax/100 ;
+        svt.setText(String.format("%.2f",service));
         total.setText(String.format("%.2f", totalAmount + service));
     }
 
@@ -273,6 +342,7 @@ public class OrderDetailsActivity  extends AppCompatActivity {
                 products.add(pos,product);
                 productsListAdapter.setProviders(products);
                 productsListAdapter.notifyDataSetChanged();
+                setTotal();
             }
         }
     }

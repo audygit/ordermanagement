@@ -7,21 +7,15 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.ordermanagement.Models.Customer;
 import com.android.ordermanagement.Models.Product;
 import com.android.ordermanagement.Models.ProductListItem;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddnewProductActivity extends AppCompatActivity {
 
@@ -44,7 +38,11 @@ public class AddnewProductActivity extends AppCompatActivity {
     private EditText actualText;
     private Customer customer;
     private String company;
+    private String tax;
     private String count;
+    private String prefix;
+    private String ord;
+    private boolean isDistributor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +50,13 @@ public class AddnewProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_addnew_product);
         add = (Button) findViewById(R.id.add);
         company=getIntent().getStringExtra("company");
+        isDistributor=getIntent().getBooleanExtra("isDistributor", false);
+        prefix=getIntent().getStringExtra("prefix");
+        tax=getIntent().getStringExtra("tax");
         count=getIntent().getStringExtra("count");
+        if(getIntent().getExtras().containsKey("ord")){
+            ord = getIntent().getStringExtra("ord");
+        }
         pNameFld = (TextView) findViewById(R.id.nameSpinner);
         pNameFld.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,9 +77,13 @@ public class AddnewProductActivity extends AppCompatActivity {
         actualText = (EditText) findViewById(R.id.actual_fld);
         amountFld = (TextView) findViewById(R.id.amount_fld);
         head = (TextView) findViewById(R.id.head);
-        customer = (Customer) getIntent().getExtras().getSerializable("customer");
-        temp = customer.getName();
-        head.setText("Add Product for " + temp);
+        if(!isDistributor) {
+            customer = (Customer) getIntent().getExtras().getSerializable("customer");
+            temp = customer.getName();
+            head.setText("Add Product for " + temp);
+        }else{
+            head.setText("Add Product");
+        }
         back = (ImageButton) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +160,7 @@ public class AddnewProductActivity extends AppCompatActivity {
                             product.setWeightInKgs(Double.valueOf(weight.getText().toString()));
                             product.setAmount(Double.valueOf(amountFld.getText().toString()));
                             product.setPrice(producto.getPrice());
+                            product.setUom(producto.getUom());
                             product.setPer(producto.getPer());
                             product.setQuantityUts(Integer.valueOf(units.getText().toString()));
                             product.setQuantityPkgs(Double.valueOf(packs.getText().toString()));
@@ -160,15 +169,25 @@ public class AddnewProductActivity extends AppCompatActivity {
                                 if (flag) {
                                     Intent intent = new Intent();
                                     intent.putExtra("product", product);
-                                    intent.putExtra("name", temp);
+                                    if(!isDistributor)
+                                        intent.putExtra("name", temp);
                                     setResult(RESULT_OK, intent);
                                     finish();
 
                                 } else {
-                                    Intent intent = new Intent(AddnewProductActivity.this, NewOrderActivity.class);
+                                    Intent intent;
+                                    if(!isDistributor) {
+                                        intent = new Intent(AddnewProductActivity.this, NewOrderActivity.class);
+                                    }else{
+                                        intent = new Intent(AddnewProductActivity.this, DistributorNewOrderActivity.class);
+
+                                    }
                                     intent.putExtra("product", product);
                                     intent.putExtra("name", temp);
                                     intent.putExtra("count", count);
+                                    intent.putExtra("prefix", prefix);
+                                    intent.putExtra("ord", ord);
+                                    intent.putExtra("tax", tax);
                                     intent.putExtra("company",company);
                                     intent.putExtra("customer", customer);
                                     startActivity(intent);
@@ -194,7 +213,7 @@ public class AddnewProductActivity extends AppCompatActivity {
                 producto = (ProductListItem) data.getExtras().getSerializable("product");
                 pNameFld.setText(producto.getName());
                 price.setText(String.valueOf(producto.getPrice()));
-                uom.setText(producto.getUom());
+                uom.setText(producto.getUomPerEchUnit());
                 quantityFld.setText("");
             }
         }

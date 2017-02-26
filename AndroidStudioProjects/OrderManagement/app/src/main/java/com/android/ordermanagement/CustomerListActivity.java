@@ -50,11 +50,16 @@ public class CustomerListActivity extends AppCompatActivity {
     private String company;
     private ProgressDialog progressDialog;
     private String order;
+    private String tax;
+    private String prefix;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_list);
         company=getIntent().getStringExtra("company");
+        tax=getIntent().getStringExtra("tax");
+        prefix=getIntent().getStringExtra("prefix");
         search= (ImageButton) findViewById(R.id.search);
         search.setVisibility(View.VISIBLE);
         toolbar=findViewById(R.id.toolbar);
@@ -144,11 +149,15 @@ public class CustomerListActivity extends AppCompatActivity {
                                 }
                             }
                             for(Customer cust: customers){
-                                JSONArray one = response.getJSONArray("SaleOrderType_Details");
-                                JSONObject two = (JSONObject) one.get(0);
+                                try {
+                                    JSONArray one = response.getJSONArray("SaleOrderType_Details");
+                                    JSONObject two = (JSONObject) one.get(0);
 
-                                cust.setSalesOrderType(two.getString("SaleOrdertypeID"));
-                                cust.setSalesExecutiveName(two.getString("Salestype_Name"));
+                                    cust.setSalesOrderType(two.getString("SaleOrdertypeID"));
+                                    cust.setSalesExecutiveName(two.getString("Salestype_Name"));
+                                }catch (JSONException e){
+
+                                }
                             }
                             dismissDialogue();
                             setup();
@@ -185,6 +194,8 @@ public class CustomerListActivity extends AppCompatActivity {
         recyclerView= (RecyclerView) findViewById(R.id.my_recycler_view);
         adapter=new CustomersListAdapter(CustomerListActivity.this,customers,false, order);
         adapter.setCompanyId(company);
+        adapter.setPrefix(prefix);
+        adapter.setTax(tax);
         recyclerView.setLayoutManager(new LinearLayoutManager(CustomerListActivity.this));
         recyclerView.setAdapter(adapter);
     }

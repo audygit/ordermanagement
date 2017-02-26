@@ -23,6 +23,8 @@ public class Customer implements Serializable{
     private String city;
     @SerializedName("Tax_Class")
     private String tax;
+    @SerializedName("D_Prefix")
+    private String prefix;
 
     public Customer(String id,String name, String image){
         setId(id);
@@ -114,5 +116,13 @@ public class Customer implements Serializable{
 
     public void setTax(String tax) {
         this.tax = tax;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 }

@@ -45,6 +45,13 @@
             android:layout_width="30dp"
             android:layout_height="30dp" />
     </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
     <LinearLayout
         android:background="@color/grey"
         android:paddingTop="15dp"
@@ -91,6 +98,31 @@
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/tax_layout">
+            <TextView
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:text="Service Tax percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/tax"
+                android:textSize="18sp"
+                android:paddingRight="20dp"
+                android:inputType="numberDecimal"
+                android:gravity="right"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
                 android:textSize="18sp"
@@ -103,6 +135,31 @@
                 android:id="@+id/service_tax"
                 android:textSize="18sp"
                 android:paddingRight="20dp"
+                android:gravity="right"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:id="@+id/transport_layout">
+            <TextView
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:text="Transport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/transport"
+                android:textSize="18sp"
+                android:paddingRight="20dp"
+                android:hint="+click to add"
                 android:gravity="right"
                 android:layout_gravity="right"
                 android:layout_weight="1"
@@ -186,4 +243,6 @@
             android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

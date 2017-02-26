@@ -39,22 +39,35 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        userName= (EditText) findViewById(R.id.userName);
-        password= (EditText) findViewById(R.id.password);
-        login= (Button) findViewById(R.id.login);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String passwordStr=password.getText().toString();
-                if (!TextUtils.isEmpty(passwordStr)){
-                    showDialogue("logging in!");
-                    login();
-                }else {
-                    Toast.makeText(MainActivity.this,"Invalid Credentials",Toast.LENGTH_SHORT).show();
+        SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+        if(preferences.getAll().size()==0) {
+            setContentView(R.layout.activity_main);
+            userName = (EditText) findViewById(R.id.userName);
+            password = (EditText) findViewById(R.id.password);
+            login = (Button) findViewById(R.id.login);
+            login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String passwordStr = password.getText().toString();
+                    if (!TextUtils.isEmpty(passwordStr)) {
+                        showDialogue("logging in!");
+                        login();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    }
                 }
+            });
+        }else{
+            if(preferences.contains("customerId")){
+                Intent mainIntent = new Intent(MainActivity.this, DashBoardActivity.class);
+                startActivity(mainIntent);
+                finish();
+            }else{
+                Intent mainIntent = new Intent(MainActivity.this, OrdersActivity.class);
+                startActivity(mainIntent);
+                finish();
             }
-        });
+        }
     }
 
     @Override
@@ -64,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void getSalesExe(String comp, String temp){
         JSONObject params = new JSONObject();
-        String url = URLUtils.SALES_EXE;
+        String url = URLUtils.SALES_DETAILS_EXE;
         try {
-            params.put("User_Name", temp);
+            params.put("Emp_Name", temp);
             params.put("Creation_Company",String.valueOf(comp) );
         } catch (JSONException e) {
             e.printStackTrace();
@@ -81,9 +94,11 @@ public class MainActivity extends AppCompatActivity {
                             JSONArray array = response.getJSONArray("SalesExecutive_Service");
                             if(array.length()>0){
                                 String temp = array.getJSONObject(0).getString("Area_Responsible");
+                                String salesCode = array.getJSONObject(0).getString("Salesmen_Code");
                                 SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = preferences.edit();
                                 editor.putString("city", temp);
+                                editor.putString("salesCode", salesCode);
                                 boolean commit = editor.commit();
 
                                 if(commit){
@@ -143,16 +158,18 @@ public class MainActivity extends AppCompatActivity {
                                         String temp = array.getJSONObject(0).getString("UserName");
                                         String role = array.getJSONObject(0).getString("UserRole");
                                         String comp = array.getJSONObject(0).getString("CompanyId");
+                                        String emp = array.getJSONObject(0).getString("Emp_Name");
                                         String salesType = array.getJSONObject(0).getString("Sale_Type");
                                         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = preferences.edit();
                                         editor.putString("user", temp);
                                         editor.putString("role", role);
                                         editor.putString("company", comp);
+                                        editor.putString("emp", emp);
                                         editor.putString("salesType", salesType);
                                         boolean commit = editor.commit();
                                         if (commit) {
-                                            getSalesExe(comp,temp);
+                                            getSalesExe(comp,emp);
                                         }
                                     }
                                     else {
@@ -178,6 +195,9 @@ public class MainActivity extends AppCompatActivity {
                                 } catch (JSONException ex) {
                                     String temp = array.getJSONObject(0).getString("User_Name");
                                     String role = array.getJSONObject(0).getString("Customer_Type");
+                                    String customerId = array.getJSONObject(0).getString("Customer_Id");
+                                    String tax = array.getJSONObject(0).getString("Tax_Class");
+                                    String name = array.getJSONObject(0).getString("Customer_Name");
                                     if (role.equalsIgnoreCase("Distributor")){
                                         isDistributor=true;
                                     }
@@ -186,7 +206,10 @@ public class MainActivity extends AppCompatActivity {
                                     SharedPreferences.Editor editor = preferences.edit();
                                     editor.putString("user", temp);
                                     editor.putString("role", role);
+                                    editor.putString("customerId", customerId);
                                     editor.putString("company", comp);
+                                    editor.putString("name", name);
+                                    editor.putString("tax", tax);
                                     boolean commit = editor.commit();
                                     if (commit) {
                                         Intent mainIntent = new Intent(MainActivity.this, DashBoardActivity.class);

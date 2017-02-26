@@ -5,23 +5,27 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.ordermanagement.Models.Customer;
-import com.android.ordermanagement.Models.Order;
 import com.android.ordermanagement.Models.Product;
-import com.android.ordermanagement.Models.ProductListItem;
 import com.android.ordermanagement.Models.SalesOrder;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -30,6 +34,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,9 +44,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
-public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
+public class DistributorNewOrderActivity extends AppCompatActivity implements DeleteHelper, TransportDialog.TransportDialogListener {
 
     private ArrayList<Product> products=new ArrayList<>();
     private RecyclerView recyclerView;
@@ -68,6 +74,10 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
     private String tax;
     private String prefix;
     private String orderId;
+    private LinearLayout transportLayout;
+    private TextView transport;
+    private ArrayList<String> transArray;
+    private String nameS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +85,7 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
         setContentView(R.layout.activity_new_order);
         company=getIntent().getStringExtra("company");
         tax=getIntent().getStringExtra("tax");
-        count = getIntent().getStringExtra("count");
+        count = getIntent().getStringExtra("ord");
         prefix = getIntent().getStringExtra("prefix");
         final Calendar calendar1 = Calendar.getInstance(TimeZone.getDefault());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -88,6 +98,20 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
         svt= (TextView) findViewById(R.id.service_tax);
         add= (ImageButton) findViewById(R.id.add);
         vatView= (TextView) findViewById(R.id.vat);
+        transportLayout= (LinearLayout) findViewById(R.id.transport_layout);
+        transportLayout.setVisibility(View.VISIBLE);
+        transport = (TextView)findViewById(R.id.transport);
+        SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        transArray = gson.fromJson(preferences.getString("transport", ""),
+                new TypeToken<List<String>>(){}.getType());
+        transport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TransportDialog addressDialog = TransportDialog.newInstance(transArray);
+                addressDialog.show(getSupportFragmentManager(), "estimatesDialog");
+            }
+        });
         confirm= (Button) findViewById(R.id.confirm);
         edit= (Button) findViewById(R.id.edit);
         total= (TextView) findViewById(R.id.total);
@@ -114,7 +138,7 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
             svt.setText(String.valueOf(order.getTaxAmount()));
 //            vatView.setText(String.valueOf(order.getVat()));
         }else {
-            orderString = "New Order for "+getIntent().getExtras().getString("name");
+            orderString = "New Order";
             Product product= (Product) getIntent().getSerializableExtra("product");
             products.add(product);
             edit.setVisibility(View.VISIBLE);
@@ -124,15 +148,16 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(NewOrderActivity.this,AddnewProductActivity.class);
+                Intent intent=new Intent(DistributorNewOrderActivity.this,AddnewProductActivity.class);
                 intent.putExtra("flag",true);
                 intent.putExtra("customer",customer);
+                intent.putExtra("isDistributor",true);
                 intent.putExtra("name",getIntent().getExtras().getString("name"));
                 startActivityForResult(intent,22);
             }
         });
-        productsListAdapter=new ProductsListAdapter(NewOrderActivity.this,products,true, orderString);
-        recyclerView.setLayoutManager(new LinearLayoutManager(NewOrderActivity.this));
+        productsListAdapter=new ProductsListAdapter(DistributorNewOrderActivity.this,products,true, orderString);
+        recyclerView.setLayoutManager(new LinearLayoutManager(DistributorNewOrderActivity.this));
         recyclerView.setAdapter(productsListAdapter);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,11 +186,12 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
         String url = " http://loginwebservice.laksanasoft.com/LoginWebService.asmx/TAXDetails";
         JSONObject params = new JSONObject();
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
-        String companyId = preferences.getString("company", "");
+        String companyId = preferences.getString("customerId", "");
+        String tax = preferences.getString("tax", "");
         try {
 //            params.put("Creation_Company", company);
-            params.put("Creation_Company", companyId);
-            params.put("Customer_Id", company);
+            params.put("Creation_Company", company);
+            params.put("Customer_Id", companyId);
             params.put("Tax_Class", tax);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -178,15 +204,16 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
                             JSONArray results = response.getJSONArray("SalesExecutive_Service");
                             JSONObject tax = results.getJSONObject(0);
                             taxClass = tax.getString("TaxClass");
-                            if("VAT".equals(taxClass))
-                                taxPercent = 0.0;
-                            else if("CST".equals(taxClass))
+                            if(!TextUtils.isEmpty(tax.getString("VATPer")))
+                                taxPercent = Double.valueOf(tax.getString("VATPer"));
+                            else{
                                 taxPercent = Double.valueOf(tax.getString("CSTPer"));
-                            dismissDialogue();
+                            }
                             setTotal();
+                            getSaleInfo();
                         } catch (JSONException e) {
                             dismissDialogue();
-                            Toast.makeText(NewOrderActivity.this, "Error retrieving taxes!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DistributorNewOrderActivity.this, "Error retrieving taxes!", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
                     }
@@ -195,7 +222,7 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
             public void onErrorResponse(VolleyError error) {
                 dismissDialogue();
                 error.printStackTrace();
-                Toast.makeText(NewOrderActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DistributorNewOrderActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -208,6 +235,56 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
         postQuestionRequest.setRetryPolicy(policy);
         VolleySingleton.getInstance(this).addToRequestQueue(postQuestionRequest);
     }
+
+    public void getSaleInfo(){
+        String url = " http://loginwebservice.laksanasoft.com/LoginWebService.asmx/SalesExeServices";
+        JSONObject params = new JSONObject();
+        SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+        String comp = preferences.getString("company", "");
+        String name = preferences.getString("name", "");
+        try {
+//            params.put("Creation_Company", company);
+            params.put("Creation_Company", comp);
+            params.put("Name", name);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest postQuestionRequest = new JsonObjectRequest(Request.Method.POST, url, params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray results = response.getJSONArray("SalesExecutive_Service");
+                            JSONObject obj = results.getJSONObject(0);
+                            nameS = obj.getString("Salesmen_Code");
+                            dismissDialogue();
+                            setTotal();
+                        } catch (JSONException e) {
+                            dismissDialogue();
+                            Toast.makeText(DistributorNewOrderActivity.this, "Error retrieving sales info!", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dismissDialogue();
+                error.printStackTrace();
+                Toast.makeText(DistributorNewOrderActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return "application/xml";
+            }
+        };
+        int socketTimeout = 15000;//30 seconds
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postQuestionRequest.setRetryPolicy(policy);
+        VolleySingleton.getInstance(this).addToRequestQueue(postQuestionRequest);
+    }
+
 
 
     public void postOrder() throws JSONException {
@@ -232,24 +309,25 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
         Gson gson = new Gson();
         String url = URLUtils.POST_ORDER;
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
-        String salesCode = preferences.getString("salesCode", "");
-        String user = preferences.getString("user", "");
-        String role = preferences.getString("role", "");
         String salesType = preferences.getString("salesType", "");
-        num = salesType.substring(0,3)+"/"+String.valueOf(count);
+        String customerId = preferences.getString("customerId", "");
+        String prefix = preferences.getString("prefix", "");
+        String tax = preferences.getString("tax", "");
+        String comp = preferences.getString("company", "");
+        String user = preferences.getString("user", "");
+
         JSONObject temp = new JSONObject();
-        temp.put("CustomerCode", customer.getId());
-        temp.put("CustomerName", customer.getName());
-        temp.put("UserType", null);
-        temp.put("SalesExecutiveName", salesCode);
-        temp.put("SaleOrderType", null);
-        temp.put("DispatchThrough", null);
-        temp.put("Transport", null);
-        temp.put("Destination", customer.getCity());
+        temp.put("CustomerCode", customerId);
+        temp.put("UserType", "Distributor");
+        temp.put("SalesExecutiveName", nameS);
+        temp.put("SaleOrderType", salesType);
+        temp.put("UserName", user);
+        temp.put("Transport", transport.getText().toString());
+//        temp.put("Destination", customer.getCity());
         temp.put("DiscountType", null);
-        temp.put("TaxClass", null);
-        temp.put("OrderNo", prefix+count);
-        temp.put("CreationCompany", company);
+        temp.put("TaxClass", tax);
+        temp.put("OrderNo", prefix+"/"+count);
+        temp.put("CreationCompany", comp);
 //        temp.put("InvDate", date);
 //        temp.put("CreationCompany", company);
         temp.put("OrderDate", date);
@@ -263,7 +341,7 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
         temp.put("TotalAmount", String.valueOf(total));
         temp.put("Status", "Created");
 //        temp.put("UserType", role);
-        temp.put("UserName", user);
+//        temp.put("UserName", user);
 
         params.put("HeaderDetails", temp);
         JSONArray returnProducts= new JSONArray();
@@ -279,8 +357,8 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
             t.put("WeightInKgs", pro.getWeightInKgs());
             t.put("ActualQty", pro.getActualQuantity());
             t.put("BilledQty", pro.getBilledQuantity());
-            t.put("Rate", pro.getRate());
-            t.put("Per", pro.getUom());
+            t.put("Rate", pro.getPrice());
+            t.put("Uom", pro.getUom());
             returnProducts.put(t);
         }
         params.put("ItemDetails", returnProducts);
@@ -303,7 +381,7 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
             public void onErrorResponse(VolleyError error) {
                 dismissDialogue();
                 error.printStackTrace();
-                Toast.makeText(NewOrderActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DistributorNewOrderActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
 
             }
         }){
@@ -319,7 +397,7 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
     }
 
     public void showDialog(){
-        Dialog dialog = new Dialog(NewOrderActivity.this);
+        Dialog dialog = new Dialog(DistributorNewOrderActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.item_popup);
         TextView textView = (TextView) dialog.findViewById(R.id.order_num);
@@ -336,19 +414,13 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
             @Override
             public void onClick(View view) {
                 SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
-                if(!preferences.contains("customerId")) {
-                    Intent intent = new Intent(NewOrderActivity.this, OrdersActivity.class);
+
+                    Intent intent = new Intent(DistributorNewOrderActivity.this, DashBoardActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
-                }else{
-                    Intent intent = new Intent(NewOrderActivity.this, DashBoardActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                }
+
             }
         });
     }
@@ -411,7 +483,7 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
 
     public void showDialogue(String message) {
         if (progressDialog == null) {
-            progressDialog = new ProgressDialog(NewOrderActivity.this);
+            progressDialog = new ProgressDialog(DistributorNewOrderActivity.this);
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
@@ -427,4 +499,9 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
         dismissDialogue();
     }
 
+    @Override
+    public void onDialogItemClick(DialogFragment dialog, String estimate) {
+        transport.setText(estimate);
+        dialog.dismiss();
+    }
 }

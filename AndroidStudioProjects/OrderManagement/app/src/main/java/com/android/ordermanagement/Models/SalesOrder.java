@@ -28,6 +28,8 @@ public class SalesOrder implements Serializable{
     private String destination;
     private String remarks;
     private String userType;
+    private String customerId;
+    private String inv;
 
     private ArrayList<Product> products=new ArrayList<>();
 
@@ -207,5 +209,21 @@ public class SalesOrder implements Serializable{
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getInv() {
+        return inv;
+    }
+
+    public void setInv(String inv) {
+        this.inv = inv;
     }
 }

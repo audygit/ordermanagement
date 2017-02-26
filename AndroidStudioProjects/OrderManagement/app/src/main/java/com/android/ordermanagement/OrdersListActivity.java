@@ -37,12 +37,13 @@ public class OrdersListActivity extends AppCompatActivity {
     private int type;
     private ImageButton back;
     private boolean isPending=true;
+    private String inv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders_list);
         type=getIntent().getIntExtra("type",0);
-
+        inv = getIntent().getStringExtra("inv");
         head= (TextView) findViewById(R.id.head);
         head.setText("Pending Orders");
         if (type==2){
@@ -50,7 +51,12 @@ public class OrdersListActivity extends AppCompatActivity {
             head.setText("Completed Orders");
         }
         back= (ImageButton) findViewById(R.id.back);
-        back.setVisibility(View.GONE);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         recyclerView= (RecyclerView) findViewById(R.id.my_recycler_view);
         adapter=new OrdersListAdapter(OrdersListActivity.this,orders);
         recyclerView.setLayoutManager(new LinearLayoutManager(OrdersListActivity.this));
@@ -63,9 +69,9 @@ public class OrdersListActivity extends AppCompatActivity {
         JSONObject params = new JSONObject();
         String url = URLUtils.GET_ORDERS;
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
-        String company = preferences.getString("company", "");
+        String company = preferences.getString("customerId", "");
         try {
-            params.put("Creation_Company",String.valueOf(company) );
+            params.put("Creation_Company",company);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -75,8 +81,6 @@ public class OrdersListActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray array = response.getJSONArray("Sales_Details");
-
-
                             if(array.length()>0){
                                 for (int i=0;i<array.length();i++) {
                                     String orderNo = array.getJSONObject(i).getString("Order_No");
@@ -102,6 +106,7 @@ public class OrdersListActivity extends AppCompatActivity {
                                         salesOrder.setTotalAmount(amount);
                                         salesOrder.setDestination(array.getJSONObject(i).getString("Destination"));
                                         salesOrder.setId(array.getJSONObject(i).getString("Order_No"));
+                                        salesOrder.setCustomerId(array.getJSONObject(i).getString("Customer_Id"));
                                         salesOrder.setSalesmenCode(array.getJSONObject(i).getString("Salesmen_Code"));
                                         salesOrder.setSaleOrderType(array.getJSONObject(i).getString("SaleOrdertype"));
                                         salesOrder.setTransporter(array.getJSONObject(i).getString("Transporter"));
@@ -116,6 +121,7 @@ public class OrdersListActivity extends AppCompatActivity {
                                         salesOrder.setDiscountType(array.getJSONObject(i).getString("Discounttype"));
                                         salesOrder.setDate(array.getJSONObject(i).getString("Order_Date"));
                                         salesOrder.setUserType(array.getJSONObject(i).getString("User_Type"));
+                                        salesOrder.setInv(inv);
                                         sOrder=salesOrder;
                                     }
                                    ArrayList<Product> products= sOrder.getProducts();
@@ -133,7 +139,7 @@ public class OrdersListActivity extends AppCompatActivity {
                                     double billedQuantity=array.getJSONObject(i).getDouble("Billd_Qty");
                                     double actualQuantity=array.getJSONObject(i).getDouble("Actual_Qty");
                                     String rate= String.valueOf(array.getJSONObject(i).getDouble("Rate"));
-                                    String uom= array.getJSONObject(i).getString("Uom");
+                                    String uom= array.getJSONObject(i).getString("UOM");
                                     double amount=array.getJSONObject(i).getDouble("Amount");
                                     Product product=new Product(itemCode,itemName,qc,qu,qp,price,amount,weight,actualQuantity,billedQuantity,rate,uom);
                                     if (newOder) {

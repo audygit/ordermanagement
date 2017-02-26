@@ -3,6 +3,7 @@ package com.android.ordermanagement;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +24,18 @@ public class ProductsListAdapter  extends RecyclerView.Adapter<ProductsListAdapt
     private ArrayList<Product> products;
     private boolean viewOnly;
     private String orderId;
+    private boolean isDistributor;
 
     public ProductsListAdapter(Context mContext, ArrayList<Product> products,boolean viewOnly, String orderId) {
         this.mContext = mContext;
         this.products = products;
         this.viewOnly=viewOnly;
+        SharedPreferences preferences = mContext.getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+
+        this.isDistributor = preferences.contains("customerId");
         this.orderId = orderId;
     }
+
 
     @Override
     public MyVH onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -57,7 +63,7 @@ public class ProductsListAdapter  extends RecyclerView.Adapter<ProductsListAdapt
             holder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((NewOrderActivity)mContext).removeProduct(position);
+                    ((DeleteHelper)mContext).removeProduct(position);
                 }
             });
         }
@@ -83,7 +89,12 @@ public class ProductsListAdapter  extends RecyclerView.Adapter<ProductsListAdapt
                 @Override
                 public void onClick(View v) {
                     if (viewOnly) {
-                        Intent intent = new Intent(mContext, ProductActivity.class);
+                        Intent intent;
+                        if(!isDistributor) {
+                            intent = new Intent(mContext, ProductActivity.class);
+                        }else{
+                            intent = new Intent(mContext, ProductDistributorActivity.class);
+                        }
                         intent.putExtra("product",products.get(getAdapterPosition()));
                         intent.putExtra("order",orderId);
                         intent.putExtra("position",getAdapterPosition());

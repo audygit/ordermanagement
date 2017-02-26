@@ -9,6 +9,8 @@ public class URLUtils {
 
     public static final String SALES_EXE = "http://loginwebservice.laksanasoft.com/LoginWebService.asmx/SalesExeServices";
 
+    public static final String SALES_DETAILS_EXE = "http://loginwebservice.laksanasoft.com/LoginWebService.asmx/GetSalesmenAreaDetails";
+
     public static final String GET_CUSTOMERS_LIST = "http://loginwebservice.laksanasoft.com/LoginWebService.asmx/So_MasterDetails";
 
     public static final String GET_PRODUCTS_LIST = "http://loginwebservice.laksanasoft.com/LoginWebService.asmx/ItemDetails";

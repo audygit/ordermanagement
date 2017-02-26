@@ -140,7 +140,7 @@ public class DistributorsActivity extends AppCompatActivity {
                                 JSONArray one = response.getJSONArray("SaleOrderType_Details");
                                 JSONObject two = (JSONObject) one.get(0);
 
-                                cust.setSalesOrderType(two.getString("SaleOrdertypeID"));
+//                                cust.setSalesOrderType(two.getString("SaleOrdertypeID"));
                                 cust.setSalesExecutiveName(two.getString("Salestype_Name"));
                             }
                             dismissDialogue();

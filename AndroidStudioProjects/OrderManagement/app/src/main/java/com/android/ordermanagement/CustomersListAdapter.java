@@ -23,7 +23,9 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
     private ArrayList<Customer> customers;
     private boolean isDistributor=false;
     private String order;
+    private String tax;
     private String companyId;
+    private String prefix;
 
     public CustomersListAdapter(Context mContext, ArrayList<Customer> customers,boolean isDistributor, String order) {
         this.mContext = mContext;
@@ -64,6 +66,14 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
         this.companyId = companyId;
     }
 
+    public void setTax(String tax){
+        this.tax = tax;
+    }
+
+    public void setPrefix(String prefix){
+        this.prefix = prefix;
+    }
+
     public class MyVH extends RecyclerView.ViewHolder {
         private TextView customerName;
         private CircularImageView pic;
@@ -79,7 +89,9 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
                     if (isDistributor){
                         Customer customer = customers.get(getAdapterPosition());
                         Intent intent = new Intent(mContext, CustomerListActivity.class);
-                        intent.putExtra("company",customer.getCreationCompany());
+                        intent.putExtra("company",customer.getId());
+                        intent.putExtra("tax", customer.getTax());
+                        intent.putExtra("prefix", customer.getPrefix());
 //                        intent.putExtra("customer", customer);
                         mContext.startActivity(intent);
                     }else {
@@ -87,6 +99,8 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
                         Intent intent = new Intent(mContext, AddnewProductActivity.class);
                         intent.putExtra("customer", customer);
                         intent.putExtra("company",companyId);
+                        intent.putExtra("tax", tax);
+                        intent.putExtra("prefix", prefix);
                         intent.putExtra("count",order);
                         mContext.startActivity(intent);
                     }

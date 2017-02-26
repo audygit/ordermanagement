@@ -20,7 +20,7 @@ public class Product implements Serializable{
     private int quantityUts;
     @SerializedName("QtyInPackages")
     private double quantityPkgs;
-    @SerializedName("price")
+    @SerializedName("Price")
     private double price;
     @SerializedName("Amount")
     private double amount;
@@ -35,6 +35,7 @@ public class Product implements Serializable{
     @SerializedName("Per")
     private int per;
 
+    @SerializedName("Uom")
     private String uom;
 
     public Product(){

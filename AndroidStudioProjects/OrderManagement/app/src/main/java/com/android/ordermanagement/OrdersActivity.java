@@ -19,9 +19,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.ordermanagement.Models.Order;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -95,7 +103,9 @@ public class OrdersActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position==4){
                     SharedPreferences preferences = getSharedPreferences("USER_PREFS", 0);
-                    preferences.edit().clear();
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.clear();
+                    editor.commit();
                     Intent intent=new Intent(OrdersActivity.this,MainActivity.class);
                     startActivity(intent);
                 }
@@ -165,11 +175,10 @@ public class OrdersActivity extends AppCompatActivity {
         calendar1.set(Calendar.MINUTE, 0);
         calendar1.set(Calendar.HOUR, 0);
         final Date date = calendar1.getTime();
+//        showDialogue("Please wait!");
         getData();
     }
-//    private void  getData(){
-//
-//    }
+
     private void getData(){
         try {
             JSONObject obj=new JSONObject(" {\"results\": {\"weekly_count\": 0, \"weekly_total\": 0,\"monthly_count\": 0, \"monthly_total\": 0,\"yearly_count\": 0, \"yearly_total\": 0, \"pending_count\":0, \"pending_order\": 0, \"completed_order\":0}}");
@@ -188,7 +197,7 @@ public class OrdersActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-      CustomPagerAdapter pagerAdapter=new CustomPagerAdapter(OrdersActivity.this);
+        CustomPagerAdapter pagerAdapter=new CustomPagerAdapter(OrdersActivity.this);
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -208,7 +217,96 @@ public class OrdersActivity extends AppCompatActivity {
                     third.setImageResource(R.drawable.grey_circle);
                 }else if (position==2){
                     first.setImageResource(R.drawable.grey_circle);
-                    second.setImageResource(R.drawable.grey_circle);
+                    second.setImageResource(R.drawable.grey_circle);//    private void  getData(){
+//
+//    }
+//    private void getData(){
+//        JSONObject params = new JSONObject();
+//        String url = URLUtils.SALES_EXE;
+//        try {
+//            params.put("User_Name", temp);
+//            params.put("Creation_Company",String.valueOf(comp));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        JsonObjectRequest postQuestionRequest = new JsonObjectRequest(Request.Method.POST, url, params,
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        dismissDialogue();
+//                        try {
+//                            try {
+//                                JSONObject res=response.getJSONObject("results");
+//                                weeklyCount=res.getInt("weekly_count");
+//                                weeklyTotal=res.getInt("weekly_total");
+//                                monthlyCount=res.getInt("monthly_count");
+//                                monthlyTotal=res.getInt("monthly_total");
+//                                yearlyCount=res.getInt("yearly_count");
+//                                yearlyTotal=res.getInt("yearly_total");
+//                                pendingCount=res.getInt("pending_count");
+//                                pendingOrder=res.getInt("pending_order");
+//                                completeOrder=res.getInt("completed_order");
+//                                completed.setText(String.valueOf(completeOrder));
+//                                pending.setText(String.valueOf(pendingOrder));
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                            CustomPagerAdapter pagerAdapter=new CustomPagerAdapter(OrdersActivity.this);
+//                            viewPager.setAdapter(pagerAdapter);
+//                            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//                                @Override
+//                                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onPageSelected(int position) {
+//                                    if (position==0){
+//                                        first.setImageResource(R.drawable.circle);
+//                                        second.setImageResource(R.drawable.grey_circle);
+//                                        third.setImageResource(R.drawable.grey_circle);
+//                                    }else if (position==1){
+//                                        first.setImageResource(R.drawable.grey_circle);
+//                                        second.setImageResource(R.drawable.circle);
+//                                        third.setImageResource(R.drawable.grey_circle);
+//                                    }else if (position==2){
+//                                        first.setImageResource(R.drawable.grey_circle);
+//                                        second.setImageResource(R.drawable.grey_circle);
+//                                        third.setImageResource(R.drawable.circle);
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onPageScrollStateChanged(int state) {
+//
+//                                }
+//                            });
+//                        } catch (JSONException e) {
+//                            dismissDialogue();
+//                            Toast.makeText(OrdersActivity.this, "Invalid credentials!", Toast.LENGTH_SHORT).show();
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                dismissDialogue();
+//                error.printStackTrace();
+//                Toast.makeText(OrdersActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+//            }
+//        }){
+//            @Override
+//            public String getBodyContentType() {
+//                return "application/xml";
+//            }
+//        };
+//        int socketTimeout = 15000;//30 seconds
+//        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+//        postQuestionRequest.setRetryPolicy(policy);
+//        VolleySingleton.getInstance(this).addToRequestQueue(postQuestionRequest);
+//
+//    }
                     third.setImageResource(R.drawable.circle);
                 }
             }
@@ -219,6 +317,7 @@ public class OrdersActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public class CustomPagerAdapter extends PagerAdapter {
 
