@@ -213,7 +213,7 @@ public class ProductListActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.no_change, R.anim.slide_down);
             finish();
         }else{
-            Toast.makeText(getApplicationContext(), "This product cannot be added as per is not updates", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "This product cannot be added as per is not updated", Toast.LENGTH_SHORT).show();
         }
     }
 
