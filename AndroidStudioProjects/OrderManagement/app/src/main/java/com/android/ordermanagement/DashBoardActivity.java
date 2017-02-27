@@ -108,14 +108,14 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private void setupMenu() {
         ListView mMainList = (ListView) findViewById(R.id.main_list);
-        final String[] menuList = {"Home", "Distributors", "Customers", "Sales Persons", "Logout"};
+        final String[] menuList = {"Home", "Logout"};
         final Integer[] menuIcons = {R.drawable.ham, R.drawable.ham, R.drawable.ham, R.drawable.ham, R.drawable.ham};
         DrawerItemCustomAdapter adapter3 = new DrawerItemCustomAdapter(DashBoardActivity.this, R.layout.home_menu_item_list, menuList, menuIcons);
         mMainList.setAdapter(adapter3);
         mMainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 4) {
+                if (position == 1) {
                     SharedPreferences preferences = getSharedPreferences("USER_PREFS", 0);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.clear();
@@ -130,23 +130,15 @@ public class DashBoardActivity extends AppCompatActivity {
     private void setup() {
         first = (ImageView) findViewById(R.id.first);
         second = (ImageView) findViewById(R.id.second);
-        third = (ImageView) findViewById(R.id.third);
 //        target= (TextView) findViewById(R.id.target);
 //        count= (TextView) findViewById(R.id.count);
-        week = (TextView) findViewById(R.id.week);
-        week.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.startAnimation(AnimationUtils.loadAnimation(DashBoardActivity.this, R.anim.image_click));
-                viewPager.setCurrentItem(0);
-            }
-        });
+
         month = (TextView) findViewById(R.id.month);
         month.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.startAnimation(AnimationUtils.loadAnimation(DashBoardActivity.this, R.anim.image_click));
-                viewPager.setCurrentItem(1);
+                viewPager.setCurrentItem(0);
             }
         });
         year = (TextView) findViewById(R.id.year);
@@ -154,7 +146,7 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 v.startAnimation(AnimationUtils.loadAnimation(DashBoardActivity.this, R.anim.image_click));
-                viewPager.setCurrentItem(2);
+                viewPager.setCurrentItem(1);
             }
         });
         pending = (TextView) findViewById(R.id.pending);
@@ -172,14 +164,8 @@ public class DashBoardActivity extends AppCompatActivity {
         newOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DashBoardActivity.this, AddnewProductActivity.class);
-                SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
-                String companyId = preferences.getString("company", "");
-                intent.putExtra("company", companyId);
-                intent.putExtra("ord", ordNo);
-                intent.putExtra("type", 1);
-                intent.putExtra("isDistributor", true);
-                startActivity(intent);
+                showDialogue("please wait!");
+                getNewData();
             }
         });
         completed.setOnClickListener(new View.OnClickListener() {
@@ -205,6 +191,108 @@ public class DashBoardActivity extends AppCompatActivity {
 //
 //    }
     private void getData() {
+        JSONObject params = new JSONObject();
+        String url = URLUtils.GET_CUSTOMERS_LIST;
+        SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+        String comp = preferences.getString("customerId", "");
+        try {
+            params.put("Creation_Company", String.valueOf(comp));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest postQuestionRequest = new JsonObjectRequest(Request.Method.POST, url, params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+
+//                            SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+                            JSONArray res = response.getJSONArray("Dist_Dash_Sales");
+//                            JSONArray inv = response.getJSONArray("Invoice_No");
+//                            JSONArray ord = response.getJSONArray("Order_No");
+//                            JSONArray transport = response.getJSONArray("Transport_Details");
+//                            ArrayList<String> tr = new ArrayList<>();
+//                            for(int i=0;i<transport.length();i++){
+//                                tr.add(transport.getJSONObject(i).getString("Transporter_Name"));
+//                            }
+//                            JSONArray sales = response.getJSONArray("SaleOrderType_Details");
+//                            String salesType = ((JSONObject) sales.get(0)).getString("Salestype_Name");
+//                            String prefix = ((JSONObject) sales.get(0)).getString("Prefix");
+//                            SharedPreferences.Editor editor = preferences.edit();
+//                            editor.putString("salesType", salesType);
+//                            editor.putString("prefix", prefix);
+//
+//                            Gson gson = new Gson();
+//                            editor.putString("transport", gson.toJson(tr));
+//                            boolean commit = editor.commit();
+//                            invNo = ((JSONObject) inv.get(0)).getString("Invoice_No");
+//                            ordNo = ((JSONObject) ord.get(0)).getString("Order_No");
+                            JSONObject te = (JSONObject) res.get(0);
+//                                weeklyCount=res.getInt("weekly_count");
+//                                weeklyTotal=res.getInt("weekly_total");
+//                                monthlyCount=res.getInt("monthly_count");
+//                                monthlyTotal=res.getInt("monthly_total");
+//                                yearlyCount=res.getInt("yearly_count");
+//                                yearlyTotal=res.getInt("yearly_total");
+//                                pendingCount=res.getInt("pending_count");
+                            pendingOrder = te.getInt("Pending_Orders");
+                            completeOrder = te.getInt("Completed_Orders");
+                            completed.setText(String.valueOf(completeOrder));
+                            pending.setText(String.valueOf(pendingOrder));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        dismissDialogue();
+                        CustomPagerAdapter pagerAdapter = new CustomPagerAdapter(DashBoardActivity.this);
+                        viewPager.setAdapter(pagerAdapter);
+                        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                            @Override
+                            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                            }
+
+                            @Override
+                            public void onPageSelected(int position) {
+                                if (position == 0) {
+                                    first.setImageResource(R.drawable.circle);
+                                    second.setImageResource(R.drawable.grey_circle);
+                                } else if (position == 1) {
+                                    first.setImageResource(R.drawable.grey_circle);
+                                    second.setImageResource(R.drawable.circle);
+                                } else if (position == 2) {
+                                    first.setImageResource(R.drawable.grey_circle);
+                                    second.setImageResource(R.drawable.grey_circle);
+                                }
+                            }
+
+                            @Override
+                            public void onPageScrollStateChanged(int state) {
+
+                            }
+                        });
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dismissDialogue();
+                error.printStackTrace();
+                Toast.makeText(DashBoardActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/xml";
+            }
+        };
+        int socketTimeout = 15000;//30 seconds
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postQuestionRequest.setRetryPolicy(policy);
+        VolleySingleton.getInstance(this).addToRequestQueue(postQuestionRequest);
+
+    }
+
+    private void getNewData() {
         JSONObject params = new JSONObject();
         String url = URLUtils.GET_CUSTOMERS_LIST;
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
@@ -258,36 +346,41 @@ public class DashBoardActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         dismissDialogue();
-                        CustomPagerAdapter pagerAdapter = new CustomPagerAdapter(DashBoardActivity.this);
-                        viewPager.setAdapter(pagerAdapter);
-                        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                            @Override
-                            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                            }
-
-                            @Override
-                            public void onPageSelected(int position) {
-                                if (position == 0) {
-                                    first.setImageResource(R.drawable.circle);
-                                    second.setImageResource(R.drawable.grey_circle);
-                                    third.setImageResource(R.drawable.grey_circle);
-                                } else if (position == 1) {
-                                    first.setImageResource(R.drawable.grey_circle);
-                                    second.setImageResource(R.drawable.circle);
-                                    third.setImageResource(R.drawable.grey_circle);
-                                } else if (position == 2) {
-                                    first.setImageResource(R.drawable.grey_circle);
-                                    second.setImageResource(R.drawable.grey_circle);
-                                    third.setImageResource(R.drawable.circle);
-                                }
-                            }
-
-                            @Override
-                            public void onPageScrollStateChanged(int state) {
-
-                            }
-                        });
+                        Intent intent = new Intent(DashBoardActivity.this, AddnewProductActivity.class);
+                        SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+                        String companyId = preferences.getString("company", "");
+                        intent.putExtra("company", companyId);
+                        intent.putExtra("ord", ordNo);
+                        intent.putExtra("type", 1);
+                        intent.putExtra("isDistributor", true);
+                        startActivity(intent);
+//                        CustomPagerAdapter pagerAdapter = new CustomPagerAdapter(DashBoardActivity.this);
+//                        viewPager.setAdapter(pagerAdapter);
+//                        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//                            @Override
+//                            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onPageSelected(int position) {
+//                                if (position == 0) {
+//                                    first.setImageResource(R.drawable.circle);
+//                                    second.setImageResource(R.drawable.grey_circle);
+//                                } else if (position == 1) {
+//                                    first.setImageResource(R.drawable.grey_circle);
+//                                    second.setImageResource(R.drawable.circle);
+//                                } else if (position == 2) {
+//                                    first.setImageResource(R.drawable.grey_circle);
+//                                    second.setImageResource(R.drawable.grey_circle);
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onPageScrollStateChanged(int state) {
+//
+//                            }
+//                        });
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -308,6 +401,7 @@ public class DashBoardActivity extends AppCompatActivity {
         VolleySingleton.getInstance(this).addToRequestQueue(postQuestionRequest);
 
     }
+
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -414,17 +508,13 @@ public class DashBoardActivity extends AppCompatActivity {
             TextView subText = (TextView) view.findViewById(R.id.subtext);
             collection.addView(view, 0);
             if (position == 0) {
-                count.setText(String.valueOf(weeklyCount) + "/");
-                target.setText(String.valueOf(weeklyTotal));
-                subText.setText("This Week");
-            } else if (position == 1) {
                 count.setText(String.valueOf(monthlyCount) + "/");
                 target.setText(String.valueOf(monthlyTotal));
                 subText.setText("This Month");
-            } else if (position == 2) {
-                subText.setText("This Year");
+            } else if (position == 1) {
                 count.setText(String.valueOf(yearlyCount) + "/");
                 target.setText(String.valueOf(yearlyTotal));
+                subText.setText("This Year");
             }
             return view;
         }
@@ -436,7 +526,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         @Override

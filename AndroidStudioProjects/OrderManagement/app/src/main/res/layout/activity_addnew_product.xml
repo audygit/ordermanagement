@@ -148,7 +148,7 @@
             android:layout_weight="1"
             android:textSize="17sp"
             android:textColor="@color/black"
-            android:text="UoM per each unit"
+            android:text="UOM"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
         <EditText

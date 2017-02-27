@@ -186,7 +186,6 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
                             setTotal();
                         } catch (JSONException e) {
                             dismissDialogue();
-                            Toast.makeText(NewOrderActivity.this, "Error retrieving taxes!", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
                     }
@@ -195,7 +194,6 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
             public void onErrorResponse(VolleyError error) {
                 dismissDialogue();
                 error.printStackTrace();
-                Toast.makeText(NewOrderActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -279,7 +277,7 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
             t.put("WeightInKgs", pro.getWeightInKgs());
             t.put("ActualQty", pro.getActualQuantity());
             t.put("BilledQty", pro.getBilledQuantity());
-            t.put("Rate", pro.getRate());
+            t.put("Rate", pro.getPrice());
             t.put("Per", pro.getUom());
             returnProducts.put(t);
         }

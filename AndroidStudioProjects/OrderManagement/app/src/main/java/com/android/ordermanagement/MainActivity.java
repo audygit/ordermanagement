@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         moveTaskToBack(false);
     }
 
-    private void getSalesExe(String comp, String temp){
+    private void getSalesExe(String comp, final String temp){
         JSONObject params = new JSONObject();
         String url = URLUtils.SALES_DETAILS_EXE;
         try {
@@ -92,24 +92,25 @@ public class MainActivity extends AppCompatActivity {
                         dismissDialogue();
                         try {
                             JSONArray array = response.getJSONArray("SalesExecutive_Service");
-                            if(array.length()>0){
-                                String temp = array.getJSONObject(0).getString("Area_Responsible");
-                                String salesCode = array.getJSONObject(0).getString("Salesmen_Code");
-                                SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = preferences.edit();
-                                editor.putString("city", temp);
-                                editor.putString("salesCode", salesCode);
-                                boolean commit = editor.commit();
+                            for(int i=0;i<array.length();i++){
+                                if(array.getJSONObject(i).getString("Sales_Executive_Name").equals(temp)){
+                                    String salesCode = array.getJSONObject(i).getString("Salesmen_Code");
+                                    String temp1 = array.getJSONObject(i).getString("Area_Responsible");
+                                    SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.putString("city", temp1);
+                                    editor.putString("salesCode", salesCode);
+                                    boolean commit = editor.commit();
 
-                                if(commit){
+                                    if(commit){
 //                                    Intent mainIntent = new Intent(MainActivity.this, OrdersActivity.class);
 //                                    startActivity(mainIntent);
 //                                    finish();
-                                      Intent mainIntent = new Intent(MainActivity.this, OrdersActivity.class);
-                                    startActivity(mainIntent);
-                                    finish();
-
+                                        Intent mainIntent = new Intent(MainActivity.this, OrdersActivity.class);
+                                        startActivity(mainIntent);
+                                        finish();
                                 }
+                            }
                             }
                         } catch (JSONException e) {
                             dismissDialogue();

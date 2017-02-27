@@ -88,11 +88,11 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
     }
     private void getOrders(){
         JSONObject params = new JSONObject();
-        String url = URLUtils.GET_ORDERS;
+        String url = URLUtils.SALES_DASHBOARD;
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
-        String company = preferences.getString("company", "");
+        String company = preferences.getString("salesCode", "");
         try {
-            params.put("Creation_Company",String.valueOf(company) );
+            params.put("SalesMenCode",String.valueOf(company) );
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -101,7 +101,7 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONArray array = response.getJSONArray("Sales_Details");
+                            JSONArray array = response.getJSONArray("SalesMen_Pending_Sales");
 
 
                             if(array.length()>0){
@@ -160,7 +160,7 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
                                     double billedQuantity=array.getJSONObject(i).getDouble("Billd_Qty");
                                     double actualQuantity=array.getJSONObject(i).getDouble("Actual_Qty");
                                     String rate= String.valueOf(array.getJSONObject(i).getDouble("Rate"));
-                                    String uom= array.getJSONObject(i).getString("Uom");
+                                    String uom= array.getJSONObject(i).getString("UOM");
                                     double amount=array.getJSONObject(i).getDouble("Amount");
                                     Product product=new Product(itemCode,itemName,qc,qu,qp,price,amount,weight,actualQuantity,billedQuantity,rate,uom);
                                     if (newOder) {
@@ -181,6 +181,7 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
                                     }
                                 }
                                 ordersAdapter.setOrders(orders);
+                                count.setText(orders.size()+" Orders");
                                 ordersAdapter.notifyDataSetChanged();
                             }
                         } catch (JSONException e) {

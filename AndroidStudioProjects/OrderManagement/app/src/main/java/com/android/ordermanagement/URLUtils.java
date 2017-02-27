@@ -21,4 +21,6 @@ public class URLUtils {
 
     public static final String INVOICE = "http://loginwebservice.laksanasoft.com/LoginWebService.asmx/InvoiceCreation";
 
+    public static final String SALES_DASHBOARD = "http://loginwebservice.laksanasoft.com/LoginWebService.asmx/SalesMenDashboardSales";
+
 }

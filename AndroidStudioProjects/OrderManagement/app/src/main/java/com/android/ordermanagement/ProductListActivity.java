@@ -206,15 +206,11 @@ public class ProductListActivity extends AppCompatActivity {
 
     public void setProduct(int position){
         ProductListItem p = products.get(position);
-        if(p.getPer()>0) {
             Intent intent = new Intent();
             intent.putExtra("product", p);
             setResult(RESULT_OK, intent);
             overridePendingTransition(R.anim.no_change, R.anim.slide_down);
             finish();
-        }else{
-            Toast.makeText(getApplicationContext(), "This product cannot be added as per is not updated", Toast.LENGTH_SHORT).show();
-        }
     }
 
 }

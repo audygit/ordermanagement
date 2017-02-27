@@ -105,27 +105,31 @@ public class AddnewProductActivity extends AppCompatActivity {
                 if(!TextUtils.isEmpty(pNameFld.getText()) && !TextUtils.isEmpty(s.toString())) {
                     int q = Integer.parseInt(s.toString());
                     billedQuantityFld.setText(String.valueOf(q * 11));
-                    double first = producto.getFreeQty() / producto.getPer();
-                    double second = q * first;
-                    double j = 0;
-                    int i =0;
-                    double actual = 0;
-                    if (Integer.valueOf(producto.getFixedQty()) == 1) {
-                        actual = second + q * producto.getUnits();
-                    } else {
-                        if (second < 12)
-                            j = second;
-                        else {
-                            i = (int) (second/12);
-                            j = second%12;
+                    if(producto.getPer()==0){
+                        actualText.setText(String.valueOf(q * 11));
+                    }else {
+                        double first = producto.getFreeQty() / producto.getPer();
+                        double second = q * first;
+                        double j = 0;
+                        int i = 0;
+                        double actual = 0;
+                        if (Integer.valueOf(producto.getFixedQty()) == 1) {
+                            actual = second + q * producto.getUnits();
+                        } else {
+                            if (second < 12)
+                                j = second;
+                            else {
+                                i = (int) (second / 12);
+                                j = second % 12;
+                            }
+                            if ((int) j / 10 > 0)
+                                j = (float) j / 100;
+                            else
+                                j = (float) j / 10;
+                            actual = q * producto.getUnits() + i + j;
                         }
-                        if((int)j/10>0)
-                            j=(float)j/100;
-                        else
-                            j=(float)j/10;
-                        actual = q*producto.getUnits()+i+j;
+                        actualText.setText(String.format("%.2f", actual));
                     }
-                    actualText.setText(String.format("%.2f", actual));
                     amountFld.setText(String.valueOf(q * producto.getUnits() * producto.getPrice()));
                     units.setText(String.valueOf(q * producto.getUnits()));
                     packs.setText(String.valueOf(q * producto.getPacks()));

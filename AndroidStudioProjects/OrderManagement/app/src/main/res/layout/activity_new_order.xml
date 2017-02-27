@@ -128,7 +128,7 @@
                 android:textSize="18sp"
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
-                android:text="Service Tax"
+                android:text="Tax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
