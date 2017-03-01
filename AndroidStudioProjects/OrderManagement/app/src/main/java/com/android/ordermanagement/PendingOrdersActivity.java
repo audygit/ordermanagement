@@ -32,30 +32,31 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class PendingOrdersActivity extends AppCompatActivity implements CustomerFilterAdapter.HandleSelections{
+public class PendingOrdersActivity extends AppCompatActivity implements CustomerFilterAdapter.HandleSelections {
 
-    private ArrayList<SalesOrder> orders=new ArrayList<>();
+    private ArrayList<SalesOrder> orders = new ArrayList<>();
     private RecyclerView recyclerView;
     private OrdersAdapter ordersAdapter;
     private ImageButton filters;
-//    private DrawerLayout drawerLayout;
+    //    private DrawerLayout drawerLayout;
 //    private RecyclerView customerListView;
     private TextView head;
-    private ArrayList<String> selectedCustomers=new ArrayList<>();
-    private ArrayList<Customer> customers=new ArrayList<>();
-//    private CustomerFilterAdapter filterAdapter;
+    private ArrayList<String> selectedCustomers = new ArrayList<>();
+    private ArrayList<Customer> customers = new ArrayList<>();
+    //    private CustomerFilterAdapter filterAdapter;
     private int type;
     private TextView count;
-    private boolean isPending=true;
+    private boolean isPending = true;
     private ImageView back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pending_orders);
-        recyclerView= (RecyclerView) findViewById(R.id.pending_orders);
-        count = (TextView)findViewById(R.id.count);
-        ordersAdapter=new OrdersAdapter(PendingOrdersActivity.this,orders);
-        filters= (ImageButton) findViewById(R.id.filters);
+        recyclerView = (RecyclerView) findViewById(R.id.pending_orders);
+        count = (TextView) findViewById(R.id.count);
+        ordersAdapter = new OrdersAdapter(PendingOrdersActivity.this, orders);
+        filters = (ImageButton) findViewById(R.id.filters);
         filters.setVisibility(View.GONE);
 //        drawerLayout= (DrawerLayout) findViewById(R.id.drawer_layout);
 //        filters.setOnClickListener(new View.OnClickListener() {
@@ -64,13 +65,13 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
 //                drawerLayout.openDrawer(Gravity.RIGHT);
 //            }
 //        });
-        head= (TextView) findViewById(R.id.head);
-        type=getIntent().getIntExtra("type",0);
-        if (type==2){
-            isPending=false;
+        head = (TextView) findViewById(R.id.head);
+        type = getIntent().getIntExtra("type", 0);
+        if (type == 2) {
+            isPending = false;
             head.setText("Completed Orders");
         }
-        back = (ImageView)findViewById(R.id.back);
+        back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,13 +87,14 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
         recyclerView.setAdapter(ordersAdapter);
         getOrders();
     }
-    private void getOrders(){
+
+    private void getOrders() {
         JSONObject params = new JSONObject();
         String url = URLUtils.SALES_DASHBOARD;
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
         String company = preferences.getString("salesCode", "");
         try {
-            params.put("SalesMenCode",String.valueOf(company) );
+            params.put("SalesMenCode", String.valueOf(company));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -101,30 +103,33 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONArray array = response.getJSONArray("SalesMen_Pending_Sales");
-
-
-                            if(array.length()>0){
-                                for (int i=0;i<array.length();i++) {
+                            JSONArray array;
+                            if (isPending) {
+                                array = response.getJSONArray("SalesMen_Pending_Sales");
+                            } else {
+                                array = response.getJSONArray("SalesMen_Completed_Sales");
+                            }
+                            if (array.length() > 0) {
+                                for (int i = 0; i < array.length(); i++) {
                                     String orderNo = array.getJSONObject(i).getString("Order_No");
-                                    SalesOrder sOrder=new SalesOrder();
-                                    boolean newOder=true;
-                                    int position=0;
-                                    for (SalesOrder order:orders){
-                                        if (order.getId().equalsIgnoreCase(orderNo)){
-                                            sOrder=order;
-                                            newOder=false;
+                                    SalesOrder sOrder = new SalesOrder();
+                                    boolean newOder = true;
+                                    int position = 0;
+                                    for (SalesOrder order : orders) {
+                                        if (order.getId().equalsIgnoreCase(orderNo)) {
+                                            sOrder = order;
+                                            newOder = false;
                                             break;
-                                        }else {
-                                            position=position+1;
+                                        } else {
+                                            position = position + 1;
                                         }
                                     }
-                                    if (newOder){
-                                        double amount=array.getJSONObject(i).getDouble("Total_Order_Amount");
-                                        String cusName= array.getJSONObject(i).getString("Customer_Name");
-                                        String date=array.getJSONObject(i).getString("Order_Date");
-                                        double taxAm=array.getJSONObject(i).getDouble("Tax_Amount");
-                                        SalesOrder salesOrder=new SalesOrder(orderNo,date,cusName,amount);
+                                    if (newOder) {
+                                        double amount = array.getJSONObject(i).getDouble("Total_Order_Amount");
+                                        String cusName = array.getJSONObject(i).getString("Customer_Name");
+                                        String date = array.getJSONObject(i).getString("Order_Date");
+                                        double taxAm = array.getJSONObject(i).getDouble("Tax_Amount");
+                                        SalesOrder salesOrder = new SalesOrder(orderNo, date, cusName, amount);
                                         salesOrder.setTaxAmount(taxAm);
                                         salesOrder.setTotalAmount(amount);
                                         salesOrder.setDestination(array.getJSONObject(i).getString("Destination"));
@@ -143,37 +148,31 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
                                         salesOrder.setDiscountType(array.getJSONObject(i).getString("Discounttype"));
                                         salesOrder.setDate(array.getJSONObject(i).getString("Order_Date"));
                                         salesOrder.setUserType(array.getJSONObject(i).getString("User_Type"));
-                                        sOrder=salesOrder;
+                                        sOrder = salesOrder;
                                     }
-                                    ArrayList<Product> products= sOrder.getProducts();
-                                    if (products==null){
-                                        products=new ArrayList<>();
+                                    ArrayList<Product> products = sOrder.getProducts();
+                                    if (products == null) {
+                                        products = new ArrayList<>();
                                     }
 
                                     String itemCode = array.getJSONObject(i).getString("Item_Code");
-                                    String itemName= array.getJSONObject(i).getString("Item_Name");
-                                    int qc= array.getJSONObject(i).getInt("Qty_In_Cases");
-                                    int qu= array.getJSONObject(i).getInt("Qty_In_Units");
-                                    double qp= array.getJSONObject(i).getDouble("Qty_In_Packs");
-                                    double weight=array.getJSONObject(i).getDouble( "Weight_In_Kgs");
-                                    double price= Double.parseDouble(array.getJSONObject(i).getString("Price"));
-                                    double billedQuantity=array.getJSONObject(i).getDouble("Billd_Qty");
-                                    double actualQuantity=array.getJSONObject(i).getDouble("Actual_Qty");
-                                    String rate= String.valueOf(array.getJSONObject(i).getDouble("Rate"));
-                                    String uom= array.getJSONObject(i).getString("UOM");
-                                    double amount=array.getJSONObject(i).getDouble("Amount");
-                                    Product product=new Product(itemCode,itemName,qc,qu,qp,price,amount,weight,actualQuantity,billedQuantity,rate,uom);
+                                    String itemName = array.getJSONObject(i).getString("Item_Name");
+                                    int qc = array.getJSONObject(i).getInt("Qty_In_Cases");
+                                    int qu = array.getJSONObject(i).getInt("Qty_In_Units");
+                                    double qp = array.getJSONObject(i).getDouble("Qty_In_Packs");
+                                    double weight = array.getJSONObject(i).getDouble("Weight_In_Kgs");
+                                    double price = Double.parseDouble(array.getJSONObject(i).getString("Price"));
+                                    double billedQuantity = array.getJSONObject(i).getDouble("Billd_Qty");
+                                    double actualQuantity = array.getJSONObject(i).getDouble("Actual_Qty");
+                                    String rate = String.valueOf(array.getJSONObject(i).getDouble("Rate"));
+                                    String uom = array.getJSONObject(i).getString("UOM");
+                                    double amount = array.getJSONObject(i).getDouble("Amount");
+                                    Product product = new Product(itemCode, itemName, qc, qu, qp, price, amount, weight, actualQuantity, billedQuantity, rate, uom);
                                     if (newOder) {
                                         products.add(product);
                                         sOrder.setProducts(products);
-                                        if (sOrder.getStatus().equalsIgnoreCase("created")&&isPending) {
-                                            orders.add(sOrder);
-                                        }else {
-                                            if (sOrder.getStatus().equalsIgnoreCase("approved")&&!isPending) {
-                                                orders.add(sOrder);
-                                            }
-                                        }
-                                    }else {
+                                        orders.add(sOrder);
+                                    } else {
                                         products.add(product);
                                         sOrder.setProducts(products);
                                         orders.remove(position);
@@ -181,7 +180,7 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
                                     }
                                 }
                                 ordersAdapter.setOrders(orders);
-                                count.setText(orders.size()+" Orders");
+                                count.setText(orders.size() + " Orders");
                                 ordersAdapter.notifyDataSetChanged();
                             }
                         } catch (JSONException e) {
@@ -194,7 +193,7 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
                 error.printStackTrace();
                 Toast.makeText(PendingOrdersActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             public String getBodyContentType() {
                 return "application/xml";
@@ -248,16 +247,16 @@ public class PendingOrdersActivity extends AppCompatActivity implements Customer
 
     @Override
     public void onFiltersChanged(String id) {
-        if (selectedCustomers.contains(id)){
+        if (selectedCustomers.contains(id)) {
             selectedCustomers.remove(id);
-        }else {
+        } else {
             selectedCustomers.add(id);
         }
-        ArrayList <SalesOrder> orders=new ArrayList<>();
-        for (SalesOrder order:orders){
-            if (selectedCustomers.contains(order.getCustomerName())){
+        ArrayList<SalesOrder> orders = new ArrayList<>();
+        for (SalesOrder order : orders) {
+            if (selectedCustomers.contains(order.getCustomerName())) {
                 orders.add(order);
-            }else {
+            } else {
 
             }
         }

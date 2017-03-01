@@ -143,7 +143,7 @@ public class CustomerListActivity extends AppCompatActivity {
                             order = ((JSONObject)response.getJSONArray("Sale_OrderNo").get(0)).getString("Order_No");
                             JSONArray results = response.getJSONArray("Customer_Details");
                             for (int i = 0; i < results.length(); i++) {
-                                if (results.getJSONObject(i).getString("Customer_Type").equalsIgnoreCase("Customer")&&(results.getJSONObject(i).getString("Area_Name").equalsIgnoreCase(city))) {
+                                if (results.getJSONObject(i).getString("Customer_Type").equalsIgnoreCase("Customer")&&(results.getJSONObject(i).getString("Area_Name").contains(city))) {
                                     Customer temp = gson.fromJson(results.getJSONObject(i).toString(), Customer.class);
                                     customers.add(temp);
                                 }
