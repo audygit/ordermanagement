@@ -176,15 +176,19 @@ public class MainActivity extends AppCompatActivity {
                                     else {
                                         String temp = array.getJSONObject(0).getString("User_Name");
                                         String role = array.getJSONObject(0).getString("Customer_Type");
+                                        String id = array.getJSONObject(0).getString("Customer_Id");
                                         if (role.equalsIgnoreCase("Distributor")){
                                             isDistributor=true;
                                         }
                                         String comp = array.getJSONObject(0).getString("Creation_Company");
+                                        String city = array.getJSONObject(0).getString("Area_Name");
                                         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = preferences.edit();
                                         editor.putString("user", temp);
                                         editor.putString("role", role);
+                                        editor.putString("city",city);
                                         editor.putString("company", comp);
+                                        editor.putString("id",id);
                                         boolean commit = editor.commit();
                                         if (commit) {
                                             Intent mainIntent = new Intent(MainActivity.this, DashBoardActivity.class);

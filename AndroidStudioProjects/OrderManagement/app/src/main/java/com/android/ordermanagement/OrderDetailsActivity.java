@@ -188,17 +188,116 @@ public class OrderDetailsActivity  extends AppCompatActivity {
             public void onClick(View v) {
 
                     showDialogue("Sending Invoice!");
-                    try {
-                        sendInvoice();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                        getNewData();
+
 
             }
         });
 
     }
+    private void getNewData() {
+        JSONObject params = new JSONObject();
+        String url = URLUtils.GET_CUSTOMERS_LIST;
+        SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+        String comp = preferences.getString("company", "");
+        try {
+            params.put("Creation_Company", String.valueOf(comp));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        JsonObjectRequest postQuestionRequest = new JsonObjectRequest(Request.Method.POST, url, params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+
+                            SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+                            JSONArray res = response.getJSONArray("Dist_Dash_Sales");
+                            JSONArray inv = response.getJSONArray("Invoice_No");
+                            JSONArray ord = response.getJSONArray("Order_No");
+                            JSONArray transport = response.getJSONArray("Transport_Details");
+                            ArrayList<String> tr = new ArrayList<>();
+                            for(int i=0;i<transport.length();i++){
+                                tr.add(transport.getJSONObject(i).getString("Transporter_Name"));
+                            }
+                            JSONArray sales = response.getJSONArray("SaleOrderType_Details");
+                            String salesType = ((JSONObject) sales.get(0)).getString("Salestype_Name");
+                            String prefix = ((JSONObject) sales.get(0)).getString("Prefix");
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("salesType", salesType);
+                            editor.putString("prefix", prefix);
+                            invNo = ((JSONObject) inv.get(0)).getString("Invoice_No");
+                            editor.putString("inv",invNo);
+                            Gson gson = new Gson();
+                            editor.putString("transport", gson.toJson(tr));
+                            boolean commit = editor.commit();
+
+                            JSONObject te = (JSONObject) res.get(0);
+//                                weeklyCount=res.getInt("weekly_count");
+//                                weeklyTotal=res.getInt("weekly_total");
+//                                monthlyCount=res.getInt("monthly_count");
+//                                monthlyTotal=res.getInt("monthly_total");
+//                                yearlyCount=res.getInt("yearly_count");
+//                                yearlyTotal=res.getInt("yearly_total");
+//                                pendingCount=res.getInt("pending_count");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            sendInvoice();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+//                        CustomPagerAdapter pagerAdapter = new CustomPagerAdapter(DashBoardActivity.this);
+//                        viewPager.setAdapter(pagerAdapter);
+//                        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//                            @Override
+//                            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onPageSelected(int position) {
+//                                if (position == 0) {
+//                                    first.setImageResource(R.drawable.circle);
+//                                    second.setImageResource(R.drawable.grey_circle);
+//                                } else if (position == 1) {
+//                                    first.setImageResource(R.drawable.grey_circle);
+//                                    second.setImageResource(R.drawable.circle);
+//                                } else if (position == 2) {
+//                                    first.setImageResource(R.drawable.grey_circle);
+//                                    second.setImageResource(R.drawable.grey_circle);
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onPageScrollStateChanged(int state) {
+//
+//                            }
+//                        });
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dismissDialogue();
+                error.printStackTrace();
+                Toast.makeText(OrderDetailsActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/xml";
+            }
+        };
+        int socketTimeout = 15000;//30 seconds
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postQuestionRequest.setRetryPolicy(policy);
+        VolleySingleton.getInstance(this).addToRequestQueue(postQuestionRequest);
+
+    }
     public void  sendInvoice()throws JSONException {
         JSONObject params = new JSONObject();
         Gson gson = new Gson();
@@ -206,6 +305,8 @@ public class OrderDetailsActivity  extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
         String code = preferences.getString("company", "");
         String user = preferences.getString("user", "");
+        String prefix = preferences.getString("prefix", "");
+        String invN = preferences.getString("inv", "");
         String custId = preferences.getString("customerId", "");
         JSONObject temp = new JSONObject();
         temp.put("CustomerCode", salesOrder.getCustomerId());
@@ -218,7 +319,8 @@ public class OrderDetailsActivity  extends AppCompatActivity {
 //        temp.put("Destination", salesOrder.getDestination());
 //        temp.put("DiscountType", salesOrder.getDiscountType());
 //        temp.put("TaxClass", "AP TS SALES");
-        temp.put("InvNo", salesOrder.getInv());
+        temp.put("InvNo", prefix+invN);
+        inv=prefix+invN;
         temp.put("OrderNo", salesOrder.getId());
         temp.put("CreationCompany", custId);
         temp.put("InvDate", date);
@@ -241,7 +343,7 @@ public class OrderDetailsActivity  extends AppCompatActivity {
             JSONObject t = new JSONObject();
             t.put("ItemCode", pro.getId());
             t.put("ItemName", pro.getName());
-            t.put("QtyInCases", pro.getBilledQuantity());
+            t.put("QtyInCases", pro.getQuantity());
             t.put("quantityUts", pro.getQuantityUts());
             t.put("quantityPkgs", pro.getQuantityPkgs());
             t.put("Price", pro.getPrice());
@@ -261,11 +363,11 @@ public class OrderDetailsActivity  extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         dismissDialogue();
-                        try {
-                            inv = response.getString("Inv_No");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+////                            inv = response.getString("Inv_No");
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
                         showDialog();
                     }
                 }, new Response.ErrorListener() {

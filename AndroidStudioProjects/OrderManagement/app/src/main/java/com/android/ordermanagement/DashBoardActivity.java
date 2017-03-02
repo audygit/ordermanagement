@@ -108,19 +108,25 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private void setupMenu() {
         ListView mMainList = (ListView) findViewById(R.id.main_list);
-        final String[] menuList = {"Home", "Logout"};
-        final Integer[] menuIcons = {R.drawable.ham, R.drawable.ham, R.drawable.ham, R.drawable.ham, R.drawable.ham};
+        final String[] menuList = {"Home", "Customers","Add Customer","Logout"};
+        final Integer[] menuIcons = {R.drawable.ham, R.drawable.ham,R.drawable.ham,R.drawable.ham, R.drawable.ham, R.drawable.ham, R.drawable.ham};
         DrawerItemCustomAdapter adapter3 = new DrawerItemCustomAdapter(DashBoardActivity.this, R.layout.home_menu_item_list, menuList, menuIcons);
         mMainList.setAdapter(adapter3);
         mMainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 1) {
+                if (position == 3) {
                     SharedPreferences preferences = getSharedPreferences("USER_PREFS", 0);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.clear();
                     editor.commit();
                     Intent intent = new Intent(DashBoardActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }else if (position==2){
+                    Intent intent=new Intent(DashBoardActivity.this,AddCustomerActivity.class);
+                    startActivity(intent);
+                }else if (position==1){
+                    Intent intent=new Intent(DashBoardActivity.this,CustomerslistDistActivity.class);
                     startActivity(intent);
                 }
             }
@@ -324,12 +330,12 @@ public class DashBoardActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putString("salesType", salesType);
                             editor.putString("prefix", prefix);
-
+                            ordNo = ((JSONObject) ord.get(0)).getString("Order_No");
+                            editor.putString("count",ordNo);
                             Gson gson = new Gson();
                             editor.putString("transport", gson.toJson(tr));
                             boolean commit = editor.commit();
-                            invNo = ((JSONObject) inv.get(0)).getString("Invoice_No");
-                            ordNo = ((JSONObject) ord.get(0)).getString("Order_No");
+
                             JSONObject te = (JSONObject) res.get(0);
 //                                weeklyCount=res.getInt("weekly_count");
 //                                weeklyTotal=res.getInt("weekly_total");

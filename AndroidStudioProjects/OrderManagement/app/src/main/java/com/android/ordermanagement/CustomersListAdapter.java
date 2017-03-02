@@ -25,13 +25,23 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
     private String order;
     private String tax;
     private String companyId;
+    private boolean flag=false;
     private String prefix;
 
-    public CustomersListAdapter(Context mContext, ArrayList<Customer> customers,boolean isDistributor, String order) {
+    public CustomersListAdapter(Context mContext, ArrayList<Customer> customers,boolean isDistributor, String order,boolean flag) {
         this.mContext = mContext;
         this.order = order;
         this.customers = customers;
         this.isDistributor=isDistributor;
+        this.flag=flag;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 
     @Override
@@ -86,23 +96,27 @@ public class CustomersListAdapter extends RecyclerView.Adapter<CustomersListAdap
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isDistributor){
-                        Customer customer = customers.get(getAdapterPosition());
-                        Intent intent = new Intent(mContext, CustomerListActivity.class);
-                        intent.putExtra("company",customer.getId());
-                        intent.putExtra("tax", customer.getTax());
-                        intent.putExtra("prefix", customer.getPrefix());
-//                        intent.putExtra("customer", customer);
-                        mContext.startActivity(intent);
+                    if (flag){
+
                     }else {
-                        Customer customer = customers.get(getAdapterPosition());
-                        Intent intent = new Intent(mContext, AddnewProductActivity.class);
-                        intent.putExtra("customer", customer);
-                        intent.putExtra("company",companyId);
-                        intent.putExtra("tax", tax);
-                        intent.putExtra("prefix", prefix);
-                        intent.putExtra("count",order);
-                        mContext.startActivity(intent);
+                        if (isDistributor) {
+                            Customer customer = customers.get(getAdapterPosition());
+                            Intent intent = new Intent(mContext, CustomerListActivity.class);
+                            intent.putExtra("company", customer.getId());
+                            intent.putExtra("tax", customer.getTax());
+                            intent.putExtra("prefix", customer.getPrefix());
+//                        intent.putExtra("customer", customer);
+                            mContext.startActivity(intent);
+                        } else {
+                            Customer customer = customers.get(getAdapterPosition());
+                            Intent intent = new Intent(mContext, AddnewProductActivity.class);
+                            intent.putExtra("customer", customer);
+                            intent.putExtra("company", companyId);
+                            intent.putExtra("tax", tax);
+                            intent.putExtra("prefix", prefix);
+                            intent.putExtra("count", order);
+                            mContext.startActivity(intent);
+                        }
                     }
                 }
             });

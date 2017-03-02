@@ -2,21 +2,18 @@ package com.android.ordermanagement;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class CustomerListActivity extends AppCompatActivity {
+public class CustomerslistDistActivity extends AppCompatActivity {
 
     private ArrayList<Customer> customers=new ArrayList<>();
     private RecyclerView recyclerView;
@@ -57,9 +54,8 @@ public class CustomerListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_list);
-        company=getIntent().getStringExtra("company");
-        tax=getIntent().getStringExtra("tax");
-        prefix=getIntent().getStringExtra("prefix");
+//        tax=getIntent().getStringExtra("tax");
+//        prefix=getIntent().getStringExtra("prefix");
         search= (ImageButton) findViewById(R.id.search);
         search.setVisibility(View.VISIBLE);
         toolbar=findViewById(R.id.toolbar);
@@ -127,7 +123,7 @@ public class CustomerListActivity extends AppCompatActivity {
         String url = URLUtils.GET_CUSTOMERS_LIST;
         SharedPreferences preferences = getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
         final String city = preferences.getString("city", "");
-//        String company = preferences.getString("company", "");
+        String company = preferences.getString("company", "");
         try {
             params.put("Creation_Company", company);
         } catch (JSONException e) {
@@ -162,7 +158,7 @@ public class CustomerListActivity extends AppCompatActivity {
                             setup();
                         } catch (JSONException e) {
                             dismissDialogue();
-                            Toast.makeText(CustomerListActivity.this, "Error retrieving customers!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomerslistDistActivity.this, "Error retrieving customers!", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
                     }
@@ -171,7 +167,7 @@ public class CustomerListActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 dismissDialogue();
                 error.printStackTrace();
-                Toast.makeText(CustomerListActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CustomerslistDistActivity.this, "Error in posting!", Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -191,11 +187,11 @@ public class CustomerListActivity extends AppCompatActivity {
         else
             count.setText(customers.size()+" Customers");
         recyclerView= (RecyclerView) findViewById(R.id.my_recycler_view);
-        adapter=new CustomersListAdapter(CustomerListActivity.this,customers,false, order,false);
+        adapter=new CustomersListAdapter(CustomerslistDistActivity.this,customers,false, order,true);
         adapter.setCompanyId(company);
-        adapter.setPrefix(prefix);
-        adapter.setTax(tax);
-        recyclerView.setLayoutManager(new LinearLayoutManager(CustomerListActivity.this));
+//        adapter.setPrefix(prefix);
+//        adapter.setTax(tax);
+        recyclerView.setLayoutManager(new LinearLayoutManager(CustomerslistDistActivity.this));
         recyclerView.setAdapter(adapter);
     }
 
@@ -207,7 +203,7 @@ public class CustomerListActivity extends AppCompatActivity {
 
     public void showDialogue(String message) {
         if (progressDialog == null) {
-            progressDialog = new ProgressDialog(CustomerListActivity.this);
+            progressDialog = new ProgressDialog(CustomerslistDistActivity.this);
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
@@ -223,3 +219,4 @@ public class CustomerListActivity extends AppCompatActivity {
         dismissDialogue();
     }
 }
+

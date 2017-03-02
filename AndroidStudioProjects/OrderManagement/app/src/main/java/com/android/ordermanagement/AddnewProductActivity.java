@@ -104,10 +104,13 @@ public class AddnewProductActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(!TextUtils.isEmpty(pNameFld.getText()) && !TextUtils.isEmpty(s.toString())) {
                     int q = Integer.parseInt(s.toString());
-                    billedQuantityFld.setText(String.valueOf(q * 11));
-                    if(producto.getPer()==0){
-                        actualText.setText(String.valueOf(q * 11));
-                    }else {
+
+                    if(producto.getPer()==0) {
+                        producto.setPer(1);
+                    }
+//                        billedQuantityFld.setText(String.valueOf(q * producto.getUnits()));
+//                        actualText.setText(String.valueOf(q * producto.getUnits()));
+//                    }else {
                         double first = producto.getFreeQty() / producto.getPer();
                         double second = q * first;
                         double j = 0;
@@ -129,7 +132,9 @@ public class AddnewProductActivity extends AppCompatActivity {
                             actual = q * producto.getUnits() + i + j;
                         }
                         actualText.setText(String.format("%.2f", actual));
-                    }
+                        billedQuantityFld.setText(String.valueOf(q * producto.getUnits()));
+//                    }
+
                     amountFld.setText(String.valueOf(q * producto.getUnits() * producto.getPrice()));
                     units.setText(String.valueOf(q * producto.getUnits()));
                     packs.setText(String.valueOf(q * producto.getPacks()));
@@ -159,11 +164,13 @@ public class AddnewProductActivity extends AppCompatActivity {
                     if (!TextUtils.isEmpty(billedQuantityFld.getText().toString()))
                         billed = Double.valueOf(billedQuantityFld.getText().toString());
                         if (actual != 0) {
-                            product.setQuantity(actual);
+                            product.setBilledQuantity(Double.valueOf(actualText.getText().toString()));
+                            product.setQuantity(Integer.parseInt(quantityFld.getText().toString()));
                             product.setActualQuantity(Double.valueOf(actualText.getText().toString()));
                             product.setWeightInKgs(Double.valueOf(weight.getText().toString()));
                             product.setAmount(Double.valueOf(amountFld.getText().toString()));
                             product.setPrice(producto.getPrice());
+                            product.setRate(price.getText().toString());
                             product.setUom(producto.getUom());
                             product.setPer(producto.getPer());
                             product.setQuantityUts(Integer.valueOf(units.getText().toString()));
@@ -217,7 +224,7 @@ public class AddnewProductActivity extends AppCompatActivity {
                 producto = (ProductListItem) data.getExtras().getSerializable("product");
                 pNameFld.setText(producto.getName());
                 price.setText(String.valueOf(producto.getPrice()));
-                uom.setText(producto.getUomPerEchUnit());
+                uom.setText(producto.getUom());
                 quantityFld.setText("");
             }
         }

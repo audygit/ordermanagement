@@ -234,8 +234,9 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
         String user = preferences.getString("user", "");
         String role = preferences.getString("role", "");
         String salesType = preferences.getString("salesType", "");
-        num = salesType.substring(0,3)+"/"+String.valueOf(count);
+        num = salesType.substring(0,3)+String.valueOf(count);
         JSONObject temp = new JSONObject();
+        temp.put("Created_By",user);
         temp.put("CustomerCode", customer.getId());
         temp.put("CustomerName", customer.getName());
         temp.put("UserType", null);
@@ -269,16 +270,17 @@ public class NewOrderActivity extends AppCompatActivity implements DeleteHelper{
             JSONObject t = new JSONObject();
             t.put("ItemCode", pro.getId());
             t.put("ItemName", pro.getName());
-            t.put("QtyInCases", pro.getBilledQuantity());
-            t.put("quantityUts", pro.getQuantityUts());
-            t.put("quantityPkgs", pro.getQuantityPkgs());
-            t.put("Price", pro.getPrice());
+            t.put("QtyInCases", pro.getQuantity());
+            t.put("QtyInUnits", pro.getQuantityUts());
+            t.put("QtyInPackets", pro.getQuantityPkgs());
+            t.put("price", pro.getPrice());
             t.put("Amount", pro.getAmount());
             t.put("WeightInKgs", pro.getWeightInKgs());
             t.put("ActualQty", pro.getActualQuantity());
             t.put("BilledQty", pro.getBilledQuantity());
-            t.put("Rate", pro.getPrice());
-            t.put("Per", pro.getUom());
+            t.put("Rate", pro.getRate());
+            t.put("Per", pro.getPer());
+            t.put("Uom",pro.getUom());
             returnProducts.put(t);
         }
         params.put("ItemDetails", returnProducts);

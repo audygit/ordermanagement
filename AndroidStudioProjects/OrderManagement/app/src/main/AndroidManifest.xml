@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
 
     <application
         android:allowBackup="true"
@@ -69,12 +71,19 @@
         <activity
             android:name=".OrderDetailsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".DashBoardActivity"
-            android:screenOrientation="portrait"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <activity
+            android:name=".DashBoardActivity"
+            android:screenOrientation="portrait" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".AddCustomerActivity" />
+        <activity android:name=".CustomerslistDistActivity"></activity>
     </application>
 
 </manifest>

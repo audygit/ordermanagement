@@ -34,6 +34,7 @@ public class ProductListItem implements Serializable {
     private int per;
     @SerializedName("Case_Units")
     private String caseUnit;
+    @SerializedName("Uom")
     private String Uom;
 
     public String getCode() {

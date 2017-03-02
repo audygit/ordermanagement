@@ -13,6 +13,8 @@ public class URLUtils {
 
     public static final String GET_CUSTOMERS_LIST = "http://loginwebservice.laksanasoft.com/LoginWebService.asmx/So_MasterDetails";
 
+    public static final String ADD_CUSTOMER = "http://loginwebservice.laksanasoft.com/LoginWebService.asmx/DistCustomerCreation";
+
     public static final String GET_PRODUCTS_LIST = "http://loginwebservice.laksanasoft.com/LoginWebService.asmx/ItemDetails";
 
     public static final String POST_ORDER = "http://loginwebservice.laksanasoft.com/LoginWebService.asmx/SaleOrder";
